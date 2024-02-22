@@ -1,0 +1,170 @@
+
+\documentclass{article}
+
+\usepackage{amsmath} % for advanced math typesetting
+\usepackage{amssymb} % for additional math symbols
+\usepackage{amsthm} % for theorem environments
+
+% Define theorem environment
+\newtheorem{theorem}{Theorem}[section]
+
+% Define definition environment
+\newtheorem{definition}{Definition}[section]
+
+% Define corollary environment
+\newtheorem{corollary}{Corollary}[section]
+
+% Define proposition environment
+\newtheorem{proposition}{Proposition}[section]
+
+
+% Define aliases for \mathfrak and \mathcal and mathbb
+\newcommand{\mfrak}[1]{\mathfrak{#1}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\mbb}[1]{\mathbb{#1}}
+% commands for the trace, Tr and norm, N
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\norm}[1]{\text{N}(#1)} 
+
+
+\begin{document}
+Let $K$ we a number field of degree $n$ over the rationals.
+
+
+\section*{Dual basis}
+Let $\omega_1, ..., \omega_n$ be a basis for $K$ over $k$ and choose $n$ elements, $c_1, ..., c_n$, in $k$. We know that the $n \times n$ matrix, $\tr {\omega_i \omega_j}$, is non-singular since $$0 \neq \text{disc}(\omega_1, ..., \omega_n) = |\tr{\omega_i \omega_j}|^2$$
+This means that there is a unique solution, $x_1, ..., x_n \in k$, to the $n$ equations
+$$\sum_{j=1}^n \tr{\omega_i \omega_j} x_j = \frac{c_i}{n} \quad (i = 1, ..., n)$$
+Let $\alpha = \sum_{j=1}^n x_j \omega_j$. Using rules of the trace, we get for any $i$ that
+$$c_i = \sum_{j=1}^n \tr{x_j \omega_i \omega_j} = \tr{\sum_{j=1}^n x_j \omega_i \omega_j} = \tr{\alpha \omega_i}$$
+Thus, we have demonstrated that for any choice of $c_1, ..., c_n \in k$, there is a unique $\alpha \in K$ such that $\tr{\alpha \omega_i} = c_i$. Now choose $c_{ij} = \delta_{ij}$, where $\delta_{ij}$ is the Kronecker delta. For every $i = 1, ..., n$ we get a unique $\omega_i^* \in K$ such that $\tr{\omega_i^* \omega_j} = c_{ij}$ for $j = 1, ..., n$. We call $\omega_1^*, ..., \omega_n^*$ the dual basis of $\omega_1, ..., \omega_n$. It is indeed a basis. Assume that 
+$$\sum_{i=1}^n x_i \omega_i^* = 0.$$
+Multiplying by $\omega_j$ and taking the trace, we get
+$$0 = \tr{\sum_{i=1}^n x_i \omega_i^* \omega_j} = \sum_{i=1}^n x_i \tr{\omega_i^* \omega_j} = x_j,$$
+which shows that all the $x_j$'s are zero.
+
+
+\section*{Forms and Modules}
+% forms
+A form $F(x_1, ..., x_m)$ of degree $k$ is a homogenous polynomial in the variables $x_1, ..., x_m$, of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension of $\mbb{Q}$, then it is called decomposable. It is called reducible if it can be written as the product of two forms of lower degree. Otherwise it is called irreducible. Two forms are called equivalent if one can be obtained from the other by a linear change of variables with coefficients in $\mbb{Q}$. This defines an equivalence relation on the set of forms. Consider the equation 
+$$F(x_1, ..., x_m) = a$$
+where $a$ is in $\mbb{Q}$. 
+
+Once we know the solutions to one form, we can transform them into solutions of an equivalent form. Thus, we \
+% An obvious but important property of equivalent forms is that if $F$ and $G$ are equivalent, then if we have a solution to $F(x_1, ..., x_m) = a$, then we can transform it into a solution $G(y_1, ..., y_m) = a$ and vice versa.
+
+% write a defintion 
+% \begin{definition}
+Let $\mu_1, ..., \mu_k$ be elements in $K$. The set, $M$, consisting of all $\mbb{Z}$-linear combinations of these is called a module in $K$ and the $\mu_i$'s are called the generators of the module. If $M$ contains a basis for the vector space $K / \mbb{Q}$, then it is called a \textbf{full module}. Otherwise it is called a \textbf{nonfull module}. By definition $M$ is a finitely generated abelian group and by the structure theorem, $M$ determines uniquely integers $r,s \geq 0$ and $d_1 \mid ... \mid d_s$, $d_i \geq 2$ such that
+$$M \cong \mbb{Z}^r \oplus \mbb{Z}/d_1\mbb{Z} \oplus ... \oplus \mbb{Z}/d_s\mbb{Z} $$
+But $M$ lives inside a field, which has no zero divisors, so $M$ must be a torsion-free $\mbb{Z}$-module, and so $s = 0$. Thus, $M \cong \mbb{Z}^r$, which means that $M$ is a free abelian group of rank $r$. The modules in $K$ can therefore be thought of as the finitely generated free abelian groups inside $K$ - This means that concepts such as rank and basis now make sense for modules. 
+% If $N$ is a subgroup of $M$, then $N$ is a free abelian group of rank $r' \leq r$, meaning that $N$ is also a module of $K$ of rank $r'$.
+In general, if we have a basis for $N$, say $\mu_1, ..., \mu_m$ and we choose to consider $\mbb Q$-linear combinations of these, say 
+\begin{equation}
+    a_1 \mu_1 + ... + a_m \mu_m = 0 \label{eq:linear_combination}
+\end{equation}
+Then we can always find an integer $c \neq 0$ so that $c a_i$ is an integer for all $i$. For example we can choose $c$ to be th product of all denominators of the $a_i$, all of which are non-zero. So if $m > n$ then we would be able to choose at least one of the $a_i$ to be non-zero. But that would mean that multiplying (\ref*{eq:linear_combination}) by a suitable $c$ would yield a non-trivial $Z$-linear combination, which is a contradiction. Hence the rank of a module has to be smaller than or equal to $n$. If $N$ has rank $m = n$, then $N$ is a full module, because multiplication by $c$ in (\ref{eq:linear_combination}) will give a $\mbb Z$-linear combination of the $\mu_i$'s which is zero, which implies that the $a_i$'s are all zero. On the other hand, if $N$ is a full module, then it has rank $n$ since a basis for $K$ over $\mbb Q$ descends to a basis over $\mbb Z$. Thus the full modules are exactly the modules of rank $n$, and the nonfull modules are those of rank less than $n$.
+
+Once we have a module, we can of course consider the norm of the elements in it. Let $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb{C}$. We then have
+$$N(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n \sigma_i(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k)$$
+Any term in this product occurs from choosing one of the $k$ terms in each of the $n$ factors, so multiplying this expression out, we get a homogenous polynomial in the variables $x_1, ..., x_n$. Let us think about what the coefficients of this polynomial are. Any term will have the form
+$$x_{i_1}\sigma_1(\mu_{i_1}) \dots x_{i_n}\sigma_n(\mu_{i_n}) = x_{i_1} ... x_{i_n} \sigma_1(\mu_{i_1})... \sigma_n(\mu_{i_n})$$
+where the $i_j$ signify which of the $k$ terms in the $n$ factors we chose. There could be many choices that lead to the same monomial, $x_{i_1}...x_{i_n}$. As such, the coefficient of this monomial will be
+$$\sum_{i} \sigma_1(\mu_{i_1})... \sigma_n(\mu_{i_n})$$
+where each $i$ in the sum corresponds to a unique way of choosing the $k$ terms in the $n$ factors. Acting with an embedding on the set of all embeddings will simply permute them. Thus, acting with an embedding on the above sum will just permute the order in which the terms are added. Thus, the sum is fixed by all embeddings. But this means that all coefficients are fixed by every single embedding, which means that the coefficients are in $\mbb{Q}$. Hence, $$F(x_1, ..., x_k) = N(x_1 \mu_1 + ... + x_k \mu_k)$$ 
+is a form, and we call it the form associated to the generators $\mu_1, ..., \mu_k$, of the module. Since there may be many generators that lead to the same module, the forms achieved in this way may not be equal. However, it turns out that they are equivalent. If $\nu_1, ...,\nu_s$ is another set of generators for the same module, then we can write each $\nu_i$ as a $\mbb{Z}$-linear combination of the $\mu_i$'s, i.e. for $j = 1, ..., s$, we have
+$\nu_j = \sum_{i=1}^k a_{ij} \mu_i$. Set for each $j = 1, ..., k$ 
+$$x_j = \sum_{i=1}^s a_{ji} y_i$$
+We see that
+$$\sum_{i=1}^s y_i \nu_i = \sum_{i=1}^s y_i \sum_{j=1}^k a_{ji} \mu_j = \sum_{j=1}^k (\sum_{i=1}^s a_{ji} y_i) \mu_j = \sum_{j=1}^k x_j \mu_j$$
+Which means that the forms associated to the generators $\mu_1, ..., \mu_k$ and $\nu_1, ..., \nu_s$ are equivalent. 
+
+We have seen that it is possible to construct forms from modules. The other direction is also possible. We have the theorem
+
+\begin{theorem}
+\end{theorem}
+
+Because of this correspondence between forms and norms of elements, we will now spend some more time investigating norms. 
+
+\section*{Coefficient rings and orders}
+An \textbf{order} in $K$ is a full module in $K$ which is also a ring with unity. We will now give a way of constructing such a ring. Given a full module $M$ in $K$, we can consider an element $\alpha$ in $K$ so that $\alpha M \subseteq M$. Such an element is called a \textbf{coefficient} of $M$, and the set of all of these is called the \textbf{coefficient ring} of $M$, which we will denote by $\mfrak D_M$, or simply $\mfrak D$, when it is clear from the context what is meant. It would be strange to call this object a ring, if it wasn't a ring, so let us check that it is. We check that $\mfrak D$ is a subring of $K$. First it is clear that $1 \in \mfrak{D}$ since $1 M \subseteq M$ and so $\mfrak{D}$ is non-empty. Let now $\alpha, \beta$ in $\mfrak D$ and take any element in $x$ in $M$. We have $$(\alpha - \beta)x = \alpha x - \beta x \in M$$
+Thus, $\alpha - \beta \in \mfrak{D}$. Checking that we have closure under multiplication is similar and so by the subring criterion $\mfrak{D}$ is a subring of $K$, In fact, $\mfrak{D}$ is also a full module. If $\gamma$ is any non-zero element of $M$, then $\gamma \mfrak{D}$ is a group under addition and we have that $\gamma \mfrak{D} \subseteq M$. Thus, $\gamma \mfrak D$ is a module since subgroups of modules are modules. But then also $\mfrak{D} = \gamma^{-1} \gamma \mfrak{D}$ is a module. We next show that $\mfrak D$ is full. Let $\alpha \in K$ be a non-zero element, and suppose $\mu_1, ..., \mu_n$ is a basis for $M$ which is also a basis for $K$ over $\mbb Q$. Then for each $i$ we can find $a_{ij}$ in $\mbb Q$ so that
+$$\alpha \mu_i = \sum_{j=1}^n a_{ij} \mu_j$$
+Choose now an integer, $c \neq 0$ so that $c a_{ij}$ is an integer for all $i,j$. This implies that $c \alpha \mu_i$ is in $M$ for all $i$. But this means that $c \alpha x$ is in $M$ for any $x$ in $M$, which means that $c \alpha$ is in $\mfrak D$. This means that we can find non-zero integers, $c_1, ..., c_n$, so that $c_1 \mu_1, ..., c_n \mu_n$ are all in $\mfrak D$. This is clearly still a basis for $K$ over $\mbb Q$, which means that $\mfrak D$ is full, and so $\mfrak D$ is an order in $K$.
+
+We now show that is also full. Let $\alpha$ be in $K^*$ and consider the induced $\mbb Q$ linear isomorphism from $K$ to itself 
+For any $\gamma$ in $M$, we have a map $\mfrak D \to M$ given by
+$$\phi(x) = \gamma x$$
+If $\gamma$ is non-zero, then $\phi$ is clearly injective. If $\gamma x = y$ for some $y$ in $M$, then we get $x = \gamma^{-1} y$.  
+
+
+
+Thus, there is an integer $c$ so that $c \alpha$ is in $M$. 
+
+
+
+
+\section*{Solutions to $N(\mu) = a$, where $\mu$ is in a full module}
+
+
+Let $\mfrak{D}$ be the coefficient ring of a full module $M$ and assume that 
+$$N(\mu) = a,$$
+for some $\mu$ in $M$. We have that $\epsilon \mu$ is in $M$ if and only if  $\epsilon$ is in $\mfrak{D}$. So take now $\epsilon \mu \in M$ with $\epsilon \in \mfrak{D}$. We get
+$$N(\epsilon \mu) = N(\epsilon)N(\mu) = a N(\epsilon)$$
+This means that a single solution to 
+So if $\epsilon$ has norm 1, also $\epsilon \mu$ will be a solution. The units of $\mfrak{D}$ are the elements with norm $\pm 1$. 
+
+Maybe all we really need to show is what all of these solutions are like. Maybe we do not need all the other parts. 
+
+
+
+
+\section*{Only finite many solutions up to associates}
+Let $K / k$ be a finite extension of fields. If $\alpha$ is in $K$, we get a $k$-linear map $x \mapsto \alpha x$ from $K$ to itself. Suppose that $\mu_1, ..., \mu_n$ is a basis for $K$ over $k$. Then we can write each $\alpha \mu_i$ as a $k$-linear combination of the basis, or equivalently, we can find a matrix $A$ so that 
+$$\begin{pmatrix} \alpha \mu_1 \\ \vdots \\ \alpha \mu_n \end{pmatrix} = A \begin{pmatrix} \mu_1 \\ \vdots \\ \mu_n \end{pmatrix}$$
+We say that $A$ is the matrix representation of the linear map $x \mapsto \alpha x$ with respect to the basis $\mu_1, ..., \mu_n$. The characteristic polynomial for $\alpha$ relative to the extension $K / k$, is then defined to be the characteristic polynomial of $A$ which is defined to be
+$$\phi(x) = \det(xI - A)$$
+This polynomial is monic and it has coefficients which are polynomial expressions of the entries of $A$. From the above we observe that
+$$0 = (\alpha I - A) \begin{pmatrix} \mu_1 \\ \vdots \\ \mu_n \end{pmatrix}$$
+Thus, each row of $\alpha I - A$ induces a linear combination of our basis which is zero, which means that the rows are 0, hence the entire matrix is 0. Thus, $\phi(\alpha) = \det(\alpha I - A) = 0$. 
+
+Consider now a number field $K$ with degree $n$ over $\mbb{Q}$. If $\alpha$ now is an element in an order $\mfrak D \subseteq K$, and $\mu_1, ..., \mu_n$ is a basis for $\mfrak D$ then we can write each $\alpha \mu_i \in \mfrak D$ as a linear combination with coefficients in $\mbb Z$, which means that the matrix representation of $x \mapsto \alpha x$ has integer entries, so the characteristic polynomial of $\alpha$ has integer coefficients, and $\alpha$ is a root. Hence $\alpha$ is an algebraic integer, so also the minimal polynomial of $\alpha$, $m_\alpha$, has integer coefficients. Both the trace and the norm occur as coefficients in $m_\alpha$, so these quantities are also integers. 
+
+The ring $\mfrak D$ is in particular a free abelian group of rank $n$, hence isomorphic to $\mbb Z^n$. As $\mfrak D$ is abelian, the subgroup $c \mfrak D$, where $c \in \mbb N$, is normal in $\mfrak D$. We can therefore quotient out this subgroup to get the isomorphism
+$$\mfrak D/c \mfrak D \cong \mbb Z^n/c \mbb Z^n \cong (\mbb Z/c \mbb Z)^n$$
+Now, $\mbb Z / c \mbb Z$ contains $c$ elements, which means that 
+$$c^n = \# (\mbb Z/c \mbb Z)^n = \# \mfrak D/c \mfrak D$$
+Denote by $\bar \alpha$ the image of $\alpha$ in $\mfrak D/c \mfrak D$. Assume that $\bar \alpha = \bar \beta$ and that $|N(\alpha)| = |N(\beta)| = c$. We show that $\alpha$ and $\beta$ are associates. Our assumptions give us that
+$$\alpha = \beta + c \gamma = \beta + |N(\beta)| \gamma,$$
+for some $\gamma$ in $\mfrak D$. So if $\beta$ divides $|N(\beta)|$ in $\mfrak D$, it follows that $\beta$ divides $\alpha$ and a similar argument can be carried out to show that $\alpha$ divides $\beta$. Both of these together is the same as saying that $\alpha$ and $\beta$ are associates. We now show that $\beta$ divides $|N(\beta)|$ in $\mfrak D$. Consider the minimal polynomial, $m_\beta$, for $\beta$ over $\mbb Q$. This polynomial has coefficients in $\mbb Z$. Plugging in $\beta$ into this polynomial we get
+$$0 = m_\beta(\beta) = \beta^k + a_{k-1}\beta^{k-1} + ... + a_0$$
+where $a_0 = N(\beta)$ is the constant term. Solving for $a_0$ we get
+$$N(\beta) = -\beta(\beta^{k-1} + a_{k-1}\beta^{k-2} + ... + a_1).$$
+The sum in the parenthesis is an element of $\mfrak D$ because the $a_i$ are integers and $\beta^i$ is in $\mfrak D$ for all $i \in \mbb N$. This shows that $\beta$ divides $N(\beta)$ in $\mfrak D$. Thus $\beta$ will also divide $\gamma N(\beta)$ for any $\gamma$ in $\mfrak D$, so in particular it will divide $|N(\beta)|$. We have now shown that $\alpha$ and $\beta$ are associates. 
+Take now a maximal set of pairwise non-associates in $\mfrak D$ all with absolute norm $c$, and call it $A$. These must all map to distinct elements in $\mfrak D/c \mfrak D$; Otherwise we would have a contradiction to what we have just shown. This means that $$\# A \leq \# \mfrak D / c \mfrak D = c^n$$ 
+We have shown that there are only finitely many solutions to $|N(\alpha)| = c$, $\alpha \in \mfrak D$, up to associates. Therefore there are also only finitely many solutions to $N(\alpha) = c$ up to associates.
+
+
+
+
+
+\section*{Skolem's Method}
+Let $K$ be a number field of degree $n$ and let $\mu_1, ..., \mu_m$ be a set of $\mbb{Q}$-linearly independent elements of $K$. These generate a nonfull module, $M$. Starting from these generators we can build a basis for $K$ over $\mbb{Q}$. We will call this basis $\mu_1, ..., \mu_m, \mu_{m+1}, ..., \mu_n$. Considering the module, call it $\bar M$, generated by these will give us a full module and $M \subset \bar M$. We wish to find solutions to the equation $N(\alpha) = a$, where $\alpha$ is in $M$. This is really the same as allowing $\alpha$ to be in $\bar M$, so finding solutions of the form
+$$\alpha = \sum_{i=1}^n x_i \mu_i$$
+where the $x_i$ are in $\mbb{Z}$, with the added restriction that 
+$$x_{m+1} = ... = x_n = 0$$
+Let now $\mu_1^*, ..., \mu_m^*$ be the dual basis of $\mu_1, ..., \mu_m$. The computation 
+$$\tr{\mu_i^* \alpha} = \tr {\sum_{j=1}^n \mu_i^* x_j \mu_j} = \sum_{j=1}^n x_j \tr{\mu_i^* \mu_j} = x_i$$
+shows that we can recover the $x_i$ variables in $\alpha$ by taking the trace of $\mu_i^*\alpha$. We can use this to reformulate the above restriction to
+$$\tr{\mu_m^* \alpha} = ... = \tr{\mu_n^* \alpha} = 0$$
+Since $\alpha$ has norm $a$, we can write
+$\alpha = \gamma_k \epsilon_1^{u_1}...\epsilon_n^{u_r}$, $u_i \in \mbb{Z}$, where $\gamma$ is taken from a finite set of elements with norm $a$, and the $\epsilon_i$ is a system of independent units of $K$. Let $\sigma_1, ..., \sigma_n$ be the embeddings of $K$ into $\mbb{C}$. The restriction on the last $n-m$ variables can be written as 
+$$\tr{\mu_j^* \alpha } = \sum_{i = 1}^n \sigma_i(\gamma \mu_j^* \epsilon_1^{u_1}...\epsilon_n^{u_r}) = \sum_{i = 1}^n \sigma_i(\gamma_k \mu_j^* ) \sigma_i(\epsilon_1)^{u_1}...\sigma_i(\epsilon_n)^{u_r} = 0$$
+for $j = m+1, ..., n$. If we can show that, for each of these equations, there are only finitely many possibilites for the $u_i$'s, then because there are also finitely many $\gamma$'s, we would have established that there are only finitely many $\alpha \in M$ such that $N(\alpha) = a$. Right now, the $u_i$ live in $\mbb{Z}$, but if we 
+
+
+
+
+
+
+\end{document}
