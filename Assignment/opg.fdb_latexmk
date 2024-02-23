@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1708528746 "/home/dawg/Documents/Speciale/Assignment/opg.tex" "opg.pdf" "opg" 1708528747 0
+["pdflatex"] 1708630047 "/home/dawg/Documents/Speciale/Assignment/opg.tex" "opg.pdf" "opg" 1708630047 0
   "/etc/texmf/web2c/texmf.cnf" 1707739029 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/dawg/Documents/Speciale/Assignment/opg.tex" 1708528746 18028 426ef19996824ad4fd2c87000c90ea13 ""
+  "/home/dawg/Documents/Speciale/Assignment/opg.tex" 1708630047 20867 319f66e9b86f0a6aa8598d1cc358fb72 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/euler/eufm10.tfm" 1246382020 1040 b84415f97d114011685943ade933dc71 ""
@@ -33,6 +33,7 @@
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
+  "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/euler/eufm10.pfb" 1336858727 21098 d4aee7c0aac232caac5688b586b9363c ""
   "/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/share/texlive/texmf-dist/tex/latex/amscls/amsthm.sty" 1591045760 12594 0d51ac3a545aaaa555021326ff22a6cc ""
@@ -53,8 +54,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1681034085 39561 34c98e380bf7c7201ee6a7909aff625a ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1707739063 4623455 fa0568a71dd9a288d6c226ee477506c6 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1707739096 7880445 6e72456622bc3919f22ea7fd874755a7 ""
-  "opg.aux" 1708528747 73 8f67699b98a54ec80395b98dd7ba0a6d "pdflatex"
-  "opg.tex" 1708528746 18028 426ef19996824ad4fd2c87000c90ea13 ""
+  "opg.aux" 1708630047 138 b0f9fce3acd7d6e952cfa4a73ffaf273 "pdflatex"
+  "opg.tex" 1708630047 20867 319f66e9b86f0a6aa8598d1cc358fb72 ""
   (generated)
   "opg.aux"
   "opg.log"

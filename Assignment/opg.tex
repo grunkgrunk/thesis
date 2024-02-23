@@ -17,6 +17,9 @@
 % Define proposition environment
 \newtheorem{proposition}{Proposition}[section]
 
+% Define lemma environment
+\newtheorem{lemma}{Lemma}[section]
+
 
 % Define aliases for \mathfrak and \mathcal and mathbb
 \newcommand{\mfrak}[1]{\mathfrak{#1}}
@@ -60,10 +63,10 @@ $$M \cong \mbb{Z}^r \oplus \mbb{Z}/d_1\mbb{Z} \oplus ... \oplus \mbb{Z}/d_s\mbb{
 But $M$ lives inside a field, which has no zero divisors, so $M$ must be a torsion-free $\mbb{Z}$-module, and so $s = 0$. Thus, $M \cong \mbb{Z}^r$, which means that $M$ is a free abelian group of rank $r$. The modules in $K$ can therefore be thought of as the finitely generated free abelian groups inside $K$ - This means that concepts such as rank and basis now make sense for modules. 
 % If $N$ is a subgroup of $M$, then $N$ is a free abelian group of rank $r' \leq r$, meaning that $N$ is also a module of $K$ of rank $r'$.
 In general, if we have a basis for $N$, say $\mu_1, ..., \mu_m$ and we choose to consider $\mbb Q$-linear combinations of these, say 
-\begin{equation}
-    a_1 \mu_1 + ... + a_m \mu_m = 0 \label{eq:linear_combination}
+\begin{equation} \label{eq:LinearCombination}
+    a_1 \mu_1 + ... + a_m \mu_m = 0 
 \end{equation}
-Then we can always find an integer $c \neq 0$ so that $c a_i$ is an integer for all $i$. For example we can choose $c$ to be th product of all denominators of the $a_i$, all of which are non-zero. So if $m > n$ then we would be able to choose at least one of the $a_i$ to be non-zero. But that would mean that multiplying (\ref*{eq:linear_combination}) by a suitable $c$ would yield a non-trivial $Z$-linear combination, which is a contradiction. Hence the rank of a module has to be smaller than or equal to $n$. If $N$ has rank $m = n$, then $N$ is a full module, because multiplication by $c$ in (\ref{eq:linear_combination}) will give a $\mbb Z$-linear combination of the $\mu_i$'s which is zero, which implies that the $a_i$'s are all zero. On the other hand, if $N$ is a full module, then it has rank $n$ since a basis for $K$ over $\mbb Q$ descends to a basis over $\mbb Z$. Thus the full modules are exactly the modules of rank $n$, and the nonfull modules are those of rank less than $n$.
+Then we can always find an integer $c \neq 0$ so that $c a_i$ is an integer for all $i$. For example we can choose $c$ to be th product of all denominators of the $a_i$, all of which are non-zero. So if $m > n$ then we would be able to choose at least one of the $a_i$ to be non-zero. But that would mean that multiplying (\ref{eq:LinearCombination}) by a suitable $c$ would yield a non-trivial $\mbb Z$-linear combination, which is a contradiction. Hence the rank of a module has to be smaller than or equal to $n$. If we have $m = n$, then $N$ is a full module, because multiplication by $c \neq 0$ in (\ref{eq:LinearCombination}) will give a $\mbb Z$-linear combination of the $\mu_i$'s which is zero, which implies that the $ca_i$'s are all zero, which forces the $a_i$ to be zero. On the other hand, if $N$ is a full module, then it has rank $n$ since a basis for $K$ over $\mbb Q$ is in particular also linearly independent over $\mbb Z$. But then the $\mu_i$ must be a basis for $N$, so it has rank $n$. Thus the full modules are exactly the modules of rank $n$, and the nonfull modules are those of rank less than $n$.
 
 Once we have a module, we can of course consider the norm of the elements in it. Let $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb{C}$. We then have
 $$N(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n \sigma_i(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k)$$
@@ -88,19 +91,25 @@ Because of this correspondence between forms and norms of elements, we will now 
 
 \section*{Coefficient rings and orders}
 An \textbf{order} in $K$ is a full module in $K$ which is also a ring with unity. We will now give a way of constructing such a ring. Given a full module $M$ in $K$, we can consider an element $\alpha$ in $K$ so that $\alpha M \subseteq M$. Such an element is called a \textbf{coefficient} of $M$, and the set of all of these is called the \textbf{coefficient ring} of $M$, which we will denote by $\mfrak D_M$, or simply $\mfrak D$, when it is clear from the context what is meant. It would be strange to call this object a ring, if it wasn't a ring, so let us check that it is. We check that $\mfrak D$ is a subring of $K$. First it is clear that $1 \in \mfrak{D}$ since $1 M \subseteq M$ and so $\mfrak{D}$ is non-empty. Let now $\alpha, \beta$ in $\mfrak D$ and take any element in $x$ in $M$. We have $$(\alpha - \beta)x = \alpha x - \beta x \in M$$
-Thus, $\alpha - \beta \in \mfrak{D}$. Checking that we have closure under multiplication is similar and so by the subring criterion $\mfrak{D}$ is a subring of $K$, In fact, $\mfrak{D}$ is also a full module. If $\gamma$ is any non-zero element of $M$, then $\gamma \mfrak{D}$ is a group under addition and we have that $\gamma \mfrak{D} \subseteq M$. Thus, $\gamma \mfrak D$ is a module since subgroups of modules are modules. But then also $\mfrak{D} = \gamma^{-1} \gamma \mfrak{D}$ is a module. We next show that $\mfrak D$ is full. Let $\alpha \in K$ be a non-zero element, and suppose $\mu_1, ..., \mu_n$ is a basis for $M$ which is also a basis for $K$ over $\mbb Q$. Then for each $i$ we can find $a_{ij}$ in $\mbb Q$ so that
+Thus, $\alpha - \beta \in \mfrak{D}$. Checking that we have closure under multiplication is similar and so by the subring criterion $\mfrak{D}$ is a subring of $K$, In fact, $\mfrak{D}$ is also a full module. If $\gamma$ is any non-zero element of $M$, then $\gamma \mfrak{D}$ is a group under addition and we have that $\gamma \mfrak{D} \subseteq M$. Thus, $\gamma \mfrak D$ is a module since subgroups of modules are modules. But then also $\mfrak{D} = \gamma^{-1} \gamma \mfrak{D}$ is a module. Before we show that $\mfrak D$ is full, we need a small intermediate result. Let $\mu_1, ..., \mu_n$ be a basis for $M$. To show that $\alpha M \subseteq M$, $\alpha$ in $K$, it suffices to show that $\alpha \mu_i \in M$ for all $\mu_i$. Here is why. Take any $x \in M$ and write $x = \sum_{i=1}^n a_i \mu_i$ where the $a_i$ are integers. Multiplying by $\alpha$ we get
+$$\alpha x = \sum_{i=1}^n a_i (\alpha \mu_i)$$
+So if the $\alpha \mu_i$ are all in $M$, this is just a finite sum of elements in $M$, meaning that the entire sum is in $M$. Hence, $\alpha M \subseteq M$. 
+
+%Using this result we can now move on to show that $\mfrak D$ is a full module. 
+This allows us to prove the following lemma 
+
+\begin{lemma} \label{lem:ElementsCanBeScaledToBeInCoefficientRing}
+    Suppose $M$ is a full module of $K$ and suppose $\alpha \in K$. Then there exists an integer $c \neq 0$ so that $c \alpha$ is in the coefficient ring of $M$.
+\end{lemma}
+
+PROOF.
+Since $M$ is full we can assume that $\mu_1, ..., \mu_n$ not only a basis for $M$ but also a basis for $K$ over $\mbb Q$. Then for each $i$ we can find $a_{ij}$ in $\mbb Q$ so that
 $$\alpha \mu_i = \sum_{j=1}^n a_{ij} \mu_j$$
-Choose now an integer, $c \neq 0$ so that $c a_{ij}$ is an integer for all $i,j$. This implies that $c \alpha \mu_i$ is in $M$ for all $i$. But this means that $c \alpha x$ is in $M$ for any $x$ in $M$, which means that $c \alpha$ is in $\mfrak D$. This means that we can find non-zero integers, $c_1, ..., c_n$, so that $c_1 \mu_1, ..., c_n \mu_n$ are all in $\mfrak D$. This is clearly still a basis for $K$ over $\mbb Q$, which means that $\mfrak D$ is full, and so $\mfrak D$ is an order in $K$.
-
-We now show that is also full. Let $\alpha$ be in $K^*$ and consider the induced $\mbb Q$ linear isomorphism from $K$ to itself 
-For any $\gamma$ in $M$, we have a map $\mfrak D \to M$ given by
-$$\phi(x) = \gamma x$$
-If $\gamma$ is non-zero, then $\phi$ is clearly injective. If $\gamma x = y$ for some $y$ in $M$, then we get $x = \gamma^{-1} y$.  
+Choose now an integer, $c \neq 0$ so that $c a_{ij}$ is an integer for all $i,j$. This implies that $c \alpha \mu_i$ is in $M$ for all $i$. But this means that $c \alpha x$ is in $M$ for any $x$ in $M$, which means that $c \alpha$ is in $\mfrak D$. 
 
 
 
-Thus, there is an integer $c$ so that $c \alpha$ is in $M$. 
-
+This means that we can find non-zero integers, $c_1, ..., c_n$, so that $c_1 \mu_1, ..., c_n \mu_n$ are all in $\mfrak D$. This is clearly still a basis for $K$ over $\mbb Q$, which means that $\mfrak D$ is full, and so $\mfrak D$ is an order in $K$.
 
 
 
@@ -120,15 +129,15 @@ Maybe all we really need to show is what all of these solutions are like. Maybe 
 
 
 \section*{Only finite many solutions up to associates}
-Let $K / k$ be a finite extension of fields. If $\alpha$ is in $K$, we get a $k$-linear map $x \mapsto \alpha x$ from $K$ to itself. Suppose that $\mu_1, ..., \mu_n$ is a basis for $K$ over $k$. Then we can write each $\alpha \mu_i$ as a $k$-linear combination of the basis, or equivalently, we can find a matrix $A$ so that 
-$$\begin{pmatrix} \alpha \mu_1 \\ \vdots \\ \alpha \mu_n \end{pmatrix} = A \begin{pmatrix} \mu_1 \\ \vdots \\ \mu_n \end{pmatrix}$$
-We say that $A$ is the matrix representation of the linear map $x \mapsto \alpha x$ with respect to the basis $\mu_1, ..., \mu_n$. The characteristic polynomial for $\alpha$ relative to the extension $K / k$, is then defined to be the characteristic polynomial of $A$ which is defined to be
-$$\phi(x) = \det(xI - A)$$
-This polynomial is monic and it has coefficients which are polynomial expressions of the entries of $A$. From the above we observe that
-$$0 = (\alpha I - A) \begin{pmatrix} \mu_1 \\ \vdots \\ \mu_n \end{pmatrix}$$
-Thus, each row of $\alpha I - A$ induces a linear combination of our basis which is zero, which means that the rows are 0, hence the entire matrix is 0. Thus, $\phi(\alpha) = \det(\alpha I - A) = 0$. 
+% Let $K / k$ be a finite extension of fields. For any $k$-linear map, $f$, from $K$ to itself the characteristic polynomial of the map is defined to be
+% $$\chi(\lambda) = \det (A - \lambda I)$$ 
+% where $I$ is an identity matrix of suitable size and $A$ is the matrix representation of $f$ with respect to a basis for $K$ over $k$. This is well-defined, i.e it does not depend on the choice of basis and $\chi(\lambda)$ is in fact a polynomial in $\lambda$  with coefficients in $k$ - It is even monic and by the Cayley-Hamilton theorem, $\chi(f) = 0$. Noq if $\alpha$ is in $K$, we can regard multiplication by $\alpha$ as a $k$-linear map $\phi_\alpha(x) = \alpha x$ from $K$ to itself. We then have that $\chi_\alpha(\alpha) = \chi_\alpha(\phi_\alpha) = 0$. This means that $\alpha$ is a root of its characteristic polynomial.
 
-Consider now a number field $K$ with degree $n$ over $\mbb{Q}$. If $\alpha$ now is an element in an order $\mfrak D \subseteq K$, and $\mu_1, ..., \mu_n$ is a basis for $\mfrak D$ then we can write each $\alpha \mu_i \in \mfrak D$ as a linear combination with coefficients in $\mbb Z$, which means that the matrix representation of $x \mapsto \alpha x$ has integer entries, so the characteristic polynomial of $\alpha$ has integer coefficients, and $\alpha$ is a root. Hence $\alpha$ is an algebraic integer, so also the minimal polynomial of $\alpha$, $m_\alpha$, has integer coefficients. Both the trace and the norm occur as coefficients in $m_\alpha$, so these quantities are also integers. 
+% Choosing an arbitrary basis for $K$ over $k$, we can represent this map by a matrix, $A$, with respect to this basis. The characteristic polynomial of $A$ is then defined to be $\chi_A(x) = \det(xI - A)$, where $I$ is the identity matrix of suitable size. 
+
+Suppose we have a finite extension of fields, $K / k$. Multiplication by an element, $\alpha$, in $K$ can be regarded as a $k$-linear map, $\phi_\alpha(x) = \alpha x$, from $K$ to itself, and we have that $\phi_\alpha^k(x)$ = $\alpha^k x$, for $k \in \mbb N$. Hence, $\phi_\alpha^k(1) = \alpha^k$. The characteristic polynomial, $\chi_{\phi_\alpha}$, of $\phi_\alpha$ is then a monic polynomial with coefficients in $k$ and we have $\chi_{\phi_\alpha}(\phi_\alpha) = 0$. In words, this means that $\chi_{\phi_\alpha}(\phi_\alpha)$ is the zero map. Hence evaluating it in 1 gives a polynomial expression in $\alpha$ with coefficients in $k$ which equals 0. This means that $\alpha$ is a root of $\chi_{\phi_\alpha}$. We will therefore call the polynomial $\chi_{\phi_\alpha}$ the characteristic polynomial of $\alpha$ relative to the extension $K / k$.
+
+If now $K$ is instead a number field with degree $n$ over $\mbb{Q}$. If $\alpha$ now is an element in an order $\mfrak D \subseteq K$, and $\mu_1,  ..., \mu_n$ is a basis for $\mfrak D$ then we can write each $\alpha \mu_i \in \mfrak D$ as a linear combination with coefficients in $\mbb Z$, which means that the matrix representation of $x \mapsto \alpha x$ has integer entries, so the characteristic polynomial of $\alpha$ has integer coefficients. But as we saw above, $\alpha$ is a root of this polynomial, which is a monic. Hence $\alpha$ is an algebraic integer, so also the minimal polynomial of $\alpha$, $m_\alpha$, has integer coefficients. Both the trace and the norm occur as coefficients in $m_\alpha$, so these quantities are also integers. 
 
 The ring $\mfrak D$ is in particular a free abelian group of rank $n$, hence isomorphic to $\mbb Z^n$. As $\mfrak D$ is abelian, the subgroup $c \mfrak D$, where $c \in \mbb N$, is normal in $\mfrak D$. We can therefore quotient out this subgroup to get the isomorphism
 $$\mfrak D/c \mfrak D \cong \mbb Z^n/c \mbb Z^n \cong (\mbb Z/c \mbb Z)^n$$
@@ -142,10 +151,10 @@ where $a_0 = N(\beta)$ is the constant term. Solving for $a_0$ we get
 $$N(\beta) = -\beta(\beta^{k-1} + a_{k-1}\beta^{k-2} + ... + a_1).$$
 The sum in the parenthesis is an element of $\mfrak D$ because the $a_i$ are integers and $\beta^i$ is in $\mfrak D$ for all $i \in \mbb N$. This shows that $\beta$ divides $N(\beta)$ in $\mfrak D$. Thus $\beta$ will also divide $\gamma N(\beta)$ for any $\gamma$ in $\mfrak D$, so in particular it will divide $|N(\beta)|$. We have now shown that $\alpha$ and $\beta$ are associates. 
 Take now a maximal set of pairwise non-associates in $\mfrak D$ all with absolute norm $c$, and call it $A$. These must all map to distinct elements in $\mfrak D/c \mfrak D$; Otherwise we would have a contradiction to what we have just shown. This means that $$\# A \leq \# \mfrak D / c \mfrak D = c^n$$ 
-We have shown that there are only finitely many solutions to $|N(\alpha)| = c$, $\alpha \in \mfrak D$, up to associates. Therefore there are also only finitely many solutions to $N(\alpha) = c$ up to associates.
+We have shown that there are only finitely many solutions to $|N(\alpha)| = c$, $\alpha \in \mfrak D$, up to associates. Therefore there are also only finitely many solutions to $N(\alpha) = c$ up to associates. We can now use this result to show a more general statement, namely that there are only finitely many pairwise non-associate elements in a full module with a certain norm. A module $M$ need not be a ring with unity. Hence we need to define the concept of associate elements in a module. We say that two element, $a,b$ in $M$ are \textbf{associated} if $\frac{a}{b}$ is a unit in the coefficient ring of $M$. Now to proving the statement. Suppose $\mfrak D$ is the coefficient ring of $M$, and that we have pairwise non-associate elements $\gamma_1, ..., \gamma_k$ in $M$ all with the same norm, $c$. It is possible to find an integer $b$ so that $b M$ is contained in $\mfrak D$. In particular $b \gamma_i$ is in $\mfrak D$, and all of these have the same norm, namely $N(b \gamma_i) =N(b)N(\gamma_i) = b^n \gamma_i$. Furthermore, the elements $b \gamma_1, ..., b \gamma_n$ are pairwise non-associated in the ring $\mfrak D$. But $\mfrak D$ is an order, so that means that $k$ cannot be arbitrarily large. What remains to show is the existence of the number $b$ above. 
 
 
-
+By (\ref{lem:ElementsCanBeScaledToBeInCoefficientRing}) we can find $c_i$ for every $\mu_i$ so that $c_i \mu_i$ is in $\mfrak D$. We can then take $b$ to be the product of all the $c_i$'s. This will be a non-zero integer, satisfying that $b \mu_i$ is in $\mfrak D$ for all $i$.
 
 
 \section*{Skolem's Method}
