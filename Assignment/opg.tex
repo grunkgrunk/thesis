@@ -1,9 +1,23 @@
 
 \documentclass{article}
-
 \usepackage{amsmath} % for advanced math typesetting
 \usepackage{amssymb} % for additional math symbols
 \usepackage{amsthm} % for theorem environments
+\usepackage{mathtools} % for advanced math typesetting
+
+% \usepackage{charter} % use Helvetica font
+% \renewcommand{\familydefault}{\sfdefault} % set Helvetica as the default font
+
+
+\newcommand*{\argordot}[1]{%
+    \def\arg{#1}%
+    \ifx\arg\empty
+        \,\cdot\,%
+    \else
+        #1%
+    \fi%
+}
+\DeclarePairedDelimiterX{\abs}[1]{\mid}{\mid}{\argordot{#1}}
 
 % Define theorem environment
 \newtheorem{theorem}{Theorem}[section]
@@ -20,6 +34,9 @@
 % Define lemma environment
 \newtheorem{lemma}{Lemma}[section]
 
+% Define example environment
+\newtheorem{example}{Example}[section]
+
 
 % Define aliases for \mathfrak and \mathcal and mathbb
 \newcommand{\mfrak}[1]{\mathfrak{#1}}
@@ -31,6 +48,10 @@
 
 
 \begin{document}
+
+% TODO: Write an introduction, saying that there has been developed mathematics that does not require a complex root as we do. There are even results giving an upper bound on the number of solutions to the thue equation. We will not do that here - we will just show that under certain circumstances, there are only finitely many solutions.So the result is not as strong, but the proof is more elegant. It does not require much analysis at all. 
+
+
 Let $K$ we a number field of degree $n$ over the rationals.
 
 
@@ -55,21 +76,38 @@ which shows that all the $x_j$'s are zero.
     A field $K$ equipped with a valuation, $v$, is said to be complete with respect to $v$, if every Cauchy sequence in $K$ converges to an element in $K$.
 \end{definition}
 
-\section{Local analytic manifold}
+%TODO
+\begin{theorem}
+    The valuation ring of of a local field $K$ is compact.
+\end{theorem}
+\begin{proof}
+    The valuation ring can be thought of as the closed unit ball around 0 with respect to the absolute value on $K$. Hence it is closed and is homeomorphic to $\varprojlim \mcal O / \mfrak p^n$ which is then of course also closed. This inverse limit is contained in $\prod_{n = 1}^\infty \mcal O / \mfrak p^n$, which is compact by Tychonoff's theorem since all the $\mcal O / \mfrak p^n$ are finite, hence compact. It follows that $\mcal O$ is compact.
+\end{proof}
+Since the absolute value $K$ induces a metric on $K$, it means that compactness is equivalent to sequential compactness. Thus every sequence in $\mcal O$ has a convergent subsequence. We will use this fact in section (?????)
 
-\begin{definition}
-    Suppose $K$ is complete with respect to a valuation $v$, and let $||$ be a corresponding multiplicative valuation. Define $\tilde K^n$ to be the set of $n$-tuples, $(\alpha_1, ..., \alpha_n)$ so that each of the $\alpha_i$ lie in a finite extension of $K$. We call such a tuple a point. The set of points where $|\alpha_i| < \epsilon$ we call an $\epsilon$-neighborhood of the origin. Consider now the set $\mfrak D_\epsilon$, of all formal powerseries, $f(x_1, ..., x_n)$ (OVER WHAT RING?) that converge (IN WHAT SENSE?) in an $\epsilon$-neighborhood of the origin. Suppose now we have $f_1, ..., f_m \in \mfrak D_\epsilon$ all of which have zero constant term. The set $V$ of points $X \in \tilde K^n$ in the $\epsilon$-neighborhood so that $$f_1(X) = ... = f_m(X) = 0$$ is called a local manifold. We say that two local manifolds are equal if there is an $\epsilon$-neighborhood in which they are equal.
+
+\section{Local manifold}
+
+\begin{definition}[Local manifold]
+    Suppose $K$ is complete with respect to a valuation $v$, and let $\abs{}$ be a corresponding multiplicative valuation. Let $\overline K$ denote the algebraic closure of $K$. We will refer to the elements, $(\alpha_1, ..., \alpha_n)$ of the cartesian product, $\overline K^n$, as points. The set of points where $|\alpha_i| < \epsilon$ for all $i = 1, ..., n$, we call an $\epsilon$-neighborhood of the origin. Let $R = \overline K[[x_1, ..., x_n]]$ (WHAT IS THE RING OF COEFFICIENTS HERE?) denote the set of all format power series, $f(x_1, ..., x_n)$ with coefficients in $\overline K$ and let $F$ be the set of all $f \in R$ so that $f$ converges in some $\epsilon$-neighborhood of the origin.
+
+    Assume $f_1, ..., f_m \in F$ all of which have zero constant term. The set $V$ of points $X \in \overline {K}^n$ such that $$f_1(X) = ... = f_m(X) = 0$$
+    where $X$ belongs to some $\epsilon$-neighborhood of the origin is called a local manifold. We say that two local manifolds are equal if there is an $\epsilon$-neighborhood in which they are the same.
+\end{definition}
+
+\begin{definition}[Curve]
+    A curve in $\overline K^n$ is a collection of $n$ power series, $\omega_1(t), ..., \omega_n(t) \in \overline K[[t]]$, not all identically zero, but with constant term zero. We say the curve lies on a manifold $V$, if for every $f \in I_V$ we have $$f(\omega_1(t), ..., \omega_n(t)) = 0$$
 \end{definition}
 
 \begin{proposition}
-    The set $\mfrak D_\epsilon$ is actually a ring. Suppose $V$ is a local manifold. The subset, $I_V \subseteq \mfrak D_\epsilon$, given by 
-    $$I_V = \{ f \in \mfrak D_\epsilon \mid f(X) = 0 \text{ for all } X \in V\}$$ 
-    is an ideal of $\mfrak D_\epsilon$.
+    The set $F$ in the definition above is actually a ring. Suppose $V$ is a local manifold. The subset, $I_V \subseteq F$, given by 
+    $$I_V = \{ f \in F \mid f(X) = 0 \text{ for all } X \in V\}$$ 
+    is an ideal of $F$.
 \end{proposition}
 
-\begin{proof}
-    
-\end{proof}
+\begin{theorem}
+    A local manifold is either equal to the set containing just the origin, or it contains a curve.
+\end{theorem}
 
 
 EXPLAIN WHY: Elements in the quotient ring $\mfrak D_\epsilon / I_V$ can be thought of as functions on the local manifold $V$.
@@ -181,9 +219,9 @@ Maybe all we really need to show is what all of these solutions are like. Maybe 
 
 Suppose we have a finite extension of fields, $K / k$. Multiplication by an element, $\alpha$, in $K$ can be regarded as a $k$-linear map, $\phi_\alpha(x) = \alpha x$, from $K$ to itself, and we have that $\phi_\alpha^k(x)$ = $\alpha^k x$, for $k \in \mbb N$. Hence, $\phi_\alpha^k(1) = \alpha^k$. The characteristic polynomial, $\chi_{\phi_\alpha}$, of $\phi_\alpha$ is then a monic polynomial with coefficients in $k$ and we have $\chi_{\phi_\alpha}(\phi_\alpha) = 0$. In words, this means that $\chi_{\phi_\alpha}(\phi_\alpha)$ is the zero map. Hence evaluating it in 1 gives a polynomial expression in $\alpha$ with coefficients in $k$ which equals 0. This means that $\alpha$ is a root of $\chi_{\phi_\alpha}$. We will therefore call the polynomial $\chi_{\phi_\alpha}$ the characteristic polynomial of $\alpha$ relative to the extension $K / k$.
 
-If now $K$ is instead a number field with degree $n$ over $\mbb{Q}$. If $\alpha$ now is an element in an order $\mfrak D \subseteq K$, and $\mu_1,  ..., \mu_n$ is a basis for $\mfrak D$ then we can write each $\alpha \mu_i \in \mfrak D$ as a linear combination with coefficients in $\mbb Z$, which means that the matrix representation of $x \mapsto \alpha x$ has integer entries, so the characteristic polynomial of $\alpha$ has integer coefficients. But as we saw above, $\alpha$ is a root of this polynomial, which is monic. Hence $\alpha$ is an algebraic integer and therefore $\mfrak D$ is a subring of the ring of algebraic integers, $\mcal O$. and we even have that the units of $\mcal O$. We therefore already know some things about the elements in $\mfrak D$. All its units are characterized by having norm $\pm 1$, the norm and trace of an element in $\mfrak D$ are integers, and if $\alpha \in \mfrak{D}$ then $\alpha$ divides $N(\alpha)$ in $\mfrak D$. But perhaps more interestingly, Dirichlet's unit theorem generalized to orders, such as $\mfrak D$. We have the following result.
+If now $K$ is instead a number field with degree $n$ over $\mbb{Q}$. If $\alpha$ now is an element in an order $\mfrak D \subseteq K$, and $\mu_1,  ..., \mu_n$ is a basis for $\mfrak D$ then we can write each $\alpha \mu_i \in \mfrak D$ as a linear combination with coefficients in $\mbb Z$, which means that the matrix representation of $x \mapsto \alpha x$ has integer entries, so the characteristic polynomial of $\alpha$ has integer coefficients. But as we saw above, $\alpha$ is a root of this polynomial, which is monic. Hence $\alpha$ is an algebraic integer and therefore $\mfrak D$ is a subring of the ring of algebraic integers, $\mcal O$. We therefore already know some things about $\mfrak D$. All its units are characterized by having norm $\pm 1$, the norm and trace of an element in $\mfrak D$ are integers, and if $\alpha \in \mfrak{D}$ then $\alpha$ divides $N(\alpha)$ in $\mfrak D$. But perhaps more interestingly, Dirichlet's unit theorem generalizes to orders, such as $\mfrak D$. We have the following result.
 \begin{theorem}[Dirichlet's unit theorem]
-    Let $\mfrak D$ be an order in some number field $K$ of degree $n$ and let $r$ and $s$ be the number of real and complex embeddings into $\mbb C$, respectively. Then $$\mfrak D^* = W \oplus V$$
+    Let $\mfrak D$ be an order in some number field $K$ of degree $n$ and let $r$ and $2s$ be the number of real and complex embeddings into $\mbb C$, respectively. Then $$\mfrak D^* = W \oplus V$$
     where $W$ is a finite cyclic group consisting of all roots of unity of $\mfrak D$ and $V$ is a free abelian group of rank $t = r + s - 1$.
 \end{theorem}
 \begin{proof}
@@ -191,7 +229,7 @@ If now $K$ is instead a number field with degree $n$ over $\mbb{Q}$. If $\alpha$
     Let $\mcal O$ be the ring of algebraic integers in $K$. For the order $\mcal O$ we know that the above theorem holds, so we get
     $$\mcal O^* = W \oplus V$$
     with $W$ and $V$ as above. Since $\mfrak D$ is a subring of $\mcal O$ we also have $\mfrak D^* \subseteq \mcal O^*$. Hence, $$\mfrak D^* = W' \oplus V'$$ 
-    where $W' \trianglelefteq W$ is finite cyclic and $V' \trianglelefteq V$ is free abelian of rank $t' \leq t$. We wish to show two things; That $W'$ does indeed consist of all roots of unity of $\mfrak D$ and that $t' = t$. For the first claim, if we have any root of unity $\xi \in \mfrak{D}$, then $\xi$ has finite order so it cannot possibly belong to $V'$. Thus the only possibility is that $\xi$ is in $W'$. For the second claim, consider the quotient of groups $\mcal O / \mfrak D$. Both of these have rank $n$, so this quotient is finite, and so we know that $f = [\mcal O : \mfrak D]$ is a natural number. Thus, if $x \in \mcal O$ then $\overline {fx} = 0$ in $\mcal O / \mfrak D$ so $x \in \mfrak D$, so $f \mcal O \subseteq \mfrak D$. Of course $f \mcal O$ is also a free abelian group of rank $n$, so again $R = \mcal O / f \mcal O$ is finite. But $f\mcal O$ is also an ideal of the ring $\mcal O$, so in fact $R$ is a finite ring. Consider now any unit $\epsilon \in V$. Then $\epsilon$ is in $\mcal O^*$, so $\overline \epsilon \in R$ is also a unit, since ring maps preserve units. Set now $k = \# R^*$. Then $\overline {\epsilon^k} = \overline 1$ and $\overline {\epsilon^{-k}} = \overline {(\epsilon^{-1})^k} = \overline 1$. Together, these equalities give us
+    where $W' \trianglelefteq W$ is finite cyclic and $V' \trianglelefteq V$ is free abelian of rank $t' \leq t$. We wish to show two things; That $W'$ does indeed consist of all roots of unity of $\mfrak D$ and that $t' = t$. For the first claim, if we have any root of unity $\xi \in \mfrak{D}$, then $\xi$ has finite order so it cannot possibly belong to $V'$. Thus the only possibility is that $\xi$ is in $W'$. For the second claim, consider the quotient of groups $\mcal O / \mfrak D$. Both of these have rank $n$, so this quotient is finite, and so we know that $f = [\mcal O : \mfrak D]$ is a natural number. Thus, if $x \in \mcal O$ then $\overline {fx} = 0$ in $\mcal O / \mfrak D$ so $fx \in \mfrak D$, so $f \mcal O \subseteq \mfrak D$. Of course $f \mcal O$ is also a free abelian group of rank $n$, so again $R = \mcal O / f \mcal O$ is finite. But $f\mcal O$ is also an ideal of the ring $\mcal O$, so in fact $R$ is a finite ring. Consider now any unit $\epsilon \in V$. Then $\epsilon$ is in $\mcal O^*$, so $\overline \epsilon \in R$ is also a unit, since ring maps preserve units. Set now $k = \# R^*$. Then $\overline {\epsilon^k} = \overline 1$ and $\overline {\epsilon^{-k}} = \overline {(\epsilon^{-1})^k} = \overline 1$. Together, these equalities give us
     \begin{align*}
         \epsilon^k = 1 + f \alpha \\
         \epsilon^{-k} = 1 + f \beta
@@ -199,22 +237,7 @@ If now $K$ is instead a number field with degree $n$ over $\mbb{Q}$. If $\alpha$
     where $\alpha, \beta \in \mcal O$. But as we argued above, $f \alpha$ and $f \beta$ both belong to $\mfrak D$ and so $\epsilon^k \in \mfrak D^*$. Thus, $\epsilon^k$ is either in $W'$ or $V'$ and the first option is impossible as that would imply that $\epsilon^k$ would also be in $W$. Therefore, $\epsilon^k$ is in $V'$ so $V / V'$ is finite meaning that $t' = t$.
 \end{proof}
 
-\begin{lemma} 
-    \label{lem:ElementDividesNorm}
-    If $\mfrak D$ is the coefficient ring of a full module and $\alpha \in \mfrak D$, then $\alpha$ divides $N(\alpha)$ in $\mfrak D$.
-\end{lemma}
-
-\begin{proof}
-The minimal polynomial, $m_\beta$, for $\beta$ over $\mbb Q$ has coefficients in $\mbb Z$, since $\beta \in \mfrak D$. By definition, $\beta$ is a root of this polynomial, so we get
-$$0 = m_\beta(\beta) = \beta^k + a_{k-1}\beta^{k-1} + ... + a_0$$
-where $a_0 = N(\beta)$ is the constant term. Solving for $a_0$ we get
-$$N(\beta) = -\beta(\beta^{k-1} + a_{k-1}\beta^{k-2} + ... + a_1).$$
-The sum in the parenthesis is an element of $\mfrak D$ because the $a_i$ are integers and $\beta^i$ is in $\mfrak D$ for all $i \in \mbb N$. This shows that $\beta$ divides $N(\beta)$ in $\mfrak D$. 
-\end{proof}
-
-
-
-We say that two elements, $\alpha,\beta$ in a module $M$ are \textbf{associated} if there is a unit $\epsilon \in \mfrak D$ so that $\alpha = \epsilon \beta$. Note that when $M$ is equal to its own coefficient ring, this concept is exactly the same as that of being associated in the ring $M = \mfrak D$. Being associated elements in $M$ defines an equivalence relation on $M$, and from now on we will denote this relation as $\sim$. Define now for some $c \in \mbb N$ the subsets
+We say that two elements, $\alpha,\beta$ in a module $M$ are \textbf{associated} if there is a unit $\epsilon \in \mfrak D$ so that $\alpha = \epsilon \beta$. Note that when $M$ is equal to its own coefficient ring, this concept is exactly the same as that of being associated in rings. Being associated elements in $M$ defines an equivalence relation on $M$, and from now on we will denote this relation as $\sim$. Define now for some $c \in \mbb N$ the subsets
 \begin{align*}
     M_c &= \{ \alpha \in M \mid N(\alpha) = c\} \\
     \overline M_c &= \{ \alpha \in M \mid | N(\alpha) | = c\}
@@ -222,7 +245,7 @@ We say that two elements, $\alpha,\beta$ in a module $M$ are \textbf{associated}
 We are now ready to formulate the following theorem.
 % Recall that an equivalence relation on a set restricts to an equivalence relation on any subset of the set.  
 \begin{theorem} 
-    Let $M$ be a full module of $K$. Then the quotient set $\overline M_c / \sim$ is finite for any $c \in \mbb N$.
+    Let $M$ be a full module of $K$. Then the quotient set $\overline M_c / \sim$ is finite for any $c \in \mbb N$. In particular $M_c / \sim$ is finite.
 \end{theorem}
 \begin{proof}
 We first consider the special case where $M = \mfrak D$. The ring $\mfrak D$ is a full module so it is a free abelian group of rank $n$, hence isomorphic to $\mbb Z^n$. Considering $\mfrak D$ as an abelian group with respect to addition, the subgroup $c \mfrak D$, is normal in $\mfrak D$. We can therefore quotient out this subgroup to get the isomorphism
@@ -233,13 +256,15 @@ Denote by $\bar \alpha$ as the image of the canonical projection of $\alpha$ in 
 $$\phi : \overline M_c /c \mfrak D \twoheadrightarrow  \overline M_c / \sim,$$
 given by $\phi(\bar \alpha) = [\alpha]$. Suppose $\bar \alpha, \bar \beta$ are in $\overline M_c /c \mfrak D$ so that $\bar \alpha = \bar \beta$. Thus, $\alpha, \beta$ are in $\overline M_c$, so $|N(\alpha)| = |N(\beta)| = c$. We show that $[\alpha] = [\beta]$ - In other words, we show that $\alpha$ and $\beta$ are associates. We have
 $$\alpha = \beta + c \gamma = \beta + |N(\beta)| \gamma,$$
-for some $\gamma$ in $\mfrak D$. But by (\ref{lem:ElementDividesNorm}), $\beta$ divides $N(\beta)$ in $\mathfrak D$ so it also divides $|N(\beta)|$ in $\mfrak D$. Hence, $\beta$ divides $\alpha$ in $\mfrak D$ and similarly $\alpha$ divides $\beta$ in $\mfrak D$. Thus, $\alpha$ and $\beta$ are associates, showing that $\phi$ is well-defined. It is surjective simply because if $[\alpha] \in \overline M_c / \sim$, then $\alpha$ is in $\overline M_c$ so $\phi(\bar \alpha) = [\alpha]$. That $\phi$ is a surjection implies that $\# (\overline M_c / \sim) \leq \# \overline M_c / c \mfrak D$, since each element in $\overline M_c /\sim$ has at least one preimage. Now the inclusion $\overline M_c / c \mfrak D \subseteq \mfrak D / c \mfrak D$ implies that $\# (\overline M_c / \sim) \leq \# \overline M_c / c \mfrak D \leq \# \mfrak D / c \mfrak D = c^n$. We will now prove the general statement. Suppose that $M$ is a full module and that $\mfrak D$ is the coefficient ring of $M$. Then $\overline {\mfrak{D}}_c / \sim$ has finitely many elements. By use of (\ref{lem:ModuleCanBeScaledToFitInsideCoefficientRing}), take now a non-zero integer $b$ so that we obtain the inclusions 
+for some $\gamma$ in $\mfrak D$. But $\beta$ divides $N(\beta)$ in $\mathfrak D$ so it also divides $|N(\beta)|$ in $\mfrak D$. Hence, $\beta$ divides $\alpha$ in $\mfrak D$ and similarly $\alpha$ divides $\beta$ in $\mfrak D$. Thus, $\alpha$ and $\beta$ are associates, showing that $\phi$ is well-defined. It is surjective simply because if $[\alpha] \in \overline M_c / \sim$, then $\alpha$ is in $\overline M_c$ so $\phi(\bar \alpha) = [\alpha]$. That $\phi$ is a surjection implies that $\# (\overline M_c / \sim) \leq \# \overline M_c / c \mfrak D$, since each element in $\overline M_c /\sim$ has at least one preimage. Now the inclusion $\overline M_c / c \mfrak D \subseteq \mfrak D / c \mfrak D$ implies that $\# (\overline M_c / \sim) \leq \# \overline M_c / c \mfrak D \leq \# \mfrak D / c \mfrak D = c^n$. We will now prove the general statement. Suppose that $M$ is a full module and that $\mfrak D$ is the coefficient ring of $M$. Then $\overline {\mfrak{D}}_c / \sim$ has finitely many elements. By use of (\ref{lem:ModuleCanBeScaledToFitInsideCoefficientRing}), take now a non-zero integer $b$ so that we obtain the inclusions 
 $$M \hookrightarrow bM \hookrightarrow \mfrak D$$
 It is clear that if $\alpha$ and $\beta$ are associated then also $b\alpha$ and $b\beta$ are associated. Hence we get the inclusions
 $$(\overline M_c / \sim) \hookrightarrow (b\overline M_c / \sim) \hookrightarrow (\overline {\mfrak D_c} / \sim) $$
-Which means that $$\# (\overline M_c / \sim) \leq \# (b\overline M_c / \sim) \leq \# (\overline {\mfrak D_c} / \sim) \leq c^n$$  
+Which means that $$\# (\overline M_c / \sim) \leq \# (b\overline M_c / \sim) \leq \# (\overline {\mfrak D_c} / \sim) \leq c^n$$ 
+The last claim now follows since $M_c \subseteq \overline M_c$.  
+
 \end{proof}
-As a quick remark, we now have that the quotient set $M_c / \sim$ is also finite, since $M_c \subseteq \overline M_c$. We now present a result that allows to find all the elements of $M_c$ if we know the elements of $M_c / \sim$ and all the units with norm 1 in $\mfrak D$.
+We now present a result that allows to find all the elements of $M_c$ if we know the elements of $M_c / \sim$ and all the units with norm 1 in $\mfrak D$.
 \begin{theorem}
     Assume that the elements of $M_c / \sim$ are $[\gamma_1], ..., [\gamma_k]$ and that $\alpha \in M$. We then have that $\alpha \in M_c$ if and only if there is a uniquely determined $i$ such that $\alpha = \epsilon \gamma_i$ where $\epsilon$ is a unit in $\mfrak D$ with norm 1.
 \end{theorem}
@@ -250,28 +275,183 @@ If $\alpha \in M_c$ then, there is a unique $\gamma_i$ such that $\alpha \in [\g
 So we must have that $N(\epsilon) = 1$. 
 \end{proof}
 
-\begin{lemma}
-    Saying that an element, $\epsilon$, in $\mfrak D$ is a unit is exactly the same as saying that $N(\epsilon) = \pm 1$. 
-\end{lemma}
+We are therefore interested in finding the units in the ring of algebraic integers that have norm 1. We will first look at the roots of unity. 
 
+\begin{theorem}
+    Let $K$ be a number field of degree $n$ over $\mbb Q$. Suppose $n$ is odd. Then the only roots of unity in $\mcal O_K$ are $\pm 1$ and we have $N(1) = 1$ and $N(-1) = -1$. On the other hand, if $n$ is even, then all the roots of unity in $\mcal O_K$ have norm 1.
+\end{theorem}
 \begin{proof}
-    If $\epsilon$ is a unit then $1 = \epsilon \epsilon^{-1}$. But then $1 = 1^n = N(1) = N(\epsilon \epsilon^{-1}) = N(\epsilon)N(\epsilon^{-1})$. But $N(\epsilon)$ is an integer, so this is only possible if $N(\epsilon) = \pm 1$. Conversely, if $N(\epsilon) = \pm 1$ then $N(\epsilon)$ is clearly a unit in $\mfrak D$, and we know that $\epsilon$ divides $N(\epsilon)$ in $\mfrak D$. But any element that divides a unit is itself a unit. Hence $\epsilon$ is a unit. 
+    Suppose first that $n$ is odd and let $\zeta$ be a primitive $k$th root of unity in $\mcal O_K$. Then 
+    $$\mbb Q \subseteq \mbb Q(\zeta) \subseteq \mcal O_K$$
+    As $\phi(k) = [\mbb Q(\zeta) : \mbb Q]$, we have $\phi(k) \mid n$. Thus, $\phi(k)$ has to be odd. But this happens only when $k$ is 1 or 2. Hence $\zeta = \pm 1$. We see that $N(-1) = (-1)^n = -1$. Next, assume that $n$ is even. We then clearly have $1 = N(1) = N(-1)$. Take again $\zeta \in O_K$ to be a primitive $k$th root of unity. Then any embedding $\sigma : K \hookrightarrow \mbb C$ must send $\zeta$ to a primitive $k$th root of unity $\mbb C$. So if $k \geq 3$ then $\sigma(\zeta)$ is an imaginary number. This implies that there are no real embeddings, so $n = 2s$. All the embeddings come in complex conjugate pairs and so we can list them as: $\sigma_1, \overline{\sigma_1}, ... , \sigma_s, \overline{\sigma_s}$. We then have
+    $$N(\zeta) = \prod_{i=1}^s \sigma_i(\zeta) \overline{\sigma_i}(\zeta) = \prod_{i=1}^s |\sigma_i(\zeta)|^2 = 1$$
 \end{proof}
 
-\section*{p-adic number}
+
+\begin{theorem}
+    Let $K$ be a number field of degree $n = r + 2s$ over the rationals and let $c \in \mbb Z$. Assume further that $M$ is a full module with ring of coefficients $\mfrak D$. Then there exists a system of fundamental units, $\epsilon_1, ..., \epsilon_r$ in $\mfrak D$ and a finite set of elements $\gamma_1, ..., \gamma_k$ in $M$ such that every element $\alpha \in M_c$ can be written as 
+    $$\alpha = \gamma_i \epsilon_1^{u_1} ... \epsilon_r^{u_t}$$
+    for $i \in \{1, ..., k\}$ and $u_1, ..., u_t \in \mbb Z$.
+\end{theorem}
+
+\begin{proof}
+    Using Dirichlet's unit theorem, we take a fundamental system of units of $\mfrak D$, say $\epsilon_1, ..., \epsilon_t$ where $t = r + s - 1$ and by use of (???), let $\gamma_1, ..., \gamma_k$ be a system of representatives of the quotient set $M_c / \sim$.
+    We split the proof into two cases. Suppose first that $n$ is even. By the above (???) we know that the only primitive roots of unity are $\pm 1$. So if any $\epsilon_i$ has norm -1, we can just swap it out with $-\epsilon_i$ to obtain a unit with norm 1. Modifying all such $\epsilon_i$ we obtain a new system of fundamental units, where each $\epsilon_i$ has norm 1, and so we can write every unit in $\mfrak D$ with norm 1 as a product $\epsilon_1^{u_1}...\epsilon_t^{u_t}$. Thus by (???) we can now write every $\alpha \in M_c$ as $\alpha = \gamma_i \epsilon_1^{u_1}...\epsilon_r^{u_t}$. Suppose now $n$ is odd. Then by (???) all the roots of unity have norm 1, so if it happens that all the $\epsilon_i$ also have norm 1, then all units have this property as well. Suppose now that $1 = N(\epsilon_1) = ... = N(\epsilon_q)$ and $-1 = N(\epsilon_{q+1}) = ... = N(\epsilon_t)$. Define then 
+    $\mu_i = \epsilon_i$ for $i \in \{1, ..., q\}$ and $\mu_i = \epsilon_i \epsilon_t$ for $i \in \{q+1, ..., t-1\}$. We now have a new fundamental system of units, namely $\mu_1, ..., \mu_{t-1},\epsilon_t$ and only the last unit, $\epsilon_t$, has norm -1. Thus, by setting $\mu_t = \epsilon_t^2$, all units of norm 1 in $\mfrak D$ can now be written as $\zeta \mu_1^{u_1}...\mu_t^{u_t}$, where $\zeta$ is a root of unity in $\mfrak D$. By the unit theorem, there are only finitely such $\zeta$. Hence there are only finitely many, let's say $h$, numbers $\zeta \gamma_i$, where $\zeta$ is a root of unity. We can therefore list all of these, $\gamma'_1, ..., \gamma'_h$ and by (???) write any element $\alpha \in M_c$ as 
+    $$ \alpha = \gamma'_i \mu_1^{u_1} ... \mu_r^{u_r}$$
+\end{proof}
+
+
+
+
+
+\section*{Completions of fields}
+
+\begin{definition}[Absolute value]
+    Let $K$ be a field. A function $\abs{} : K \to \mbb R$, is called an absolute value if it happens to satisfy the properties
+    \begin{itemize}
+        \item $\abs{x} \geq 0$ for every $x \in K$. (Non-negativity)
+        \item $\abs{x} = 0$ if and only if $x = 0$. (Zero detection)
+        \item $\abs{xy} = \abs{x} \abs{y}$ for every $x,y \in K$. (Multiplicativity)
+        \item $\abs{x + y} \leq \abs{x} + \abs{y}$ for every $x,y \in K$. (Triangle inequality)
+    \end{itemize}
+    When the triangle inequality can be upgraded to the stronger condition $$\abs{x + y} \leq \max \{\abs{x}, \abs{y}\} \quad \text{for every } x,y \in K,$$
+    the absolute value is said to be \textbf{non-archimedian}. Otherwise it is called \textbf{archimedian}.
+\end{definition}
+It is always possible define the trivial absolute value on a field, that is, the function that sends everything in $K$ to 1 except for 0 which is sent to 0. This satisfies all the above criteria but does not lead to anything interesting, so we will not consider it.
+
+Once we have an absolute value on field $K$, we can think about the topology it generates. It might very well happen that two absolute values generate the same topology and whenever this happens we say that the absolute values are equivalent. This defines an equivalence relation on the set of absolute values on $K$, and the equivalence classes are called \textbf{places} of $K$. We now turn to a notion that is closely related to absolute values - namely valuations. 
+
+\begin{definition}[Valuation]
+    A valuation on a field $K$ is a function $v : K \to \mbb R \cup \{\infty\}$ with the following properties 
+    \begin{itemize}
+        \item $v(x) = \infty$ if and only if $x = 0$.
+        \item $v(xy) = v(x) + v(y)$ for every $x,y \in K$. 
+        \item $v(x + y) \geq \min \{v(x), v(y)\}$ for every $x,y \in K$.
+    \end{itemize}
+\end{definition}
+
+We stipulated that these concepts have something to do with each other. Let us see why. Suppose we have access to a valuation, $v$ on a field $K$. Then for any $q > 0$ we get a corresponding  non-archimedian absolute value on $K$ by setting $\abs{x} = q^{-v(x)}$. No matter the choice of $q > 0$, all of these absolute values will be equivalent. In other words, they are all representatives of the same place. Thus, we will say that two valuations are equivalent if they correspond to the same place, giving us now an equivalence relation on the set of valuations on $K$. We can also go the other way around, so in fact there is a bijective correspondence between places and the equivalence classes of valuations on $K$.
+
+\begin{definition}
+    A valuation on a field $K$ is called discrete if there is an element $\pi \in K$ so that $0 < v(\pi) \leq v(x)$ for every $x \in K$. Such an element $\pi$ is called a prime element of the valuation, and if $v(\pi) = 1$ we say that $v$ is normalized. 
+\end{definition}
+
+
+
+\begin{proposition}
+    The object
+    $$\mcal O = \{x \in K |  v(x) \geq 0 \} = \{x \in K | |x| \leq 1 \}$$ 
+    is a ring with unity, called the valuation ring of $K$. It is in fact a local ring, with maximal ideal 
+    $$\mfrak p = \{x \in K | v(x) > 0 \} = \{x \in K | |x| < 1 \}$$
+    Hence the quotient ring $\mcal O / \mfrak p$ is a field and is called the residue field of $K$, and we typically denote it by $\kappa$. It follows that the units are 
+    $$O^* = \mcal O \setminus \mfrak p = \{x \in K | v(x) = 0 \} = \{x \in K | |x| = 1 \}$$
+    If the valuation is discrete, then the valuation ring is a local Dedekin domain. If $v$ is normalized and $\pi \in \mcal O$ is a prime element then $(\pi) = \mfrak{p}$ and all non-zero ideals are given by
+    $$\mfrak p^n = \{x \in K | v(x) \geq n \}$$
+    for $n \geq 0$. Furthermore, the residue field is isomorphism to subsequent quotients of powers of $\mfrak p$, i.e,
+    $$\mcal O / \mfrak p \cong \mfrak p^n / \mfrak p^{n+1}$$
+\end{proposition}
+
+\begin{proof}
+    
+\end{proof}
+
+
+
+
+
+
+\begin{definition}[Complete valued field]
+    We say that a valued field, $K$, with absolute value, $\abs{}$, is complete if every Cauchy sequence in $K$ converges to some element in $K$ with respect to $\abs{}$.
+\end{definition}
+
+% In mathematics, the concept of closure shows up time and time again; The idea here is to go from one object which has a certain property, and then forcefully 
+
+Not all fields are complete valued fields. For example, $\mbb Q$ is not complete with respect to the usual absolute value; For instance, one can find a Cauchy sequence converging to $\sqrt 2$ which of course does not belong to $\mbb Q$. There are many other such numbers, and adjoining all of them to $\mbb Q$ gives us $\mbb R$. This process can be thought of as filling out all the holes of $\mbb Q$.
+
+Intuitively, the completion of a field, $K$, is the smallest extension of $K$ which is complete.
+
+\begin{theorem}
+    Let $K$ be a valued field and $R$ be the set of all Cauchy sequences of $K$. Then $R$ is a ring and the set $\mfrak m$ of all null sequences of $R$ is a maximal ideal.
+\end{theorem}
+\begin{proof}
+    % The operations on $R$ are defined element wise. As such, the Cauchy property is preserved under both addition and multiplication and rules such as the distributive law hold are inherited from the ring structure on $K$. The Cauchy sequences $1,1,1,...$ and $0,0,0,...$ are the identity elements for multiplication and addition respectively.
+    The operations on $R$ are defined element wise and it is therefore rather clear that $R$ is a ring. The set $I$ is non-empty, as it most certainly contains the constant sequence $0,0,0,...$. Furthermore the difference of two null sequences is again a null sequence and the product of any sequence by a null sequence is also a null sequence. Thus, $I$ is an ideal. NEED THE MAXIMAL IDEAL PART
+\end{proof}
+
+From this it follows that $\hat R = R / \mfrak m$ is a field. Define now $$\tilde x = (x,x,x,...) + \mfrak m \in \hat R$$ for any $x \in K$. This map is a homomorphism of fields and is thus injective. We can therefore think of $K$ as a subfield of $\hat R$.
+
+\begin{definition}[Completion]
+    Let $K$, $R$ and $\mfrak m$ be as above and define $\hat R = R / \mfrak m$. There is a well defined function $\abs{} : \hat R \to \mbb R$, given by
+    $$\abs{x} = \lim_{n \to \infty} \abs{x_n}$$
+    where $x_n$ is a representative of $x \in \hat R$. We have the following properties
+    \begin{itemize}
+        \item $\abs{}$ is an absolute value on $\hat R$.
+        \item $\hat R$ is complete with respect to $\abs{}$.
+        \item $\abs {}$ is an extension of the absolute value on $K$.
+    \end{itemize}
+    We say that the field $R / \mfrak m$ is the completion of $K$ with respect to the absolute value $\abs{}$.
+\end{definition}
+\begin{proof}
+    Suppose first that $x_n \in \mfrak m$. We then know that $x_n$ converges to 0 with respect to $\abs{}$. 
+    
+    Suppose that $\bar x, \bar y \in \hat R$. Then $x - y \in \mfrak m$ so $\abs{x - y} = 0$, meaning that $\abs{x} = \abs{y}$. 
+\end{proof}
+
+
+Right now, we don't have an absolute value on $R / \mfrak m$, so saying that this field is complete would not make much sense. But it turns out that the absolute value on $K$ can be extended to $R / \mfrak m$ and with respect to this absolute value, $R / \mfrak m$ is indeed complete.
+
+% Show that a discrete valuation extends to discrete valuation by showing that the image of the two valuations are the same.
+
+
+\begin{example}
+    % USED, BUT NOT ARGUED FOR: 
+    % - If v is discrete then the extension of v is also discrete
+    % - The number field K coincides with the field of fractions of O_K
+
+
+    Consider an algebraic number field $K$ and fix a prime $\mfrak p$ of this field. For any $\alpha \in \mathcal O_K$ different from 0, we can consider the factorization
+    $$\alpha \mcal O_K = \mfrak p^k A$$
+    where $A$ is an ideal so that $\mfrak{p} \nmid A$ and $k \in \mbb N_0$. From this requirement, it follows that $k$ is uniquely determined because we have unique prime factorization of ideals in Dedekin domains. This means that we now have a function,
+    $$v_\mfrak p : \mathcal O_K \to \mbb{Z},$$
+    once we formally define $v_\mfrak p(0) = \infty$. This function can even be extended to all of $K$; For any $\frac{\alpha}{\beta} \in K$ we have $\alpha, \beta \in \mathcal O_K$ (DEMONSTRATE THIS) so we can define
+    $$v_\mfrak p \left(\frac{\alpha}{\beta}\right) = v_\mfrak p(\alpha) - v_\mfrak p(\beta)$$    
+    This function is called the $\mfrak p$-adic valuation of $K$ and is non-archimedian. It is also discrete and normalized, since $v_\mfrak p(\mfrak p) = 1$ and this is the smallest possible value that is strictly positive. The completion of $K$ with respect to this valuation is denoted by $K_\mfrak p$. Let $\mfrak P$ be the unique maximal ideal of $\mcal O_{K_\mfrak p}$. Consider the map 
+    $$\mcal O_K \to \mcal O_{K_\mfrak p} / \mfrak P$$
+    
+    
+    
+    
+    We show that the residue field $\mcal O_{K_\mfrak p} / \mfrak P$ is isomorphic to $\mcal O_K / \mfrak p$. We have the surjective ring homomorphism given by the natural projection, 
+    
+    To verify this, we only need to show that the residue field $\mcal O_\mfrak p / \mfrak P$, where 
+
+
+    We can then define the function 
+     
+
+\end{example}
+
+
 \begin{lemma} \label{lem:SufficientConditionForConvergence}
-    Let $||$ be a non-achimedian absolute value on a field $K$ and suppose $x_n$ is a sequence in $K$. This sequence is Cauchy if and only if the sequence $y_n = x_{n-1} - x_{n}$ converges to 0. 
+    Let $||$ be a non-achimedian absolute value on a field $K$ and let $v$ be an additive valuation corresponding to $||$. Suppose $x_n$ is a sequence in $K$. Define the sequence $y_n = x_{n+1} - x_{n}$. The following are equivalent
+    \begin{enumerate}
+        \item $x_n$ is Cauchy.
+        \item $|y_n| \to 0$ as $n \to \infty$.
+        \item $v(y_n) \to \infty$ as $n \to \infty$.
+    \end{enumerate}
 \end{lemma}
 \begin{proof}
-    A sequence being Cauchy clearly implies that $y_n$ converges to 0. Let $N \in \mbb N$ be so large that makes $|y_n| \leq \epsilon$. Suppose now $n > m > N$. We obtain
+    A sequence being Cauchy clearly implies that $y_n$ converges to 0. For the next implication, consider that $v(x) = - \log |x|$ by definition (IS THIS REALLY THE CASE). For the last implication, (FIX THIS PROOF)
+    
+    Let $N \in \mbb N$ be so large that makes $|y_n| \leq \epsilon$. Suppose now $n > m > N$. We obtain
     \begin{align*}
         |x_n - x_m| &= |x_n - x_{n-1} + x_{n-1} - ... + x_{m+1} - x_{m}| \\ 
         &= |y_n + y_{n-1} + ... + y_{m}| \leq \max \{|y_n|, ..., |y_m|  \} \leq \epsilon
     \end{align*}
-    Importantly, this implies that infinite sequences converge, if their terms converge. This is a quite strong statement and is certainly not satisfied when the valuation is archimedian. The harmonic series, $x_n = \sum^n_{i=1} \frac{1}{i}$ does not converge, but the $y_n$ sequence does. 
 \end{proof}
 
-In particular, we can use this lemma to show that a sum $\sum_{n=1}^\infty x_n$ converges by showing that the individual terms $x_n$ converge to 0. This is certainly not something we can do in the archimedian setting - consider for example the harmonic series.
+In particular, we can use this lemma to show that a sum $\sum_{n=1}^\infty x_n$ converges by showing that the individual terms $x_n$ converge to 0. This is certainly not something we can do in the archimedian setting - consider for example the harmonic series. 
 
 
 To show that a sequence converges, one can use both the exponential and the multiplicative valuation. 
@@ -280,7 +460,7 @@ To show that a sequence converges, one can use both the exponential and the mult
 In this section, we describe how to define logarithmic and exponential functions on a p-adic field. 
 
 
-\begin{lemma}
+\begin{lemma}(Legendre's formula)
     Suppose we have $k \in \mbb N$. Then
     $$v_p(k!) = \sum_{i = 1}^{\infty} \left\lfloor \frac{k}{p^i} \right \rfloor$$
 \end{lemma}
@@ -305,23 +485,32 @@ In this section, we describe how to define logarithmic and exponential functions
     But clearly, $\sum_{j = 1}^k f_{p^i}(j) = \left\lfloor \frac{k}{p^i} \right \rfloor$, so we get the result. 
 \end{proof}
 
+Using this result we can prove the following
 
-
-\begin{proposition}
-    The object
-    $$\mcal O = \{x \in K |  v(x) \geq 0 \} = \{x \in K | |x| \leq 1 \}$$ 
-    is a ring with unity, called the valuation ring of $K$. It is in fact a local ring, with maximal ideal 
-    $$\mfrak p = \{x \in K | v(x) > 0 \} = \{x \in K | |x| < 1 \}$$
-    Hence the quotient ring $\mcal O / \mfrak p$ is a field and is called the residue field of $K$, and we typically denote it by $\kappa$. It follows that the units are 
-    $$O^* = \mcal O \setminus \mfrak p = \{x \in K | v(x) = 0 \} = \{x \in K | |x| = 1 \}$$
-    If the valuation is discrete, then the valuation ring is a local Dedekin domain. If $v$ is normalized and $\pi \in \mcal O$ is a prime element then $(\pi) = \mfrak{p}$ and all non-zero ideals are given by
-    $$\mfrak p^n = \{x \in K | v(x) \geq n \}$$
-    for $n \geq 0$. Furthermore, the residue field is isomorphism to subsequent quotients of powers of $\mfrak p$, i.e,
-    $$\mcal O / \mfrak p \cong \mfrak p^n / \mfrak p^{n+1}$$
-\end{proposition}
-
+\begin{lemma}
+    Assume that $k \in \mbb Z$ and suppose that $k = \sum_{i = 0}^{r} a_i p^i$ is the $p$-adic expansion of $k$. Then we have that 
+    $$v_p(k!) = \frac{k - s_k}{p - 1}$$
+    where $s_k = \sum_{i = 0}^{r} a_i$.
+\end{lemma}
 \begin{proof}
+    Suppose $i \in \mbb N$. We then get $\sum_{j = 0}^{i-1}a_j p^{j-i} < 1$, so
+    \begin{align*}
+        \left\lfloor \frac{k}{p^i} \right \rfloor &= \left \lfloor \sum_{j = 0}^{r} a_j p^{j-i} \right \rfloor \\ 
+        &= \left \lfloor \sum_{j = 0}^{i-1}a_j p^{j-i} + \sum_{j=i}^{r} a_j p^{j-i} \right \rfloor \\
+        &=  \left \lfloor \sum_{j=i}^{r} a_j p^{j-i} \right \rfloor \\
+        &= \sum_{j=i}^{r} a_j p^{j-i}
+    \end{align*}
+    So when $i > r$, we have $\left\lfloor \frac{k}{p^i} \right \rfloor = 0$.
     
+    
+    \begin{align*}
+        v_p(k!) &= \sum_{i = 1}^{r} \left\lfloor \frac{k}{p^i} \right \rfloor \\
+        &= \sum_{i = 1}^{r} \sum_{j=i}^{r} a_j p^{j-i} \\ 
+        &= \sum_{j=1}^{r} \sum_{i = j}^{r} a_j p^{j-i} \\
+        &= \sum_{j=1}^{r} a_j \sum_{i = 1}^{j} p^{j-i}
+    \end{align*}
+
+
 \end{proof}
 
 
@@ -344,18 +533,35 @@ In this section, we describe how to define logarithmic and exponential functions
         &\geq k \frac{\ln c}{\ln p} - \frac{\ln k}{\ln p} \\
         &= \frac{\ln c^k / k}{\ln p}
     \end{align*}
-    Clearly, $\ln c^k / k \to \infty$ as $k \to \infty$. Hence, $v_p(\frac{x^k}{k}) \to \infty$ as $k \to \infty$. By (\ref{lem:SufficientConditionForConvergence}), this means that the sum $x - \frac{x^2}{2} + \frac{x^3}{3} - ...$ converges. 
-
-    
+    Clearly, $\ln c^k / k \to \infty$ as $k \to \infty$. Hence, $v_p(\frac{x^k}{k}) \to \infty$ as $k \to \infty$. By (\ref{lem:SufficientConditionForConvergence}), this means that the sum $x - \frac{x^2}{2} + \frac{x^3}{3} - ...$ converges. UNIQUENESS MISSING
 \end{proof}
 
 
 
 \section*{Skolem's Method}
 % we write it in another way
-Suppose $\alpha \in U^{(n)}$. Then $\log \alpha \in \mfrak p^n$ and so $u \log \alpha \in \mfrak p^n$ for any $u \in \mcal O$ because $\mfrak p^n$ is an ideal. This means that in this case, $\exp (u \log \alpha)$ is well-defined for any $u \in \mcal O$, and we have $\alpha^u = \exp (u \log \alpha)$. Therefore, for $\alpha \in U^{(n)}$ we define the exponential function as
-$$u \mapsto \exp (u \log \alpha)$$
-for any $u \in \mcal O$ and $\alpha \in U^{(n)}$, which is really the same as the requirement that $\bar \alpha = \bar 1$ in $\mcal O / \mfrak p^n$.
+In the real numbers we are used to that the function $u \mapsto \alpha^u$ is well-defined regardless of what $u$ and $\alpha$ is. For some fields this is not the case, and we will now see an example of this. 
+
+\begin{proposition}
+    Let $K$ be a local $\mfrak p$-adic number field and let $n$ be the smallest natural number so that we obtain an isomorphism $\mfrak p^n \cong U^{(n)}$ as in (???). Suppose $u,\alpha \in \mcal O$. Then the exponential function $\alpha^u = \exp(u \log \alpha)$ is well-defined whenever $u \in \mcal O$ and $\alpha \in U^{(n)}$.
+\end{proposition}
+\begin{proof}
+    Suppose that $u \in \mcal O$ and $\alpha \in U^{(n)}$. This means that $\log \alpha \in \mfrak p^n$ and so $u \log \alpha \in \mfrak p^n$ because $\mfrak p^n$ is an ideal. Thus, it makes sense to apply $\exp$ on $u \log \alpha$.
+\end{proof}
+
+\begin{lemma}
+    Suppose $\mfrak p$ is a prime of $K$ and set $q = \# (\mcal O / \mfrak p^n)^*$. If $\alpha \in \mcal O_K$ and $\mfrak p \nmid \alpha$ then $\alpha^q \in U^{(n)}$. In particular, if $\epsilon$ is any unit of $\mcal O_K$ then $\epsilon^q \in U^{(n)}$.
+\end{lemma}
+\begin{proof}
+    Take $\alpha$ in $\mcal O_K$ and suppose $\mfrak p \nmid \alpha$ for some prime $\mfrak p$ of $K$. This means that $\mfrak p$ does not occur in the prime factorization of $\alpha \mcal O_K$, which means that $\gcd(\alpha \mcal O_K, \mfrak p) = \mcal O_K$, hence also $\gcd(\alpha \mcal O_K, \mfrak p^n) = \mcal O_K$. But that means that $\alpha \beta + q = 1$ for some $q \in \mfrak p^n$ and $\beta \in \mcal O_K$, and so $\alpha$ is a unit in $\mcal O_K / \mfrak p^n$. But $\mcal O_K / \mfrak p^n$ is finite, which means that $\overline{\alpha^q} = \overline 1$ in $\mcal O_K / \mfrak p^n$ where $q = \# (\mcal O_K / \mfrak p^n)^*$. Hence, $\alpha^q \in U^{(n)}$. Suppose now that $\epsilon$ is a unit in $\mcal O_K$. Then $\epsilon \mcal O_K = \mcal O_K$, meaning that $\mfrak p \nmid \epsilon$.  
+\end{proof}
+
+In particular, 
+
+
+
+
+
 
 
 Since all the ideals of $\mcal O$ are powers of the maximal ideal, and the maximal ideal is generated by a single element, so every ideal is finitely generated. As $\mcal O$ is an integral domain, this means that it is in fact a Dedekind domain. 
@@ -408,9 +614,37 @@ $$\tr{\mu_i^* \alpha} = \tr {\sum_{j=1}^n \mu_i^* x_j \mu_j} = \sum_{j=1}^n x_j 
 shows that we can recover the $x_i$ variables in $\alpha$ by taking the trace of $\mu_i^*\alpha$. We can use this to reformulate the above restriction to
 $$\tr{\mu_m^* \alpha} = ... = \tr{\mu_n^* \alpha} = 0$$
 Since $\alpha$ has norm $a$, we can write
-$\alpha = \gamma_k \epsilon_1^{u_1}...\epsilon_n^{u_r}$, $u_i \in \mbb{Z}$, where $\gamma$ is taken from a finite set of elements with norm $a$, and the $\epsilon_i$ is a system of independent units of $K$. Let $\sigma_1, ..., \sigma_n$ be the embeddings of $K$ into $\mbb{C}$. The restriction on the last $n-m$ variables can be written as 
+\begin{equation}\label{eq:ExpressionForAlpha}
+    \alpha = \gamma_k \epsilon_1^{u_1}...\epsilon_r^{u_r}
+\end{equation}
+Where $u_i \in \mbb{Z}$, and $\gamma$ is taken from a finite set of elements with norm $a$, and the $\epsilon_i$ is a system of independent units of $K$. Let $\sigma_1, ..., \sigma_n$ be the embeddings of $K$ into $\mbb{C}$. The restriction on the last $n-m$ variables can be written as 
 $$\tr{\mu_i^* \alpha } = \sum_{j = 1}^n \sigma_j(\gamma \mu_i^* \epsilon_1^{u_1}...\epsilon_n^{u_r}) = \sum_{i = 1}^n \sigma_j(\gamma_k \mu_i^* ) \sigma_j(\epsilon_1)^{u_1}...\sigma_j(\epsilon_n)^{u_r} = 0$$
-for $i = m+1, ..., n$. If we can show that, no matter what $\gamma$ we choose among the $k$ possibilities, there are only finitely many possibilities for the $u_i$, the we would have established that there are only finitely many $\alpha \in M$ such that $N(\alpha) = a$. Right now, the $u_i$ live in $\mbb{Z}$. Take $\mfrak p$ a prime divisor of the field $K$ and allow now for the $u_i$ belong to the valuation ring $\mcal O \subseteq K_\mfrak{p}$. When we do this, it might happen that $\epsilon^u$ is not well defined. However we can fix this using (??), and we will from now on just assume that it is. Define now
+for $i = m+1, ..., n$. If we can show that, no matter what $\gamma$ we choose among the $k$ possibilities, there are only finitely many possibilities for the $u_i$, the we would have established that there are only finitely many $\alpha \in M$ such that $N(\alpha) = a$. Right now, the $u_i$ live in $\mbb{Z}$. Take $\mfrak p$ a prime divisor of the field $K$ and let us see how we can extend the values of the $u_i$ to the valuation ring $\mcal O \subseteq K_\mfrak{p}$.
+
+The $\epsilon_i$ are all units of the coefficient ring $\mfrak D$ of $M$. Hence, these are in fact units of $O_K$. By (???) there is natural number $q$ so that $\epsilon_i^q$ is in $U^{(n)}$ for all $i$. 
+
+Consider the set $$\{\epsilon_1^{u_1} \dots \epsilon_r^{u_r} \mid 0 \leq u_i < q \}$$
+\begin{align*}
+    G &= \{\gamma \mid \gamma_1, ..., \gamma_k \} \\
+    B &= \{ \epsilon_i^{q u_1} \dots \epsilon_r^{q u_r} \mid u_i \in \mbb Z \} \\
+    C &= \{\epsilon_1^{u_1} \dots \epsilon_r^{u_r} \mid u_i \in \mbb Z \} \\ 
+    A \times B \to C
+\end{align*}
+
+ 
+
+
+Each of the $u_i$ in (\ref{eq:ExpressionForAlpha}) can be written on the form $u_i = \rho_i + qv_i$, with $0 \leq \rho_i < q$ and $v_i \in \mbb{Z}$. This allows us to write 
+$$\prod_{i=1}^r \epsilon_i^{u_i} = \prod_{i=1}^r \epsilon_i^{\rho_i + qv_i} = \prod_{i=1}^r \epsilon_i^{\rho_i} \prod_{i=1}^r \epsilon_i^{qv_i}$$ 
+
+Setting $\delta = \prod_{i=1}^r \epsilon_i^{\rho_i}$, $\gamma'_k = \delta \gamma_k$ and $\phi_i = u_i$ we can write $\alpha = \gamma_k \delta \phi_1^{v_1}...\phi_r^{v_r}$. 
+
+
+Now we can allow the $v_i$ to take on any value in $\mcal O$.
+
+
+
+However we can fix this using (??), and we will from now on just assume that it is. Define now
 
 \begin{align*}
     L_j(u_1, ..., u_r) &= \sum_{k = 1}^{r} u_k \log \sigma_j(\epsilon_k) \\
@@ -420,12 +654,9 @@ for $i = m+1, ..., n$. If we can show that, no matter what $\gamma$ we choose am
 We then have 
 $$\exp L_j (u_1, ..., u_r) = \prod_{k=1}^r \sigma_j(\epsilon_k)^{u_k}$$
 
-And so we can define
-$$F_i(u_1, ..., u_r) = \sum_{j = 1}^n A_{ij} \exp L_j(u_1, ..., u_r) = 0$$
-These are power series which converge as long as all the $u_i$ belong to $\mcal O$. EXPLAIN WHY.  
-
-The equations defined above are then the same as the equations $$F_i(u_1, ..., u_r) = 0$$ for $i = m+1, ..., n$.  
-
+And so we can rewrite our original equations as for $i = m+1, ..., n$
+$$F_i(u_1, ..., u_r) = \sum_{j = 1}^n A_{ij} \exp L_j(u_1, ..., u_r) $$
+These are power series in the variables $u_1, ..., u_r$, and they all converge as long as the $u_i$ belong to $\mcal O$. Hence the set of all solutions to this system is a local manifold. 
 
 
 
