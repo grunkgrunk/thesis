@@ -37,6 +37,9 @@
 % Define example environment
 \newtheorem{example}{Example}[section]
 
+% Define remark environment
+\newtheorem{remark}{Remark}[section]
+
 
 % Define aliases for \mathfrak and \mathcal and mathbb
 \newcommand{\mfrak}[1]{\mathfrak{#1}}
@@ -54,11 +57,7 @@
 
 Let $K$ we a number field of degree $n$ over the rationals.
 
-
-\begin{theorem}
-    Suppose $f(x,y)$ is an irreducible form of degree $n \geq 3$. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for some fixed $c \in \mbb{Z}$.
-\end{theorem}
-One might think this should not take too much effort to prove. After all, the theorem is relatively simple to parse.
+% Quickly build up to a point where the problem can be phrased. Then explain what theory is need and maybe motivate it.
 
 \section*{Dual basis}
 Let $\omega_1, ..., \omega_n$ be a basis for $K$ over $k$ and choose $n$ elements, $c_1, ..., c_n$, in $k$. We know that the $n \times n$ matrix, $\tr {\omega_i \omega_j}$, is non-singular since $$0 \neq \text{disc}(\omega_1, ..., \omega_n) = |\tr{\omega_i \omega_j}|^2$$
@@ -70,26 +69,33 @@ Thus, we have demonstrated that for any choice of $c_1, ..., c_n \in k$, there i
 $$\sum_{i=1}^n x_i \omega_i^* = 0.$$
 Multiplying by $\omega_j$ and taking the trace, we get
 $$0 = \tr{\sum_{i=1}^n x_i \omega_i^* \omega_j} = \sum_{i=1}^n x_i \tr{\omega_i^* \omega_j} = x_j,$$
-which shows that all the $x_j$'s are zero.
+which shows that all the $x_j$'s are zero. Thus, the $\omega_i^*$'s are linearly independent and as there are $n$ of them, they form a basis.
 
 \begin{definition}
     A field $K$ equipped with a valuation, $v$, is said to be complete with respect to $v$, if every Cauchy sequence in $K$ converges to an element in $K$.
 \end{definition}
 
 %TODO
-\begin{theorem}
+\begin{theorem} \label{thm: Valuation ring in local field is compact}
     The valuation ring of of a local field $K$ is compact.
 \end{theorem}
 \begin{proof}
-    The valuation ring can be thought of as the closed unit ball around 0 with respect to the absolute value on $K$. Hence it is closed and is homeomorphic to $\varprojlim \mcal O / \mfrak p^n$ which is then of course also closed. This inverse limit is contained in $\prod_{n = 1}^\infty \mcal O / \mfrak p^n$, which is compact by Tychonoff's theorem since all the $\mcal O / \mfrak p^n$ are finite, hence compact. It follows that $\mcal O$ is compact.
+    The valuation ring can be thought of as the closed unit ball around 0 with respect to the absolute value on $K$. Hence it is closed and is homeomorphic to $\varprojlim \mcal O / \mfrak p^n$ which is then of course also closed. This inverse limit is contained in $\prod_{n = 1}^\infty \mcal O / \mfrak p^n$, which is compact by Tychonoff's theorem since all the $\mcal O / \mfrak p^n$ are finite by (\ref{lem: Valuation ring mod power of prime is finite in local field}), and hence they are compact. It follows that $\mcal O$ is compact.
 \end{proof}
-Since the absolute value $K$ induces a metric on $K$, it means that compactness is equivalent to sequential compactness. Thus every sequence in $\mcal O$ has a convergent subsequence. We will use this fact in section (?????)
+\begin{remark}\label{rem: Compactness is equivalent to sequential compactness}
+    Since the absolute value $K$ induces a metric on $K$, it means that compactness is equivalent to sequential compactness. Thus every sequence in $\mcal O$ has a convergent subsequence.
+\end{remark}
 
 
 \section{Local manifold}
 
-\begin{definition}[Local manifold]
-    Suppose $K$ is complete with respect to a valuation $v$, and let $\abs{}$ be a corresponding multiplicative valuation. Let $\overline K$ denote the algebraic closure of $K$. We will refer to the elements, $(\alpha_1, ..., \alpha_n)$ of the cartesian product, $\overline K^n$, as points. The set of points where $|\alpha_i| < \epsilon$ for all $i = 1, ..., n$, we call an $\epsilon$-neighborhood of the origin. Let $R = \overline K[[x_1, ..., x_n]]$ (WHAT IS THE RING OF COEFFICIENTS HERE?) denote the set of all format power series, $f(x_1, ..., x_n)$ with coefficients in $\overline K$ and let $F$ be the set of all $f \in R$ so that $f$ converges in some $\epsilon$-neighborhood of the origin.
+\begin{definition}[Analytic function]
+    Suppose $K$ is a complete field. A function, $f$, defined on a domain contained $C \subseteq K$, is called analytic if it can be represented as a power series which is convergent on $C$.
+\end{definition}
+
+
+\begin{definition}[Local manifold] \label{def: Local manifold}
+    Suppose $K$ is complete with respect to a valuation $v$, and let $\abs{}$ be a corresponding absolute value. Let $\overline K$ denote the algebraic closure of $K$. We will refer to the elements, $(\alpha_1, ..., \alpha_n)$ of the cartesian product, $\overline K^n$, as points. The set of points where $|\alpha_i| < \epsilon$ for all $i = 1, ..., n$, we call an $\epsilon$-neighborhood of the origin. Let $R = \overline K[[x_1, ..., x_n]]$ (WHAT IS THE RING OF COEFFICIENTS HERE?) denote the set of all format power series, $f(x_1, ..., x_n)$ with coefficients in $\overline K$ and let $F$ be the set of all $f \in R$ so that $f$ converges in some $\epsilon$-neighborhood of the origin.
 
     Assume $f_1, ..., f_m \in F$ all of which have zero constant term. The set $V$ of points $X \in \overline {K}^n$ such that $$f_1(X) = ... = f_m(X) = 0$$
     where $X$ belongs to some $\epsilon$-neighborhood of the origin is called a local manifold. We say that two local manifolds are equal if there is an $\epsilon$-neighborhood in which they are the same.
@@ -105,9 +111,23 @@ Since the absolute value $K$ induces a metric on $K$, it means that compactness 
     is an ideal of $F$.
 \end{proposition}
 
+\begin{remark}
+    Recall that all the units in the ring of formal power series over a field are those that have constant term different from 0. So if we were to allow such formal power series in (\ref{def: Local manifold}), then the ideal $I_V$ would be the entire ring $F$, and so the quotient ring $F / I_V$ would be the zero ring. This explains why we require the constant term of the power series to be zero.
+\end{remark}
+
+
 \begin{theorem}
     A local manifold is either equal to the set containing just the origin, or it contains a curve.
 \end{theorem}
+
+\begin{theorem}
+    Suppose $V$ and $V'$ are local manifolds in $\overline K^n$ such that $V \nsubseteq V'$. Then there is a curve on $V$ that does not lie on $V'$.
+\end{theorem}
+\begin{remark}
+    Note that by contraposition, we have the following: If for all curves, $C$, we have that $C$ is not on $V$ or $C$ is on $V'$, then $V \subseteq V'$. This is the same as saying: If every curve on $V$ is also on $V'$ then $V \subseteq V'$.
+\end{remark}
+
+
 
 
 EXPLAIN WHY: Elements in the quotient ring $\mfrak D_\epsilon / I_V$ can be thought of as functions on the local manifold $V$.
@@ -115,7 +135,31 @@ EXPLAIN WHY: Elements in the quotient ring $\mfrak D_\epsilon / I_V$ can be thou
 
 \section{Forms and Modules}
 % forms
-A form $F(x_1, ..., x_m)$ of degree $k$ is a homogenous polynomial in the variables $x_1, ..., x_m$, of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension of $\mbb{Q}$, then it is called decomposable. It is called reducible if it can be written as the product of two forms of lower degree. Otherwise it is called irreducible. Two forms are called equivalent if one can be obtained from the other by a linear change of variables with coefficients in $\mbb{Q}$. This defines an equivalence relation on the set of forms. Consider the equation 
+A form $F(x_1, ..., x_m)$ in $m$ variables of degree $k$ is a homogenous polynomial of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension of $\mbb{Q}$, then it is called decomposable. The forms in 2 variables are actually always decomposable. 
+
+\begin{theorem}\label{thm: Forms in two variables are decomposable}
+    Let $F(x, y)$ be a form of degree $k$ in two variables and let $\alpha$ be any root of $F(x, 1)$. Then 
+    $$F(x, y) = N_{\mbb Q (\alpha) / \mbb Q}(x + \alpha y)$$ 
+    In particular, $F$ is decomposable.
+\end{theorem}
+
+
+\begin{proof}
+    We can assume without loss of generality that $F(x, 1)$ is monic. Start by writing
+    $$F(x, y) = \sum_{i=0}^k a_i x^{k-i} y^i$$
+    where the $a_i$ are in $\mbb{Q}$. Since $F(x, 1)$ is monic we have $a_k = 1$. Now 
+    $$F(x, 1) = \sum_{i=0}^k a_i x^{k-i}$$
+    Which can be written as
+    $$\prod_{i=1}^k (x - \alpha_i)$$
+    in the splitting field for $F(x,1)$. The coefficients are symmetric functions of the roots, which we denote by $s_1(\alpha_1, ..., \alpha_k), ..., s_k(\alpha_1, ..., \alpha_k)$. Notice that $s_i(\alpha_1, ..., \alpha_k)$ is a monomial of degree $i$ in the variables $\alpha_i$. Hence $s_i(\alpha_1y, ..., \alpha_k y) = y^i s_i(\alpha_1, ..., \alpha_k)$ become the coefficients of 
+    $$\prod_{i=1}^k (x - \alpha_iy)$$
+    But these are exactly the coefficients of $F(x,y)$, when regarded as a polynomial in $x$ with coefficients in $\mbb{Q}[y]$. Thus, the above expression is in fact equal to $F(x,y)$ and is a factorization of it in terms of linear factors and hence it decomposable.
+\end{proof}
+
+
+
+
+It is called reducible if it can be written as the product of two forms of lower degree. Otherwise it is called irreducible. Two forms are called equivalent if one can be obtained from the other by a linear change of variables with coefficients in $\mbb{Q}$. This defines an equivalence relation on the set of forms. Consider the equation 
 $$F(x_1, ..., x_m) = a$$
 where $a$ is in $\mbb{Q}$. 
 
@@ -136,6 +180,9 @@ Then we can always find an integer $c \neq 0$ so that $c a_i$ is an integer for 
 
 Once we have a module, we can of course consider the norm of the elements in it. Let $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb{C}$. We then have
 $$N(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n \sigma_i(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k)$$
+
+
+
 Any term in this product occurs from choosing one of the $k$ terms in each of the $n$ factors, so multiplying this expression out, we get a homogenous polynomial in the variables $x_1, ..., x_n$. Let us think about what the coefficients of this polynomial are. Any term will have the form
 $$x_{i_1}\sigma_1(\mu_{i_1}) \dots x_{i_n}\sigma_n(\mu_{i_n}) = x_{i_1} ... x_{i_n} \sigma_1(\mu_{i_1})... \sigma_n(\mu_{i_n})$$
 where the $i_j$ signify which of the $k$ terms in the $n$ factors we chose. There could be many choices that lead to the same monomial, $x_{i_1}...x_{i_n}$. As such, the coefficient of this monomial will be
@@ -550,10 +597,10 @@ In the real numbers we are used to that the function $u \mapsto \alpha^u$ is wel
 \end{proof}
 
 \begin{lemma}
-    Suppose $\mfrak p$ is a prime of $K$ and set $q = \# (\mcal O / \mfrak p^n)^*$. If $\alpha \in \mcal O_K$ and $\mfrak p \nmid \alpha$ then $\alpha^q \in U^{(n)}$. In particular, if $\epsilon$ is any unit of $\mcal O_K$ then $\epsilon^q \in U^{(n)}$.
+    Suppose $\mfrak p$ is a prime of a local field $K$ and set $q = \# (\mcal O / \mfrak p^n)^*$. If $\alpha \in \mcal O_K$ and $\mfrak p \nmid \alpha$ then $\alpha^q \in U^{(n)}$. In particular, if $\epsilon$ is any unit of $\mcal O_K$ then $\epsilon^q \in U^{(n)}$.
 \end{lemma}
 \begin{proof}
-    Take $\alpha$ in $\mcal O_K$ and suppose $\mfrak p \nmid \alpha$ for some prime $\mfrak p$ of $K$. This means that $\mfrak p$ does not occur in the prime factorization of $\alpha \mcal O_K$, which means that $\gcd(\alpha \mcal O_K, \mfrak p) = \mcal O_K$, hence also $\gcd(\alpha \mcal O_K, \mfrak p^n) = \mcal O_K$. But that means that $\alpha \beta + q = 1$ for some $q \in \mfrak p^n$ and $\beta \in \mcal O_K$, and so $\alpha$ is a unit in $\mcal O_K / \mfrak p^n$. But $\mcal O_K / \mfrak p^n$ is finite, which means that $\overline{\alpha^q} = \overline 1$ in $\mcal O_K / \mfrak p^n$ where $q = \# (\mcal O_K / \mfrak p^n)^*$. Hence, $\alpha^q \in U^{(n)}$. Suppose now that $\epsilon$ is a unit in $\mcal O_K$. Then $\epsilon \mcal O_K = \mcal O_K$, meaning that $\mfrak p \nmid \epsilon$.  
+    First of all, the number $q$ is a natural number by (\ref{lem: Valuation ring mod power of prime is finite in local field}). Take $\alpha$ in $\mcal O_K$ and suppose $\mfrak p \nmid \alpha$ for some prime $\mfrak p$ of $K$. This means that $\mfrak p$ does not occur in the prime factorization of $\alpha \mcal O_K$, which means that $\gcd(\alpha \mcal O_K, \mfrak p) = \mcal O_K$, hence also $\gcd(\alpha \mcal O_K, \mfrak p^n) = \mcal O_K$. But that means that $\alpha \beta + l = 1$ for some $l \in \mfrak p^n$ and $\beta \in \mcal O_K$, and so $\alpha$ is a unit in $\mcal O_K / \mfrak p^n$. But then $\overline{\alpha^q} = \overline 1$ in $\mcal O_K / \mfrak p^n$. Hence, $\alpha^q \in U^{(n)}$. Suppose now that $\epsilon$ is a unit in $\mcal O_K$. Then $\epsilon \mcal O_K = \mcal O_K$, meaning that $\mfrak p \nmid \epsilon$. By what we just proved, it now follows that $\epsilon^q \in U^{(n)}$. 
 \end{proof}
 
 In particular, 
@@ -586,7 +633,7 @@ Since all the ideals of $\mcal O$ are powers of the maximal ideal, and the maxim
     A local field of characteristic 0 is the same thing as a finite extension of $\mbb Q_p$.
 \end{proposition}
 
-\begin{lemma}
+\begin{lemma}\label{lem: Valuation ring mod power of prime is finite in local field}
     Let $K$ be a local field with residue field $\kappa = \mcal O / \mfrak p$, and let $q = \# \kappa$. For any $n \in \mbb N$ we have $\# (\mcal O / \mfrak p^n) = q^n$.
 \end{lemma}
 
@@ -602,7 +649,11 @@ We know from ? that there is an $n$ so that $\exp : \mfrak p^n \to U^{(n)}$ and 
 
 
 
-
+\begin{theorem}
+    Let $K$ be a number field over $\mbb Q$ of degree $n$ and fix some $c \in \mbb Q$. Suppose $F$ is an irreducible, decomposable and nonfull form of degree $m < n$. If the equation 
+    $$F(x_1, ..., x_m) = c$$
+    has infinitely many solutions (OVER WHAT SET?) then there exists a local manifold in which there is an analytic curve that parametrizes an infinite subset of these solutions.   
+\end{theorem}
 
 
 Let $K$ be a number field of degree $n$ and let $\mu_1, ..., \mu_m$ be a set of $\mbb{Q}$-linearly independent elements of $K$. These generate a nonfull module, $M$. Starting from these generators we can build a basis for $K$ over $\mbb{Q}$. We will call this basis $\mu_1, ..., \mu_m, \mu_{m+1}, ..., \mu_n$. Considering the module, call it $\bar M$, generated by these will give us a full module and $M \subset \bar M$. We wish to find solutions to the equation $N(\alpha) = a$, where $\alpha$ is in $M$. This is really the same as allowing $\alpha$ to be in $\bar M$, so finding solutions of the form
@@ -623,21 +674,24 @@ for $i = m+1, ..., n$. If we can show that, no matter what $\gamma$ we choose am
 
 The $\epsilon_i$ are all units of the coefficient ring $\mfrak D$ of $M$. Hence, these are in fact units of $O_K$. By (???) there is natural number $q$ so that $\epsilon_i^q$ is in $U^{(n)}$ for all $i$. 
 
-Consider the set $$\{\epsilon_1^{u_1} \dots \epsilon_r^{u_r} \mid 0 \leq u_i < q \}$$
-\begin{align*}
-    G &= \{\gamma \mid \gamma_1, ..., \gamma_k \} \\
-    B &= \{ \epsilon_i^{q u_1} \dots \epsilon_r^{q u_r} \mid u_i \in \mbb Z \} \\
-    C &= \{\epsilon_1^{u_1} \dots \epsilon_r^{u_r} \mid u_i \in \mbb Z \} \\ 
-    A \times B \to C
-\end{align*}
-
- 
-
 
 Each of the $u_i$ in (\ref{eq:ExpressionForAlpha}) can be written on the form $u_i = \rho_i + qv_i$, with $0 \leq \rho_i < q$ and $v_i \in \mbb{Z}$. This allows us to write 
 $$\prod_{i=1}^r \epsilon_i^{u_i} = \prod_{i=1}^r \epsilon_i^{\rho_i + qv_i} = \prod_{i=1}^r \epsilon_i^{\rho_i} \prod_{i=1}^r \epsilon_i^{qv_i}$$ 
 
-Setting $\delta = \prod_{i=1}^r \epsilon_i^{\rho_i}$, $\gamma'_k = \delta \gamma_k$ and $\phi_i = u_i$ we can write $\alpha = \gamma_k \delta \phi_1^{v_1}...\phi_r^{v_r}$. 
+Setting $\delta = \prod_{i=1}^r \epsilon_i^{\rho_i}$, $\gamma' = \delta \gamma_k$ we can write $\alpha = \gamma'_k \epsilon_1^{qv_1}...\epsilon_r^{qv_r}$. Let now $\Gamma'$ be the set of all possible $\gamma'$. The number of possible $\delta$ is $q^r$ so $\# \Gamma' = (\# \Gamma) q^r$. Of course, all elements in $\Gamma'$ still have norm $a$. Hence taking $\phi_i = \epsilon_i^q$ we can write any element of norm $a$ as 
+$$\alpha = \gamma \phi_1^{v_1}...\phi_r^{v_r}$$
+where $\gamma \in \Gamma'$ with the added benefit that we can now allow the $v_i$ to take on any value in $\mcal O$.
+This gives us the following lemma
+
+\begin{lemma}
+    There exists a finite set $\Gamma' \subseteq M_a$ and a system of independent units $\phi_1, ..., \phi_r \in U^{(n)}$, so that for any $\alpha \in M_a$ we can write $$\alpha = \gamma \phi_1^{v_1}...\phi_r^{v_r},$$ where $\gamma \in \Gamma'$.
+\end{lemma}
+
+
+and so we can replace $\Gamma$ with $\Gamma'$.
+
+
+Now the set of all possible $\gamma'$ is equa
 
 
 Now we can allow the $v_i$ to take on any value in $\mcal O$.
@@ -654,14 +708,57 @@ However we can fix this using (??), and we will from now on just assume that it 
 We then have 
 $$\exp L_j (u_1, ..., u_r) = \prod_{k=1}^r \sigma_j(\epsilon_k)^{u_k}$$
 
-And so we can rewrite our original equations as for $i = m+1, ..., n$
+For $i = m+1, ..., n$ we now define
 $$F_i(u_1, ..., u_r) = \sum_{j = 1}^n A_{ij} \exp L_j(u_1, ..., u_r) $$
-These are power series in the variables $u_1, ..., u_r$, and they all converge as long as the $u_i$ belong to $\mcal O$. Hence the set of all solutions to this system is a local manifold. 
+And so we can rewrite our original equations as
+(AVOID TALKING ABOUT MANIFOLDS HERE BECAUSE WE DONT KNOW IF THE CONSTANT TERMS OF THE $F_i$ ARE ZERO).
+$$F_i(u_1, ..., u_r) = 0$$
+for $i = m+1, ..., n$. These power series, $F_i$, converge in any $\epsilon$-neighborhood around the origin as long as $\epsilon \leq 1$ since in that case the $u_i$ belong to the valuation ring $\mcal O \subseteq K_\mfrak p$. Hence the set of all solutions to this system is a local manifold and all the $u_i$ are in $\mcal O$. Assume that we have infinitely many solutions to this system. Then we can construct an infinite sequence of distinct elements, $U_s = (u_{1s}, ..., u_{rs})$, for $s \in \mbb N$.
+As $\mcal O$ is compact, so is the product $\mcal O^r$, equipped with the product topology. But $\mcal O$ is a metric space so $\mcal O^r$ is metrizable, and therefore sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, say $u^* = (u_1^*, ..., u_r^*) \in \mcal O^r$. As the $F_i$ are continuous, we know that $F_i(U^*_s)$ converges to $F_i(u^*)$. But the $F_i$ also converge to 0 since $F_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $F_i(u^*) = 0$. Hence, $u^*$ belongs to the manifold defined by the $F_i$. Lastly, any neighborhood of $u^*$ contains infinitely many points of the manifold; Take any open $\epsilon$-ball, $B$ around $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N$ so that $U^*_s \in B$ for all $s > N$, all of which are distinct and belong to the manifold. Let us now write $u_i = u_i^* + v_i$, where $v_i \in \mcal O$. Plugging this into the $F_i$ we get
+
+\begin{align*}
+    F_i(u_1, ..., u_r) &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^* + v_1, ..., u_r^* + v_r) \\ 
+    &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^*, ..., u_r^*) \exp L_j(v_1, ..., v_r)
+\end{align*}
+Setting $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_r^*)$ and $G_i(v_1, ..., v_r) = \sum_{j = 1}^n A_{ij}^* L_j(v_1, ..., v_r)$, we therefore get
+$$F_i(u_1, ..., u_r) = G_i(v_1, ..., v_r)$$
+Viewing the $G_i$ as formal power series in the variables $u_1, ..., u_r$, we see that they all have constant term 0, since all the $L_j(v_1, ..., v_r)$ have constant term 0. Let $V$ be the local manifold defined by the $G_i$. Clearly, the point at the origin is a solution, and there are infinitely many solutions in any neighborhood of the origin. Therefore $V$ contains an analytic curve, by (??)
+
+
+By the contrapositive of this, we now have a way to show that a norm equation has only finitely many solutions. 
 
 
 
+\begin{theorem}
+    Suppose $f(x,y)$ is an irreducible form with integer coefficients, of degree $n \geq 3$ and with at least one complex root. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for some fixed $c \in \mbb{Z}$.
+\end{theorem}
+One might think this should not take too much effort to prove. After all, the theorem is relatively simple to parse.
+
+\begin{proof}
+    We can assume without loss of generality that $f(x, 1)$ is a monic polynomial. Let $\theta$ be one of its roots. By (???, change this theorm to suppose f(x,1) is monic since otherwise it doesnt work (you would have to mulitply the norm by a constant otherwise)), we know that 
+    $$f(x,y) = N_{\mbb{Q}(\alpha)/\mbb{Q}}(x + \theta y)$$
+    So in this case we are working with the module $M$ generated by $1$ and $\theta$. 
 
 
 
+    For any curve on $\omega_1(t), ..., \omega_r(t)$ on $V$ we know from lemma (\ref{lem: Two power series are equal}) that $P_k(t) = P_j(t)$ for two different indices $k$ and $j$. Consider then the local manifold, $W$, given by the equation
+    $$\prod_{i \leq k < j \leq n}^r (P_k(t) - P_j(t)) = 0$$
+    Hence, whenever we have a curve on $V$, that curve is also on $W$. By (???) this implies that $V \subseteq W$. We will now show that any neighborhood of the origin contains a point of $V$ which is not in $W$. This is of course a contradiction to $V \subseteq W$, so there must be only finitely many solutions. 
+    
+    
+\end{proof}
+
+
+\begin{lemma} \label{lem: Two power series are equal}
+    Let $K$ be a field of characteristic 0 and let $n,n_1,n_2 \in \mbb N$ so that $n_1 = n -2$ and $n_2 \geq 2$. Suppose we have the following systems of equations:
+    \begin{align*}
+        \sum_{j = 1}^n a_{ij} \exp P_j &= 0, \quad i = 1, ..., n_1 \\
+        \sum_{j = 1}^n b_{ij} P_j &= 0, \quad i = 1, ..., n_2,
+    \end{align*}
+    with the $a_{ij}$ and $b_{ij}$ in $K$ and where the both groups of equations are linearly independent (WHAT DOES THIS REALLY MEAN IN THIS CONTEXT?). Suppose that there exists a solution, $P_1(t), ..., P_n(t)$, in formal power series with coefficients in $K$, and with zero constant term. Then there are two indices $k \neq l$ so that $P_k(t) = P_l(t)$.
+\end{lemma}
+
+
+First show that all of these conditions are indeed satisfied. 
 
 \end{document}
