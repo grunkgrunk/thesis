@@ -1,4 +1,3 @@
-
 \documentclass{article}
 \usepackage{amsmath} % for advanced math typesetting
 \usepackage{amssymb} % for additional math symbols
@@ -6,11 +5,19 @@
 \usepackage{mathtools} % for advanced math typesetting
 \usepackage{makeidx} % package for creating an index
 
+
+
 % draw commutative diagrams
 \usepackage{tikz-cd}
 % \usepackage{charter} % use Helvetica font
 % \renewcommand{\familydefault}{\sfdefault} % set Helvetica as the default font
 
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\coeff}{coeff}
+
+
+\newcommand{\Span}{\operatorname{span}}
 
 \newcommand*{\argordot}[1]{%
     \def\arg{#1}%
@@ -66,6 +73,10 @@ Let $K$ we a number field of degree $n$ over the rationals.
 
 % Quickly build up to a point where the problem can be phrased. Then explain what theory is need and maybe motivate it.
 
+
+
+
+
 \section{Introduction to the problem}
 
 \section{Dual basis}
@@ -79,6 +90,72 @@ $$\sum_{i=1}^n x_i \omega_i^* = 0.$$
 Multiplying by $\omega_j$ and taking the trace, we get
 $$0 = \tr{\sum_{i=1}^n x_i \omega_i^* \omega_j} = \sum_{i=1}^n x_i \tr{\omega_i^* \omega_j} = x_j,$$
 which shows that all the $x_j$'s are zero. Thus, the $\omega_i^*$'s are linearly independent and as there are $n$ of them, they form a basis.
+
+
+
+
+\section{Formal power series}
+Let $K$ be a field. We then have the ring of formal power series, denoted by $K[[x]]$. This ring has no zero divisors, so we can consider its fraction field, which we will denote by $K((x))$. (THIS FIELD OCCURS AS THE COMPLETION OF K[[x]]) We now have a field extension $K((x)) / K$, and hence we can think about which elements are algebraic over $K$. We have the following theorem
+\begin{theorem}
+    If $f \in K((x))$ is not a constant, then it is transcendental over $K$.  
+\end{theorem}
+
+\begin{proof}
+    Consider first the special case where $f \in K[[x]]$. This allows us to write
+    $$f(x) = \sum_{i = 0}^\infty a_i x^i.$$
+    Suppose also that we have a non-zero polynomial $g \in K[x]$ of degree $n$
+    $$g(x) = \sum_{i = 0}^n b_i x^i \in K[x]$$
+    Let us start out by assuming that $f$ has finite degree, say $m$. Then $a_m \neq 0$ and we have
+    $$g(f(x)) = \sum_{i = 0}^n b_i f(x)^i$$
+    The degree of the $i$th term is $\deg f(x)^i = m + i$. Hence $\deg g(f(x)) = \deg f(x)^n = m + n$ and so $g(f(x)) \neq 0$. So suppose instead that $f$ has infinite degree. For contradiction, let us also assume that $g(f(x)) = 0$. This entails that $a_0 = 0$ and we can now write the coefficients $c_i$ of $g(f(x))$ as
+    $$c_i = \sum_{k \in \mbb N, |j| = i}b_k a_{j_1} ...a_{j_k}$$
+    where $j \in \mbb N_+^k$ and where we by $|j|$ mean the sum of the coordinates, $|j| = \sum_{i=1}^k j_i$. As $g(f(x)) = 0$, all the $c_i$ are 0. Set $d_{ik} = \sum_{|j| = i} a_{j_1} ...a_{j_k}$ and note that $b_i = 0$ for all $i > n$. We now have (MAYBE WE SHOULD START FROM K = 0)
+    $$c_i = \sum_{k = 1}^n \sum_{|j| = i}b_k a_{j_1} ...a_{j_k} = \sum_{k=1}^n d_{ik} b_k = 0$$
+
+    
+    
+    Finding a single $c_i$ which is non-zero will contradict the assumption that $g(f(x)) = 0$. Now $b_n \neq 0$ 
+     
+    The coefficient of $g(f(x))$ can be written 
+\end{proof}
+
+It turns out that only $K$ itself is algebraic. PROVE THIS
+
+
+On $K[[x]]$ we can define exponential and logarithm functions. It is sometimes possible to compose elements in $K[[x]]$. Take $f, g \in K[[x]]$. We can then write 
+\begin{align*}
+    f(x) &= \sum_{i = 0}^\infty a_i x^i \\
+    g(x) &= \sum_{i = 0}^\infty b_i x^i
+\end{align*}
+
+Composing we get 
+
+
+
+
+First, define the following element in $K[[x]]$
+$$\exp x = \sum_{n = 0}^\infty \frac{x^n}{n!}.$$
+Let $f(x) \in K[[x]]$ and write 
+$$f(x) = \sum_{i = 0}^\infty a_i x^i$$
+Denote by $\coeff(f, i)$ the $i$'th coefficient of $f$. Consider the $k$'th power of $f$,
+$$f(x)^k = (\sum_{i = 0}^\infty a_i x^i)^k$$ 
+Clearly, $\coeff (f, 0) = a_0$ and so $\coeff(f^k, 0) = a_0^k$. Let us try to brutally insert $f$ into $\exp x$ and see what happens
+$$\exp f(x) = \sum_{n = 0}^\infty \frac{f(x)^n}{n!}.$$
+So $\coeff(\exp f(x), 0) = \sum_{n = 0}^\infty \frac{a_0^n}{n!}$ 
+
+
+
+Hence, we obtain a function
+$$\exp : K[[x]] \setminus K \to K[[x]]$$
+
+
+
+(TODO)
+Next, see that exp f(u) = exp f(u), where f(u) is a p adic number, exp on the left hand side is the p adic exponential and exp on the right is the formal power series exponential function 
+
+
+
+
 
 
 
@@ -316,7 +393,20 @@ We are therefore interested in finding the units in the ring of algebraic intege
     When the triangle inequality can be upgraded to the stronger condition $$\abs{x + y} \leq \max \{\abs{x}, \abs{y}\} \quad \text{for every } x,y \in K,$$
     the absolute value is said to be \textbf{non-archimedian}. Otherwise it is called \textbf{archimedian}.
 \end{definition}
-Once we have an absolute value on field $K$, we can of course use it to define a metric, $d : K^2 \to \mbb R$, by setting $d(x,y) = \abs{x - y}$. As such, $K$ can now be thought of as a metric space, and we therefore now have a topology on $K$, generated by $d$. We will also refer to this topology as the topology induced by $\abs{}$. It might very well happen that two absolute values on $K$ induce the same topology and whenever this happens we say that the absolute values are equivalent. This defines an equivalence relation on the set of absolute values on $K$, and the equivalence classes are called \textbf{places} of $K$. 
+
+Once we have an absolute value on field $K$, we can of course use it to define a metric, $d : K^2 \to \mbb R$, by setting $d(x,y) = \abs{x - y}$. As such, $K$ can now be thought of as a metric space, and we therefore now have a topology on $K$, generated by $d$. We will also refer to this topology as the topology induced by $\abs{}$.
+
+\begin{proposition}
+    An absolute value $\abs{}$ on a field $K$ is uniformly continuous.  
+\end{proposition}
+\begin{proof}
+    Let $\epsilon > 0$ and pick $\delta = \epsilon$. For any $x,y \in K$ so that $|x - y| < \delta$ we have 
+    $$||x| - |y||_\infty \leq |x - y| < \delta = \epsilon$$
+    where we have used the reverse triangle inequality. 
+\end{proof}
+Uniformly continuous functions have the nice property that they preserve Cauchy sequences. So if we have some Cauchy sequence, $x_n$ in $K$, then $|x_n|$ is also Cauchy. We will use this fact later on.
+
+It might very well happen that two absolute values on $K$ induce the same topology and whenever this happens we say that the absolute values are equivalent. This defines an equivalence relation on the set of absolute values on $K$, and the equivalence classes are called \textbf{places} of $K$. 
 
 Note that it is always possible to define at least one absolute value on any given field. namely the function sending everything in a field to 1 except for 0 which is sent to 0. This satisfies all the above criteria but does not lead to anything interesting. For example, it induces the discrete topology on $K$. For this reason we will not consider it. 
 
@@ -386,38 +476,125 @@ which just sends an element in $\mcal O$ to its respective equivalence class in 
 
 
 \section{Completions of fields}
-As soon as we have a metric on a field $K$ we can start to talk about convergence of sequences in this field. There might be such a sequence which at first glance looks it is converging to an element in $K$, even though it in fact converges to a point outside of $K$. As such, this point can in a sense be thought of as a hole in $K$, with respect to the metric. The completion of a field is essentially the process of patching up all these holes. To make this more concrete, let us look at an example. In $\mbb Q$ equipped with the usual absolute value, one can find a Cauchy sequence converging to $\sqrt 2$ which of course does not belong to $\mbb Q$ and filling out all of these holes is a way of constructing the field $\mbb R$.
+As soon as we have a metric on a field $K$ we can start to talk about convergence of sequences in this field. There might be such a sequence which at first glance looks it is converging to an element in $K$, even though it in fact converges to a point outside of $K$. As such, this point can in a sense be thought of as a hole in $K$, with respect to the metric. The completion of a field is essentially the process of patching up all these holes. 
+
+
+%To make this more concrete, let us look at an example. In $\mbb Q$ equipped with the usual absolute value, one can find a Cauchy sequence converging to $\sqrt 2$ which of course does not belong to $\mbb Q$ and filling out all of these holes is a way of constructing the field $\mbb R$.
 
 \begin{definition}[Complete valued field]
     We say that a valued field, $K$, with absolute value, $\abs{}$, is complete if every Cauchy sequence in $K$ converges to some element in $K$ with respect to $\abs{}$.
 \end{definition}
+
+In the $\mbb R$ equipped with the standard absolute value, it is well known that every Cauchy sequence converges and hence it is an example of a complete valued field. 
 
 \begin{theorem}
     Let $K$ be a valued field and $R$ be the set of all Cauchy sequences of $K$. Then $R$ is a ring and the set $\mfrak m$ of all null sequences of $R$ is a maximal ideal.
 \end{theorem}
 \begin{proof}
     % The operations on $R$ are defined element wise. As such, the Cauchy property is preserved under both addition and multiplication and rules such as the distributive law hold are inherited from the ring structure on $K$. The Cauchy sequences $1,1,1,...$ and $0,0,0,...$ are the identity elements for multiplication and addition respectively.
-    The operations on $R$ are defined element wise and it is therefore rather clear that $R$ is a ring. The set $I$ is non-empty, as it most certainly contains the constant sequence $0,0,0,...$. Furthermore the difference of two null sequences is again a null sequence and the product of any sequence by a null sequence is also a null sequence. Thus, $I$ is an ideal. NEED THE MAXIMAL IDEAL PART
+    The operations on $R$ are defined element wise and it is therefore follows from analysis that $R$ is a ring. The set $I$ is non-empty, as it most certainly contains the constant sequence $\tilde 0$. Furthermore the difference of two null sequences is again a null sequence and the product of any sequence by a null sequence is also a null sequence. Thus, $I$ is an ideal. Let us now show that $I$ is a maximal ideal. Take an element in $x_n \in R$ which is not also in $I$. We wish to show that the ideal $J = (x_n) + I$ contains $\tilde 1$, i.e, that this ideal is in fact the entire ring $R$. The sequence $|x_n|$ is a Cauchy sequence in $\mbb R$ with respect to the usual absolute value. Hence there is an $N$ so that if $n \geq N$ then $|x_n| \geq c > 0$. Thus we can define 
+    $$y_n = \begin{cases} \frac{1}{x_n} & \text{if } n \leq N \\ 0 & \text{if } n > N \end{cases}$$
+    Let now $\epsilon > 0$ be given and choose $M$ so that $|x_n - x_m| < c^2 \epsilon$ whenever $n,m \geq M$. For $n,m \geq \max\{N,M\}$ we now have
+    \begin{align*}
+        |y_n - y_m| = |\frac{1}{x_n} - \frac{1}{x_m}| = |\frac{x_m - x_n}{x_n x_m}| \leq \frac{1}{c^2} |x_m - x_n| \leq \frac{c^2 \epsilon}{c^2} = \epsilon
+    \end{align*}
+    But that means that $y_n$ belongs to $R$ and so $x_n y_n$ is in $J$. Denote by $1$ the identity in $R$, i.e, the constant sequence $(1,1,1, ...)$. We now have $1 - x_n y_n \in J$ and so $1$ is in $J$.
+
 \end{proof}
 
-From this it follows that $\hat K = R / \mfrak m$ is a field. Define now $$\tilde x = (x,x,x,...) + \mfrak m \in \hat K$$ for any $x \in K$. This map is a homomorphism of fields and it is certainly not the zero map, which implies that it is injective. We can therefore think of $K$ as a subfield of $\hat K$.
+\begin{proposition}(Universal property for quotients) \label{prop: Universal property for quotients}
+    Let $R,S$ be a rings and $I \subseteq R$ an ideal. Suppose we have a function $f : R \to S$, which vanishes on $I$ and is an additive group homomorphism when restricted to $I$. Then there exists a uniquely determined function $$\bar f : R / I \to S$$
+    such that the following diagram commutes
+    % https://q.uiver.app/#q=WzAsMyxbMCwyLCJSL0kiXSxbMiwyLCJTIl0sWzEsMCwiUiJdLFswLDEsIlxcZXhpc3RzISBcXGJhciBmIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzIsMCwiXFxwaSIsMl0sWzIsMSwiZiJdXQ==
+\[\begin{tikzcd}
+	& R \\
+	\\
+	{R/I} && S
+	\arrow["{\exists! \bar f}"', dashed, from=3-1, to=3-3]
+	\arrow["\pi"', from=1-2, to=3-1]
+	\arrow["f", from=1-2, to=3-3]
+\end{tikzcd}\]
+    In this case we say that $f$ descends to the quotient, $R / I$. If $f$ is a ring map then so is $\bar f$.  
+\end{proposition}
+\begin{proof}
+    If there is a map $\bar f$ so that the diagram commutes then what that means is that we have, for all $r \in R$ 
+    $$\bar f (\pi(r)) = f(r)$$
+    But $\pi$ is surjective so this condition forces how $\bar f$ is defined, and hence $\bar f$ is unique if it exists. Suppose now that $x,y \in R$ so that $\bar x = \bar y$. Then $x-y \in I$ and so $f(x-y) = 0$, so $f(x) = f(y)$ as $f$ is an additive homomorphism when restricted to $I$. Hence $\bar f$ is well defined. If $f$ is a ring map, then $\bar f$ also be a ring map because the diagram commutes. 
+\end{proof}
 
-\begin{definition}[Completion]
-    Let $K$, $R$ and $\mfrak m$ be as above and define $\hat R = R / \mfrak m$. There is a well defined function $\abs{} : \hat R \to \mbb R$, given by
-    $$\abs{x} = \lim_{n \to \infty} \abs{x_n}$$
-    where $x_n$ is a representative of $x \in \hat R$. We have the following properties
+
+From this it follows that $\hat K = R / \mfrak m$ is a field. Define now $$\tilde x = (x,x,x,...) + \mfrak m \in \hat K$$ for any $x \in K$. This map is a homomorphism of fields and it is certainly not the zero map, which implies that it is injective. We can therefore think of $K$ as a subfield of $\hat K$. 
+
+\begin{theorem}[Completion]
+    The function $\phi : R \to \mbb R$, given by
+    $$\phi (x_n) = \lim_{n \to \infty} \abs{x_n}$$
+    descends to a unique function, $\abs{}'$, on the quotient $\hat K = R / \mfrak m$. We have the following properties
     \begin{itemize}
-        \item $\abs{}$ is an absolute value on $\hat R$.
-        \item $\hat R$ is complete with respect to $\abs{}$.
-        \item $\abs {}$ is an extension of the absolute value on $K$.
+        \item $\abs{}'$ is an absolute value on $\hat K$
+        \item $\hat K$ is complete with respect to $\abs{}'$
+        \item $\abs {}'$ is an extension of the absolute value on $K$
+        \item $K$ is dense in $\hat K$
     \end{itemize}
     We say that the field $R / \mfrak m$ is the completion of $K$ with respect to the absolute value $\abs{}$.
-\end{definition}
+\end{theorem}
+\begin{remark}
+    Because $\abs{}'$ is an extension of $\abs{}$, we will, for ease of notation, simply denote $\abs{}'$ by $\abs{}$.
+\end{remark}
+
 \begin{proof}
-    Suppose first that $x_n \in \mfrak m$. We then know that $x_n$ converges to 0 with respect to $\abs{}$. 
-    
-    Suppose that $\bar x, \bar y \in \hat R$. Then $x - y \in \mfrak m$ so $\abs{x - y} = 0$, meaning that $\abs{x} = \abs{y}$. 
+    First of all, if $x_n \in R$, then $x_n$ is a Cauchy sequence in $K$. Hence  $|x_n|$ is a Cauchy sequence in $\mbb R$, hence it converges to an element in $\mbb R$, i.e the limit exists.
+
+    Let now $x_n \in \mfrak m$. Then $x_n$ converges to $0 \in K$ hence $|x_n|$ converges to $0 \in \mbb R$ as $\abs{}$ is continuous. In other words, the map $\phi$ vanishes on $\mfrak m$. Suppose now that we have $x_n, y_n \in \mfrak m$. By the triangle inequality we get 
+    $$|x_n + y_n| \leq |x_n| + |y_n|$$
+    But the right hand side converges to 0 and therefore we have equality in the limit. Thus, $\phi$ is an additive group homomorphism when restricted to $\mfrak m$. By the universal property for quotients it therefore descends to a unique function, $\abs{}'$, on the quotient $\hat K$. Let us now prove that $\abs{}'$ is actually an absolute value on $K$. Suppose $\bar x_n \in \hat K$ so that $\abs{x_n}' = 0$. Then $|x_n|$ converges to 0, so $x_n$ also converges to 0, which is another way of saying that $\bar x_n = 0$. For the converse, $\phi$ vanishes on $\mfrak m$. Thus if $x \in \hat K$ we have $\abs{x}' = 0$ if and only if $x = 0$. The remaining properties for $\abs{}'$ to be an absolute value are simply inherited from the absolute value $\abs{}$ on $K$. It is also easily seen that $\abs{}'$ extends $\abs{}$. For if $x \in K$ then 
+    $$|x| = \lim_{n \to \infty} x = \phi(\tilde x) = \abs{\overline{ \tilde {x}}}'$$
+    Let us now show that $K$ is dense in $\hat K$. This will allow us to show that $\hat K$ is complete with respect to $\abs{}'$. 
+    % proof missing
+    Now, we are ready to show that $\hat K$ is complete. 
+    % proof missing
 \end{proof}
+
+
+
+\begin{proposition}
+    Let $K,F$ be valued field and suppose $\phi : K \to F$ is a ring map. If $\phi$ preserves absolute values, then it is uniformly continuous. 
+\end{proposition}
+
+\begin{proof}
+    This follows from the fact that $\abs{}_K$ is uniformly continuous and that
+    $$|\phi(x) - \phi(y)|_F = |\phi(x-y)|_F = |x-y|_K$$ 
+\end{proof}
+
+
+The completion $\bar K$ actually satisfies a universal property.
+
+\begin{proposition}[Universal property for completions]
+    Suppose $K$ is a field with absolute value, $\abs{}$. There is a complete valued field extension, $\hat K$, which preserves $\abs{}$ and contains $K$, satisfying the following universal property; If $L$ is any other field preserving $\abs{}$ containing $K$, then there is a unique continuous field map $\phi : \hat K \to L$, which preserves absolute values, making the following diagram commute
+    \[\begin{tikzcd}
+        & K \\
+        \\
+        \hat K && L
+        \arrow["{\exists! \phi}"', dashed, from=3-1, to=3-3]
+        \arrow[from=1-2, to=3-1]
+        \arrow[from=1-2, to=3-3]
+    \end{tikzcd}\]
+    In particular, $\hat K$ is unique up to unique isomorphism and $K$ is dense in $\hat K$.
+\end{proposition}
+
+\begin{proof}   
+    Take $\hat K$ to be $R / \mfrak m$ and pick any sequence $(x_n) \in R$. By assumption, the absolute value of $x_n \in K$ in $\hat K$ and in $L$ is the same. Hence $(x_n)$ is also a Cauchy sequence when regarded as a sequence in $L$. As $L$ is complete, this sequence actually converges to some element in $L$. Hence we get a map $f : R \to L$, defined by 
+    $$(x_n) \mapsto \lim_{n \to \infty} x_n.$$
+    This is clearly a ring map and it takes every element of $\mfrak m$ to 0. By the universal property for quotients we obtain a unique ring map $\phi : \hat K \to L$ so that $\phi = f \circ \pi$, where $\pi : R \to \hat K$ is the canonical projection. The map $\phi$ preserves the absolute value; Let $x = \overline {(x_n)} \in \hat K$. Then, 
+    $$|\phi(x)|_L = |\lim_{n \to \infty} x_n|_L = \lim_{n \to \infty} |x_n|_L = \lim_{n \to \infty} |x_n|_K = |x|_K$$    
+    Any $x \in K$ and mapped to the constant sequence $(x,x,x, ...) \in R$ will clearly be mapped to $x$ under $f$. Thus, the map $\phi$ acts as the identity when restricted to $K$ meaning that $\phi$ fits into the diagram in the proposition. If we had another continuous map, $\psi$, making this diagram commute, then that map would necessary also be the identity when restricted to $K$. Thus, the two maps $\psi$ and $\phi$ agree on the dense subset $K \subseteq \hat K$. But that implies that $\phi = \psi$ on all of $\hat K$. 
+    
+    %We now need to make sure that $\phi$ fits into the diagram above. Take an element $x \in K$. This element is mapped to $\tilde x \in \hat K$ which is mapped to $x$ under $\phi$. Hence the diagram commutes. 
+     
+    
+
+    The fact that $\hat K$ is unique up to unique isomorphism follows the exact same argument as the one we have given in the proof for the universal property for quotients. For the last statement, let $K'$ be some other field extension of $K$ satisfying the universal property in the theorem. We wish to show that $K$ is dense in $K'$. This follows from the fact that $\hat K$ and $K'$ are homeomorphic and that $K$ is dense in $\hat K$.
+\end{proof}
+
 
 
 Right now, we don't have an absolute value on $R / \mfrak m$, so saying that this field is complete would not make much sense. But it turns out that the absolute value on $K$ can be extended to $R / \mfrak m$ and with respect to this absolute value, $R / \mfrak m$ is indeed complete.
@@ -689,6 +866,19 @@ Using this result we can prove the following
     Clearly, $\ln c^k / k \to \infty$ as $k \to \infty$. Hence, $v_p(\frac{x^k}{k}) \to \infty$ as $k \to \infty$. By (\ref{lem:SufficientConditionForConvergence}), this means that the sum $x - \frac{x^2}{2} + \frac{x^3}{3} - ...$ converges. UNIQUENESS MISSING
 \end{proof}
 
+\section{Formal power series}
+We will briefly take a look at formal power series, as we will use them in the following section. Let $K$ be a field. A power series is an infinite sum of 
+$$\sum_{n=0}^\infty a_n x^n$$
+where $a_n \in K$ and $x$ should be thought of as simply a formal symbol. The set of all of these is a ring, called the ring of formal power series over $K$, and we denote it by $K[[x]]$. This ring contains no zero divisors, so we can consider its field of fractions, which we denote by $K((x))$. This field is called the field of formal Laurent series over $K$. 
+
+This is a local ring with maximal ideal $(x)$. Hence all units in $K[[x]]$ are those with constant term different from 0. 
+
+
+(TODO CONSTRUCT THIS RING USING COMPLETION)
+
+This ring can actually be constructed used the tools we have already developed. The ring $K[x]$ is a PID, since $K$ is a field. Hence the ideals factors uniquely into prime ideals. Now, 
+$$K[x] /(x) \cong K$$
+and so $(x)$ is in particular a prime. 
 
 
 \section{Skolem's Method}
@@ -724,7 +914,7 @@ We know from ? that there is an $n$ so that $\exp : \mfrak p^n \to U^{(n)}$ and 
 \begin{theorem}
     Let $K$ be a number field over $\mbb Q$ of degree $n$ and fix some $c \in \mbb Q$. Suppose $F$ is an irreducible, decomposable and nonfull form of degree $m < n$. If the equation 
     $$F(x_1, ..., x_m) = c$$
-    has infinitely many solutions (OVER WHAT SET?) then there exists a local manifold in which there is an analytic curve that parametrizes an infinite subset of these solutions.   
+    has infinitely many solutions (OVER WHAT SET?) then there exists a local manifold in which there is an analytic curve that parametrizes an infinite set of solutions over the $\mfrak{p}$-adic numbers.   
 \end{theorem}
 
 
@@ -800,6 +990,33 @@ Viewing the $G_i$ as formal power series in the variables $u_1, ..., u_r$, we se
 By the contrapositive of this, we now have a way to show that a norm equation has only finitely many solutions. 
 
 
+(THIS SHOULD NOT BE HERE)
+
+We have the equations
+
+We have $n - r = 2s$
+
+There is an $n-r \times n$ matrix $B$ with coefficients in $K$ with linearly independent rows, so that
+\begin{align*}
+    \sum_{j=1} A^*_{ij}\exp P_j(t) &= 0 \text{ (for } i = m+1, ..., n) \\
+    \sum_{j=1}^n B_{ij}P_j(t) &= 0 \text{ (for } i = 1,  ..., n-r)
+\end{align*}
+The rows of $A^*_{ij}$ are also linearly independent. Let us explain why, one system at a time. For the first one, we know that the $\gamma \mu_i^*$ constitute a basis for $K$ over $\mbb{Q}$. Hence the discriminant of this basis is non-zero. In fact the discriminant of this basis equals $|\sigma_j(\gamma \mu_i^*)|^2$ (p. 18 in Numberfields). Therefore, the matrix $A_{ij}$ has full rank, $n-m$ and so also $A_{ij}^*$. Let us move on to the next system. Define $U = \Span \{ \omega_1, ..., \omega_r \}$. As each $P_i$ is in $U$, we can now define the linear map
+\begin{align*}
+    T : K^n &\to U \\
+    T(a_1, ..., a_n) &= \sum_{i = 1}^n a_i P_i
+\end{align*}
+The dimension of $U$ is at most $r$. Hence the rank of $T$ is also at most $r$. By rank nullity, the nullity of $T$ is therefore larger than or equal to $n-r$. In other words, there are at least $n-r$ linearly independent elements in the kernel of $T$.
+
+
+In total there are $N = (n - m) + (n - r)$ equations. So if $n - m \geq r$, then $N = (n - m) + (n - r) \geq r + (n - r) = n$. 
+
+
+
+
+
+
+
 
 \begin{theorem}
     Suppose $f(x,y)$ is an irreducible form with integer coefficients, of degree $n \geq 3$ and with at least one complex root. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for some fixed $c \in \mbb{Z}$.
@@ -807,8 +1024,10 @@ By the contrapositive of this, we now have a way to show that a norm equation ha
 One might think this should not take too much effort to prove. After all, the theorem is relatively simple to parse.
 
 \begin{proof}
-    We can assume without loss of generality that $f(x, 1)$ is a monic polynomial. Let $\theta$ be one of its roots. By (???, change this theorm to suppose f(x,1) is monic since otherwise it doesnt work (you would have to mulitply the norm by a constant otherwise)), we know that 
-    $$f(x,y) = N_{\mbb{Q}(\alpha)/\mbb{Q}}(x + \theta y)$$
+    By assumption we can write 
+    $$f(x,y) = \sum_{i = 0}^n a_i x^{i} y^{n-i}$$
+    where the $a_i$ are in $\mbb Z$ and not all zero. We must have that $a_n \neq 0$. Otherwise $y$ would divide $f(x,y)$ which is impossible since $f$ is irreducible by assumption. Let $h(x) = f(x,1)$. We have that $h$ is a polynomial of degree $n$ with leading coefficient $a_n$. The leading term of $a_n^{n-1} h(x)$ is $a_n^nx^n = (a_n x)^n$, so $h$ can be regarded as a monic polynomial in the variable $t$ using the substitution $a_n x \mapsto t$. Hence we can, and will, without loss of generality, assume that $h$ is monic, i.e that $a_n = 1$. Furthermore, $h$ is irreducible over $\mbb Q$ since $f(x,y)$ is irreducible. Let now $K$ be the splitting field of $h$. Then $K$ is a Galois extension of $\mbb Q$, and it has finite degree, $n$, over the rational. Let now $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb C$ and take a root, $\theta \in K$, of $h$. Such an element gives rise to a subfield, $F = \mbb Q(\theta) \subseteq K$.
+    $$f(x,y) = N_{F/\mbb{Q}}(x + \theta y)$$
     So in this case we are working with the module $M$ generated by $1$ and $\theta$. 
 
 
@@ -820,36 +1039,94 @@ One might think this should not take too much effort to prove. After all, the th
     
 \end{proof}
 
+\begin{lemma}\label{lem: Unit power series is transcendental}
+    Suppose $K$ is a field and $f \in K[[t]]$, $f$ a unit. Then $f$ is transcendental over $K$. 
+\end{lemma}
+\begin{proof}
+MISSING
+\end{proof}
+
+
 
 \begin{lemma} \label{lem: Two power series are equal}
-    Let $K$ be a field of characteristic 0 and let $n,n_1,n_2 \in \mbb N$ so that $n_1 = n -2$ and $n_2 \geq 2$. Suppose we have the following systems of equations:
+    Let $K$ be a field of characteristic 0 and let $n,n_1,n_2 \in \mbb N$ so that $n_1 = n - 2$ and $n_2 \geq 2$ and suppose we have formal power series, $P_1(t), ..., P_n(t)$, with coefficients in $K$, and with zero constant term so that
     \begin{align*}
         \sum_{j = 1}^n a_{ij} \exp P_j &= 0, \quad i = 1, ..., n_1 \\
         \sum_{j = 1}^n b_{ij} P_j &= 0, \quad i = 1, ..., n_2,
     \end{align*}
-    with the $a_{ij}$ and $b_{ij}$ in $K$ and where both groups of equations are linearly independent. Suppose that there exists a solution, $P_1(t), ..., P_n(t)$, in formal power series with coefficients in $K$, and with zero constant term. Then there are two indices $k \neq l$ so that $P_k(t) = P_l(t)$.
+    with the $a_{ij}$ and $b_{ij}$ in $K$ and where both groups of equations are linearly independent. Then there are two indices $k \neq l$ so that $P_k(t) = P_l(t)$.
 \end{lemma}
 
 \begin{proof}
-    Consider the $n_1 \times n$ matrix $A = (a_{ij})$. By assumption, all rows of $A$ are linearly independent. Hence, the rank of $A$ is $n_1$ and so there are also $n_1$ linearly independent columns. As such we can, if necessary, reorder the columns of $A$ such that the first $n_1$ columns are linearly independent. We then have an $n_1 \times n_1$ submatrix, $A'$, of $A$ which is invertible and so we can find $v \in K^{n_1}$ such that $v^T A' = (1, 0,...,0)^T$. But then, as $n_1 = n -2$ we have 
-    $$v^T A = (1,0,...,0, -a, -b)^T$$
-    For some $a,b \in K$. Define now $u = (\exp P_1, ..., \exp P_n)$. Then
-    $$v^T A u = \exp P_1 - a \exp P_{n-1} - b \exp P_n$$
-    But as $Au = 0$ by assumption we now have
-    $$\exp P_1 = a \exp P_{n-1} + b \exp P_n$$
-    This argument can be generalized and so we get that we can find $a_i, b_i \in K$ so that
-    $$\exp P_i = a_i \exp P_{n-1} + b_i \exp P_n$$
-    for all $i = 1, ..., n_1$. Suppose now that $a_i = 0$. Then $\exp P_i = b_i \exp P_n$. But both $P_i$ and $P_n$ have no constant term and that means that $\exp P_i$ and $\exp P_n$ have constant term 1. Therefore, $b_i = 1$ and so $P_i = P_n$, in which case we are done. We can therefore from now on assume that $a_i \neq 0$ for all $i = 1, ..., n_1$. Let us now define, for $i = 1, ... n-1$,
-    $$Q_i = P_i - P_n,$$ 
-    and assume that $Q_i \neq 0$. We compute
+    (FIX THIS PROOF)
+    
+    Let $V = \Span_K \{ \exp P_1,...,\exp P_n\}$ and consider the linear map $$T : K^n \to V$$ given by 
+    $$T(a_1, ..., a_n) = \sum_{i=1}^n a_i \exp P_i$$
+    By assumption we have $n_1 = n - 2$ linearly independent elements $v \in K^n$ so that $v \in \ker T$. Hence $\nullity (T) \geq n-2$. The map $T$ is clearly surjective. Combining this with rank-nullity we get $\rank (T) = \dim V \leq 2$. Thus, it has to be the case that two elements among $\{\exp P_1,...,\exp P_n \}$ span all of $V$. After potentially renumbering these elements we can safely say that these elements are $\exp{P_{n-1}}$ and $\exp{P_{n}}$. Thus, we can, in particular, for any $i = 1, ..., n-1$ find elements $a_i, b_i \in K$ so that 
+    \begin{equation} \label{eq: Expression for exp P_i}
+        \exp P_i = a_i \exp P_{n-1} + b_i \exp P_n
+    \end{equation}
+    where we trivially have that $a_{n-1} = 1$ and $b_{n-1} = 0$. 
+    Suppose now that $a_i = 0$. Then $\exp P_i = b_i \exp P_n$. But both $P_i$ and $P_n$ have no constant term and that means that $\exp P_i$ and $\exp P_n$ have constant term 1. Therefore, $b_i = 1$ and so $P_i = P_n$, in which case we are done. We can therefore from now on assume that $a_i \neq 0$ for all $i = 1, ..., n_1$, and we are therefore allowed to divide by this element. Let us now define, for $i = 1, ... n-1$,
+    \begin{equation}\label{eq: Expression for Q_i}
+        Q_i = P_i - P_n,
+    \end{equation}
+    If we had $Q_i = 0$ we would again be done, so let us assume this never happens. As the power series $\exp P_i$ have non-zero constant term, they are units in $K[[t]]$. Of course, also the $Q_i$ have constant term 0, so also $\exp Q_i$ are units in $K[[t]]$. Thus, we can divide by these elements. Combining (\ref{eq: Expression for exp P_i}) and (\ref{eq: Expression for Q_i}) we have for $i = 1, ..., n-1$ that
     \begin{align*}
         \exp Q_i &= \exp P_i \exp (-P_n) \\
-        
+        &= (a_i \exp P_{n-1} + b_i \exp P_n) \exp (-P_n) \\
+        &= a_i \exp (P_{n-1} - P_n) + b_i \\
+        &= a_i \exp Q_{n-1} + b_i
     \end{align*}
+    Differentiating both sides of this equation gives us
+    $$Q_i' \exp Q_i = a_i Q_{n-1}' \exp Q_{n-1}$$
+    Solving for $Q_i'$
+    \begin{align}\label{eq: Expression for Q_i prime}
+        Q_i' &= \frac{(a_i Q_{n-1}' \exp Q_{n-1})}{\exp Q_i} \notag \\
+        &= \frac{a_i Q_{n-1}' \exp Q_{n-1}}{a_i \exp Q_{n-1} + b_i} \\
+        &= \frac{Q_{n-1}' \exp Q_{n-1}}{\exp Q_{n-1} + c_i} \notag
+    \end{align}
+    where $c_i = a_i^{-1}b_i$. Let us now deal with the next group of equations. Let $U = \Span \{P_1, ..., P_n \}$ and define the linear map $F : K^n \to U$ as $F(a_1, ..., a_n) = \sum_{i=1}^n a_i P_i$. By assumption, the nullity of this map is at least 2. Hence we can find two linearly independent elements $\alpha, \beta \in \ker F$. We can therefore find (EXPLAIN WHY) a non-trivial linear combination,
+    $$\sum_{i=1}^{n-1} d_i Q_i = 0$$
+    where the $d_i$ are in $K$. Differentiating this sum and using (\ref{eq: Expression for Q_i prime}) we obtain
+    \begin{align*}
+        \sum_{i=1}^{n-1} d_i Q_i' &= Q_{n-1}' \exp Q_{n-1} \sum_{i=1}^{n-1} \frac{d_i}{\exp Q_{n-1} + c_i} = 0
+    \end{align*}
+    It must be the case that $Q_{n-1}' \neq 0$. Otherwise, we would have $Q_{n-1} \in K$, and since the $P_i$ have zero constant term, we would then have $Q_{n-1} = 0$, which is a contradiction. Also, $\exp Q_{n-1} \neq 0$ so we must have 
+    
+    \begin{equation}\label{eq: Zero equation}
+        \sum_{i=1}^{n-1} \frac{d_i}{\exp Q_{n-1} + c_i} = 0
+    \end{equation}
+    Next let us show that this implies that the rational function 
+    $$f(z) = \sum_{i=1}^{n-1}\frac{d_i}{c_i + z}$$
+    is the zero function on $K$. As this is a rational function we can find polynomials $\phi, \psi \in K[z]$ so that $f(z) = \frac{\phi(z)}{\psi(z)}$. Let us for contradiction suppose that $f$ is not identically zero. Then $\phi$ cannot be identically 0. But then because of (\ref{eq: Zero equation}) we now have (HOW ARE WE SURE THAT DENOMINATOR NOT ZERO)
+    $$0 = f(\exp Q_{n-1}) = \frac{\phi(\exp Q_{n-1})}{\psi(\exp Q_{n-1})},$$
+    meaning that $\phi(\exp Q_{n-1}) = 0$. But then $\phi$ cannot be a constant, since if it where it would have to be equal to 0. Thus, $\phi$ must have degree strictly larger than 0. But $\exp Q_{n-1} \in K((t)) \setminus K$, so $\exp Q_{n-1}$ is apparently algebraic over over $K$. But this is not possible (SHOW WHY). Hence $f$ is identically 0. We then have $c_k = c_j$, where $k \neq j$ (WHY). Now from (\ref{eq: Expression for exp P_i}) we get 
+    \begin{align*}
+        a_k^{-1} \exp P_k &= \exp P_{n-1} + c_k \exp P_n \\
+        a_j^{-1} \exp P_j &= \exp P_{n-1} + c_j \exp P_n
+    \end{align*}
+    But since $c_k = c_j$ we conclude that
+    $$\exp P_k = a_k a_j^{-1} \exp P_j$$ 
+    But as we previously mentioned, both $\exp P_k$ and $\exp P_j$ have constant term 1 because $P_k$ and $P_j$ have zero constant term. Thus $a_k a_j^{-1} = 1$ and so $P_k = P_j$ as $\exp$ is injective (IS THIS REALLY TRUE).
 
 \end{proof}
 
 
 First show that all of these conditions are indeed satisfied. 
 
+
+% We mention the importance of the degree 3 assumption 
+
+It is clear that forms of degree 1 have infinitely many solutions. What about the forms of degree 2?
+
+Consider the form $F(x,y) = x^2 - 2y^2$ and the equation 
+$$F(x, y) = 7$$
+Suppose we already have a solution, $(x,y)$. Then also $(3x + 4y, 2x + 3y)$ is a solution. Thus a single solution can inductively produce infinitely many distinct. But $(3,1)$ is indeed a solution, and therefore $F(x, y) = 7$ has infinitely many solutions. This highlights the importance of the assumption that the degree of $F$ must be greater than or equal to 3.   
+
+
+One might ask if the assumption that $F$ has a complex root is really necessary and perhaps more interestingly, if all the solutions can be found. A big limiting factor about the statement we have proved is that we never know when we have found all solutions. This is of course expected, since this is just the nature of contradiction proofs - there are not constructive. But both of these questions can actually be answered if we look to \cite{baker}, \textbf{Theorem 4.1} on page 38. Here we see that we can simply drop the assumption that there has to be a complex root and it is even possible to find all solutions.
+
+\bibliographystyle{plainnat} % or another style like plain, alpha, etc.
+\bibliography{references}
 \end{document}
