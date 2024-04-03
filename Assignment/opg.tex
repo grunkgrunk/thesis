@@ -4,9 +4,7 @@
 \usepackage{amsthm} % for theorem environments
 \usepackage{mathtools} % for advanced math typesetting
 \usepackage{makeidx} % package for creating an index
-
-
-
+\usepackage{quiver}
 % draw commutative diagrams
 \usepackage{tikz-cd}
 % \usepackage{charter} % use Helvetica font
@@ -95,64 +93,55 @@ which shows that all the $x_j$'s are zero. Thus, the $\omega_i^*$'s are linearly
 
 
 \section{Formal power series}
-Let $K$ be a field. We then have the ring of formal power series, denoted by $K[[x]]$. This ring has no zero divisors, so we can consider its fraction field, which we will denote by $K((x))$. (THIS FIELD OCCURS AS THE COMPLETION OF K[[x]]) We now have a field extension $K((x)) / K$, and hence we can think about which elements are algebraic over $K$. We have the following theorem
+Let $K$ be a field. By $K[[x]]$ we denote the set of all expressions of the form $\sum_{i = 0}^\infty a_ix^i$, where the $a_i$ belong to $K$ is a commutative ring with addition defined in the the obvious way and multiplication defined as 
+$$\bigl( \sum_{i = 0}^\infty a_ix^i \bigr) \bigl(\sum_{i = 0}^\infty b_ix^i\bigr) = \sum_{i = 0}^{\infty}\bigl( \sum_{j = 0}^i a_j b_{i-j} \bigr) x^i$$
+Thus, multiplication is really just the process of expanding out brackets and collecting all like terms. Let us see what happens to the coefficients when multiplying many elements from $K[[x]]$. For elements $f \in K[[x]]$ we introduce the notation $[x^i]f$ to denote the $i$th coefficient of $f$. Suppose that we have a sequence $f_1, f_2, ... \in K[[x]]$ with each $f_i$ having the form 
+$$f_i = \sum_{j=0}^\infty a_{ij}x^j$$
+Define $P_{k,n} = \{ a_{1h_1} ... a_{nh_n} | h \in \mbb N_0^n,|h| = k \}$, where we by $|h|$ mean the sum of the entries of $h \in \mbb N^n_0$ and let $P_k = \bigcup_{n \in \mbb N_0} P_{k,n}$. Let $g_n = \prod_{i=1}^{n}f_i$. We claim that $[x_k]g_n = \sum_{c \in P_{k,n}} c$; when expanding out the brackets in the product $\prod_{i=1}^{n}f_i$ one ends up with a bunch of terms of degree $k$ and each such term corresponds exactly to an element in $P_{k,n}$. The process of collecting all of these terms is then just the number $[x_k]g_n$. Suppose that $f(x) = \sum_{i=0}^{\infty}$ and let us now consider the simpler case where each $f_i = f$. If $a_0 \neq 0$ then $P_0$ contains infinitely many non-zero elements since $a_0^n$ is non-zero for all $n$, as $a_0$ is a unit, and $a_0^n \in P_{0,n}$. If on the other hand $a_0 = 0$ then $P_{k,n} = \emptyset$ for all $n > k$. As each $P_{k,n}$ is finite it therefore follows that $P_k$ is finite for all $k \in \mbb N_0$, and so we conclude that $P_k$ contains only finitely many non-zero elements. This shows that if $f \in (x)$ and $g \in K[[x]]$ where $g(x) = \sum_{i = 0}^\infty a_i x^i$ we can define 
+$$g(f(x)) = \sum_{i = 0}^\infty a_i f(x)^i$$
+One way to think about this is that $g$ induces a function $g : (x) \to K[[x]]$. Composition also makes sense if $g$ is just a polynomial. In this case we can allow $f \in K[[x]]$. Observe that we can define the following elements in $K[[x]]$
+\begin{align*}
+    \exp(x) &= \sum_{n = 0}^\infty \frac{x^n}{n!} \\
+    \log (1 + x) &= \sum_{n = 1}^\infty (-1)^{n-1}\frac{x^n}{n}
+\end{align*}
+These are of course just the usual power series for the logarithm and the exponential function. Defining $F(x) = \log(1 + x)$ we have two induced functions $\exp : (x) \to K[[x]]$ and $F : (x) \to K[[x]]$. It is clear that $\exp (x) - 1 \in (x)$ and that $F(\exp (x) - 1) = \log (\exp (x)) = x$. Similarly $\exp(\log(1+x)) = 1+x$.
+
+
+
+
+(TALK ABOUT HOW THESE DEFINITION RELATE TO P-ADIC DEFINTIONS)
+(TODO)
+Next, see that exp f(u) = exp f(u), where f(u) is a p adic number, exp on the left hand side is the p adic exponential and exp on the right is the formal power series exponential function 
+
+
+
+The ring $K[[x]]$ is in fact a PID and a local ring, with maximal ideal $(x)$. One might therefore wonder if this ring is the valuation ring of some valued field. It turns out that it is. 
+
+This ring has no zero divisors, so we can consider its fraction field, which we will denote by $K((x))$. (THIS FIELD OCCURS AS THE COMPLETION OF K[[x]]) We now have a field extension $K((x)) / K$, and hence we can think about which elements are algebraic over $K$. We have the following theorem
+
+
+\begin{proposition}
+    The completion of the rational functions $K(x)$ with respect to the valuation $v_\mfrak{p}$, where $\mfrak p = (x)$, is isomorphic to $K((x))$.  
+\end{proposition}
+
 \begin{theorem}
     If $f \in K((x))$ is not a constant, then it is transcendental over $K$.  
 \end{theorem}
 
 \begin{proof}
-    Consider first the special case where $f \in K[[x]]$. This allows us to write
-    $$f(x) = \sum_{i = 0}^\infty a_i x^i.$$
-    Suppose also that we have a non-zero polynomial $g \in K[x]$ of degree $n$
-    $$g(x) = \sum_{i = 0}^n b_i x^i \in K[x]$$
-    Let us start out by assuming that $f$ has finite degree, say $m$. Then $a_m \neq 0$ and we have
-    $$g(f(x)) = \sum_{i = 0}^n b_i f(x)^i$$
-    The degree of the $i$th term is $\deg f(x)^i = m + i$. Hence $\deg g(f(x)) = \deg f(x)^n = m + n$ and so $g(f(x)) \neq 0$. So suppose instead that $f$ has infinite degree. For contradiction, let us also assume that $g(f(x)) = 0$. This entails that $a_0 = 0$ and we can now write the coefficients $c_i$ of $g(f(x))$ as
-    $$c_i = \sum_{k \in \mbb N, |j| = i}b_k a_{j_1} ...a_{j_k}$$
-    where $j \in \mbb N_+^k$ and where we by $|j|$ mean the sum of the coordinates, $|j| = \sum_{i=1}^k j_i$. As $g(f(x)) = 0$, all the $c_i$ are 0. Set $d_{ik} = \sum_{|j| = i} a_{j_1} ...a_{j_k}$ and note that $b_i = 0$ for all $i > n$. We now have (MAYBE WE SHOULD START FROM K = 0)
-    $$c_i = \sum_{k = 1}^n \sum_{|j| = i}b_k a_{j_1} ...a_{j_k} = \sum_{k=1}^n d_{ik} b_k = 0$$
+    
 
-    
-    
-    Finding a single $c_i$ which is non-zero will contradict the assumption that $g(f(x)) = 0$. Now $b_n \neq 0$ 
-     
-    The coefficient of $g(f(x))$ can be written 
+
+    Consider first the special case where $f \in K[[x]]$. Suppose also that we have a non-zero polynomial $g \in K[x]$ of degree $n$
+    $$g(x) = \sum_{i = 0}^n c_i x^i \in K[x]$$
+    It is clear that if $f$ has finite degree then the only way for $g(f(x))$ to be 0 is if $f \in K$. So suppose that $f$ has infinite degree. Note that
+    $$g(f(x)) = \sum_{i = 0}^n c_i f(x)^i$$
+    We want to show that if $g(f(x)) = 0$ then all the $c_i$ are 0. In other words, $g(x) = 0$. Hence, if we can show that the powers $1, f, ..., f^{n}$ are linearly independent over $K$, we are done with this special case. So assume that 
+    $$c_0  + ... + c_n f(x)^n = 0$$
+    Evaluating at $x = 0$ shows that $c_0 = 0$. Suppose $a_i x^i$ is the term of $f$ with lowest degree, the existence of which is due to the fact that $f$ has infinite degree. Differentiating $f$ exactly $i$ times gives us a polynomial $f^{(i)}$ with non-zero constant term - in other words, $f^{(i)}$ is a unit. Differentiating our original equation $i$ times gives us 
+    $$c_1 f^{(i)}(x) + ... + c_n (f(x)^{n-1})^{(i)} = 0$$
+    Multiplying this equation by $\frac{1}{f^{(i)}(x)}$ leaves us in a situation similar to the one we started with. Now we can evaluate in $x = 0$ and we get that $c_1 = 0$. Repeating this argument we get that all the $c_i$ are 0. Now if $f \in K((x))$ we can write 
 \end{proof}
-
-It turns out that only $K$ itself is algebraic. PROVE THIS
-
-
-On $K[[x]]$ we can define exponential and logarithm functions. It is sometimes possible to compose elements in $K[[x]]$. Take $f, g \in K[[x]]$. We can then write 
-\begin{align*}
-    f(x) &= \sum_{i = 0}^\infty a_i x^i \\
-    g(x) &= \sum_{i = 0}^\infty b_i x^i
-\end{align*}
-
-Composing we get 
-
-
-
-
-First, define the following element in $K[[x]]$
-$$\exp x = \sum_{n = 0}^\infty \frac{x^n}{n!}.$$
-Let $f(x) \in K[[x]]$ and write 
-$$f(x) = \sum_{i = 0}^\infty a_i x^i$$
-Denote by $\coeff(f, i)$ the $i$'th coefficient of $f$. Consider the $k$'th power of $f$,
-$$f(x)^k = (\sum_{i = 0}^\infty a_i x^i)^k$$ 
-Clearly, $\coeff (f, 0) = a_0$ and so $\coeff(f^k, 0) = a_0^k$. Let us try to brutally insert $f$ into $\exp x$ and see what happens
-$$\exp f(x) = \sum_{n = 0}^\infty \frac{f(x)^n}{n!}.$$
-So $\coeff(\exp f(x), 0) = \sum_{n = 0}^\infty \frac{a_0^n}{n!}$ 
-
-
-
-Hence, we obtain a function
-$$\exp : K[[x]] \setminus K \to K[[x]]$$
-
-
-
-(TODO)
-Next, see that exp f(u) = exp f(u), where f(u) is a p adic number, exp on the left hand side is the p adic exponential and exp on the right is the formal power series exponential function 
-
 
 
 
@@ -391,8 +380,10 @@ We are therefore interested in finding the units in the ring of algebraic intege
         \item $\abs{x + y} \leq \abs{x} + \abs{y}$ for every $x,y \in K$. (Triangle inequality)
     \end{itemize}
     When the triangle inequality can be upgraded to the stronger condition $$\abs{x + y} \leq \max \{\abs{x}, \abs{y}\} \quad \text{for every } x,y \in K,$$
-    the absolute value is said to be \textbf{non-archimedian}. Otherwise it is called \textbf{archimedian}.
+    the absolute value is said to be \textbf{non-archimedian}. Otherwise it is called \textbf{archimedian}. If $\abs{}$ is indeed an absolute value then the field $K$ is called a valued field.
 \end{definition}
+Sometimes we will be working with two valued fields, $K$ and $F$. To distinguish the absolute values on these fields we will write $\abs{}_K$ and $\abs{}_F$. The usual absolute value on $\mbb R$ is an example of a non-archimedian absolute value, so $\mbb R$ is an example of a valued field. We will denote this absolute value by $\abs{}_\infty$. If it happens to be the case that $K$ is a field extension of $F$, we will say that the absolute value on $K$ extends (or preserves) the absolute value on $F$ if $\abs{}_K$ restricted to $F$ is the same function as $\abs{}_F$. In this case we will typically not be explicit about which absolute value we are using - instead we will just write $\abs{}$.
+
 
 Once we have an absolute value on field $K$, we can of course use it to define a metric, $d : K^2 \to \mbb R$, by setting $d(x,y) = \abs{x - y}$. As such, $K$ can now be thought of as a metric space, and we therefore now have a topology on $K$, generated by $d$. We will also refer to this topology as the topology induced by $\abs{}$.
 
@@ -404,7 +395,7 @@ Once we have an absolute value on field $K$, we can of course use it to define a
     $$||x| - |y||_\infty \leq |x - y| < \delta = \epsilon$$
     where we have used the reverse triangle inequality. 
 \end{proof}
-Uniformly continuous functions have the nice property that they preserve Cauchy sequences. So if we have some Cauchy sequence, $x_n$ in $K$, then $|x_n|$ is also Cauchy. We will use this fact later on.
+Uniformly continuous functions have the nice property that they preserve Cauchy sequences. This implies that if we have some Cauchy sequence, $(x_n)$ in $K$, then $(|x_n|)$ is a Cauchy sequence in $\mbb R$. We will use this fact later on.
 
 It might very well happen that two absolute values on $K$ induce the same topology and whenever this happens we say that the absolute values are equivalent. This defines an equivalence relation on the set of absolute values on $K$, and the equivalence classes are called \textbf{places} of $K$. 
 
@@ -485,7 +476,13 @@ As soon as we have a metric on a field $K$ we can start to talk about convergenc
     We say that a valued field, $K$, with absolute value, $\abs{}$, is complete if every Cauchy sequence in $K$ converges to some element in $K$ with respect to $\abs{}$.
 \end{definition}
 
-In the $\mbb R$ equipped with the standard absolute value, it is well known that every Cauchy sequence converges and hence it is an example of a complete valued field. 
+In the $\mbb R$ equipped with the standard absolute value, it is well known that every Cauchy sequence converges and hence it is an example of a complete valued field.  
+
+\begin{theorem}[Ostrowski]
+    (WRITE THIS OUT PROPERLY)
+    Suppose that $K$ is field which is complete with respect to an archimedian valuation. Then $K \cong \mbb R$ or $K \cong \mbb C$.
+\end{theorem}
+
 
 \begin{theorem}
     Let $K$ be a valued field and $R$ be the set of all Cauchy sequences of $K$. Then $R$ is a ring and the set $\mfrak m$ of all null sequences of $R$ is a maximal ideal.
@@ -501,6 +498,7 @@ In the $\mbb R$ equipped with the standard absolute value, it is well known that
     But that means that $y_n$ belongs to $R$ and so $x_n y_n$ is in $J$. Denote by $1$ the identity in $R$, i.e, the constant sequence $(1,1,1, ...)$. We now have $1 - x_n y_n \in J$ and so $1$ is in $J$.
 
 \end{proof}
+
 
 \begin{proposition}(Universal property for quotients) \label{prop: Universal property for quotients}
     Let $R,S$ be a rings and $I \subseteq R$ an ideal. Suppose we have a function $f : R \to S$, which vanishes on $I$ and is an additive group homomorphism when restricted to $I$. Then there exists a uniquely determined function $$\bar f : R / I \to S$$
@@ -527,7 +525,7 @@ From this it follows that $\hat K = R / \mfrak m$ is a field. Define now $$\tild
 
 \begin{theorem}[Completion]
     The function $\phi : R \to \mbb R$, given by
-    $$\phi (x_n) = \lim_{n \to \infty} \abs{x_n}$$
+    $$(x_n) \mapsto \lim_{n \to \infty} \abs{x_n}$$
     descends to a unique function, $\abs{}'$, on the quotient $\hat K = R / \mfrak m$. We have the following properties
     \begin{itemize}
         \item $\abs{}'$ is an absolute value on $\hat K$
@@ -542,19 +540,30 @@ From this it follows that $\hat K = R / \mfrak m$ is a field. Define now $$\tild
 \end{remark}
 
 \begin{proof}
-    First of all, if $x_n \in R$, then $x_n$ is a Cauchy sequence in $K$. Hence  $|x_n|$ is a Cauchy sequence in $\mbb R$, hence it converges to an element in $\mbb R$, i.e the limit exists.
-
-    Let now $x_n \in \mfrak m$. Then $x_n$ converges to $0 \in K$ hence $|x_n|$ converges to $0 \in \mbb R$ as $\abs{}$ is continuous. In other words, the map $\phi$ vanishes on $\mfrak m$. Suppose now that we have $x_n, y_n \in \mfrak m$. By the triangle inequality we get 
+    First of all, if $(x_n) \in R$, then $(x_n)$ is a Cauchy sequence in $K$. Hence  $(|x_n|)$ is a Cauchy sequence in $\mbb R$, hence it converges to an element in $\mbb R$, since $\mbb R$ is complete. Hence the map $\phi$ is well defined. Suppose that $x_n \in \mfrak m$. Then $x_n$ converges to $0 \in K$ hence $|x_n|$ converges to $0 \in \mbb R$ as $\abs{}$ is continuous. In other words, the map $\phi$ vanishes on $\mfrak m$. If $(x_n), (y_n) \in \mfrak m$ then by the triangle inequality we get 
     $$|x_n + y_n| \leq |x_n| + |y_n|$$
-    But the right hand side converges to 0 and therefore we have equality in the limit. Thus, $\phi$ is an additive group homomorphism when restricted to $\mfrak m$. By the universal property for quotients it therefore descends to a unique function, $\abs{}'$, on the quotient $\hat K$. Let us now prove that $\abs{}'$ is actually an absolute value on $K$. Suppose $\bar x_n \in \hat K$ so that $\abs{x_n}' = 0$. Then $|x_n|$ converges to 0, so $x_n$ also converges to 0, which is another way of saying that $\bar x_n = 0$. For the converse, $\phi$ vanishes on $\mfrak m$. Thus if $x \in \hat K$ we have $\abs{x}' = 0$ if and only if $x = 0$. The remaining properties for $\abs{}'$ to be an absolute value are simply inherited from the absolute value $\abs{}$ on $K$. It is also easily seen that $\abs{}'$ extends $\abs{}$. For if $x \in K$ then 
+    But the right hand side converges to 0, so $\phi$ is an additive group homomorphism when restricted to $\mfrak m$. So by the universal property for quotients, $\phi$ descends to a unique function, $\abs{}'$ on the quotient $\hat K$. Let us now prove that $\abs{}'$ is actually an absolute value on $K$. Suppose $x = \overline {(x_n)} \in \hat K$ so that $\abs{x}' = 0$. As $\abs{}$ is continuous we have
+    $$0 = |x|' = \lim_{n \to \infty} \abs{x_n} =  \abs {\lim_{n \to \infty} x_n}$$
+    But $\abs{}$ is an absolute value on $K$ so we must have 
+    $$\lim_{n \to \infty} x_n = 0$$
+    In other words, $(x_n)$ is a null sequence meaning that $x = 0$. For the converse, $\phi$ vanishes on $\mfrak m$. Thus if $x \in \hat K$ we have $\abs{x}' = 0$ if and only if $x = 0$. The remaining properties for $\abs{}'$ to be an absolute value are simply inherited from the absolute value $\abs{}$ on $K$. It is also easily seen that $\abs{}'$ extends $\abs{}$. For if $x \in K$ then 
     $$|x| = \lim_{n \to \infty} x = \phi(\tilde x) = \abs{\overline{ \tilde {x}}}'$$
-    Let us now show that $K$ is dense in $\hat K$. This will allow us to show that $\hat K$ is complete with respect to $\abs{}'$. 
-    % proof missing
-    Now, we are ready to show that $\hat K$ is complete. 
+
+    (IS IT OKAY TO JUST CONSIDER THE POINT 0)
+    Let us now show that $K$ is dense in $\hat K$. What we mean by this is that the image of $K$ under the map $x \mapsto \tilde x$ is dense in $\hat K$. Let $\epsilon > 0$, take $\lambda \in \hat K$ and consider the open ball $B(\lambda, \epsilon)$. Let us show that we can find a constant sequence inside of this ball. Let $(x_n)$ be a Cauchy sequence representing $\lambda$. As $(x_n)$ is Cauchy we can find $N \in \mbb N$ so that $|x_n - x_m| < \epsilon / 2$ for all $m,n \geq N$. Define now the constant sequence $y = (x_N)$. Now, using the definition of the absolute value on $\hat K$ we get
+    $$|\lambda - y|' = \lim_{n \to \infty} |x_n - x_N| \leq \epsilon/2 < \epsilon$$
+    This shows that $y \in B(\lambda, \epsilon)$ and we conclude that $K$ is dense in $\hat K$.
+    
+    Now we are ready to show that $\hat K$ is complete with respect to $\abs{}'$. To do this, suppose that we have a Cauchy sequence $(\lambda_n)$ in $\hat K$. As we have just seen, $K$ is dense in $\hat K$. So for every $lambda_i$, we can find an element $y_i \in K$ so that $|\lambda_i - \tilde y_i|' < \frac{1}{i}$. This way we get a sequence $(\tilde y_n)$ in $\hat K$ and we observe that
+    $$\lim_{n \to \infty} |\lambda_n - \tilde y_n|' = 0$$
+    Hence, by MISSING $(\tilde y_n)$ is also Cauchy. But then also the sequence $(y_n)$ in $K$ is Cauchy since $\abs{}'
+    $ extends the absolute value on $K$. But that means that $(y_n)$ represents an element in $\hat K$. Call this element $\lambda$ and let us show that $\lim_{n \to \infty} \lambda_n = \lambda$. To do this, it suffices to show that $\lim_{n \to \infty} \tilde y_n = \lambda$. As $(y_n)$ is Cauchy, we can find $N$ so that if $n,m \geq N$ then $|y_n - y_m| < \epsilon / 2$. For any $n \geq N$ we now have
+    $$|\tilde y_n - \lambda|' = \lim_{m \to \infty} |y_n - y_m| \leq \epsilon / 2 < \epsilon$$
+    This shows that
+    $$\lim_{n \to \infty} |\tilde y_n - \lambda|' = 0$$
+    and we are therefore done.
     % proof missing
 \end{proof}
-
-
 
 \begin{proposition}
     Let $K,F$ be valued field and suppose $\phi : K \to F$ is a ring map. If $\phi$ preserves absolute values, then it is uniformly continuous. 
@@ -565,11 +574,12 @@ From this it follows that $\hat K = R / \mfrak m$ is a field. Define now $$\tild
     $$|\phi(x) - \phi(y)|_F = |\phi(x-y)|_F = |x-y|_K$$ 
 \end{proof}
 
+The field $\hat K$ satisfies a certain universal property. This property says, in a precise sense, that $\hat K$ is the smallest possible field extension of $K$ which is complete. 
 
-The completion $\bar K$ actually satisfies a universal property.
+(IT ALSO SAYS THAT IT IS UNIQUELY DETERMINED BY CERTAIN PROPERTIES)
 
 \begin{proposition}[Universal property for completions]
-    Suppose $K$ is a field with absolute value, $\abs{}$. There is a complete valued field extension, $\hat K$, which preserves $\abs{}$ and contains $K$, satisfying the following universal property; If $L$ is any other field preserving $\abs{}$ containing $K$, then there is a unique continuous field map $\phi : \hat K \to L$, which preserves absolute values, making the following diagram commute
+    Suppose $K$ is a field with absolute value, $\abs{}$. There is a complete valued field extension, $\hat K/K$, which preserves $\abs{}$, satisfying the following universal property; If $L/K$ is any other complete valued field extension preserving $\abs{}$ then there is a unique continuous field map $\phi : \hat K \to L$, which preserves absolute values, making the following diagram commute
     \[\begin{tikzcd}
         & K \\
         \\
@@ -578,24 +588,42 @@ The completion $\bar K$ actually satisfies a universal property.
         \arrow[from=1-2, to=3-1]
         \arrow[from=1-2, to=3-3]
     \end{tikzcd}\]
-    In particular, $\hat K$ is unique up to unique isomorphism and $K$ is dense in $\hat K$.
+    Also, the field $\hat K$ is unique up to unique isomorphism and $K$ is dense in $\hat K$.
 \end{proposition}
 
 \begin{proof}   
-    Take $\hat K$ to be $R / \mfrak m$ and pick any sequence $(x_n) \in R$. By assumption, the absolute value of $x_n \in K$ in $\hat K$ and in $L$ is the same. Hence $(x_n)$ is also a Cauchy sequence when regarded as a sequence in $L$. As $L$ is complete, this sequence actually converges to some element in $L$. Hence we get a map $f : R \to L$, defined by 
+    Take $\hat K$ to be $R / \mfrak m$. As we have already established, $\hat K$ is complete with respect to $\abs{}$ extended to $\hat K$. Now pick any sequence $(x_n) \in R$. By assumption, the absolute value of $x_n \in K$ in $\hat K$ and in $L$ is the same. Hence $(x_n)$ is also a Cauchy sequence when regarded as a sequence in $L$. As $L$ is complete, this sequence actually converges to some element in $L$. Hence we get a map $f : R \to L$, defined by 
     $$(x_n) \mapsto \lim_{n \to \infty} x_n.$$
-    This is clearly a ring map and it takes every element of $\mfrak m$ to 0. By the universal property for quotients we obtain a unique ring map $\phi : \hat K \to L$ so that $\phi = f \circ \pi$, where $\pi : R \to \hat K$ is the canonical projection. The map $\phi$ preserves the absolute value; Let $x = \overline {(x_n)} \in \hat K$. Then, 
+    This is clearly a ring map and it takes every element of $\mfrak m$ to 0. By the universal property for quotients we obtain a unique ring map $\phi : \hat K \to L$ so that $\phi = f \circ \pi$, where $\pi : R \to \hat K$ is the canonical projection. Let us now show that the map $\phi$ preserves the absolute value. Let $x = \overline {(x_n)} \in \hat K$. Using the fact that absolute values on fields are uniformly continuous hence continuous we get 
     $$|\phi(x)|_L = |\lim_{n \to \infty} x_n|_L = \lim_{n \to \infty} |x_n|_L = \lim_{n \to \infty} |x_n|_K = |x|_K$$    
-    Any $x \in K$ and mapped to the constant sequence $(x,x,x, ...) \in R$ will clearly be mapped to $x$ under $f$. Thus, the map $\phi$ acts as the identity when restricted to $K$ meaning that $\phi$ fits into the diagram in the proposition. If we had another continuous map, $\psi$, making this diagram commute, then that map would necessary also be the identity when restricted to $K$. Thus, the two maps $\psi$ and $\phi$ agree on the dense subset $K \subseteq \hat K$. But that implies that $\phi = \psi$ on all of $\hat K$. 
+    Any $x \in K$ mapped to the constant sequence $(x,x,x, ...) \in R$ will clearly be mapped to $x$ under $f$. Thus, the map $\phi$ acts as the identity when restricted to $K$ meaning that $\phi$ fits into the diagram in the proposition. If we had another continuous map, $\psi$, making this diagram commute, then that map would necessary also be the identity when restricted to $K$. Thus, the two continuous maps $\psi$ and $\phi$ agree on the dense subset $K \subseteq \hat K$. But that implies that $\phi = \psi$ on all of $\hat K$ and hence $\phi$ is unique.
     
     %We now need to make sure that $\phi$ fits into the diagram above. Take an element $x \in K$. This element is mapped to $\tilde x \in \hat K$ which is mapped to $x$ under $\phi$. Hence the diagram commutes. 
      
-    
+    If $L$ also happens to satisfy the universal property we can use the universal property twice to get the diagram
 
-    The fact that $\hat K$ is unique up to unique isomorphism follows the exact same argument as the one we have given in the proof for the universal property for quotients. For the last statement, let $K'$ be some other field extension of $K$ satisfying the universal property in the theorem. We wish to show that $K$ is dense in $K'$. This follows from the fact that $\hat K$ and $K'$ are homeomorphic and that $K$ is dense in $\hat K$.
+    % https://q.uiver.app/#q=WzAsMyxbMCwyLCJcXGhhdCBLIl0sWzIsMiwiTCJdLFsxLDAsIksiXSxbMCwxLCJcXGV4aXN0cyFcXHBoaSIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsyLDAsIlxcaW90YV8xIiwyXSxbMiwxLCJcXGlvdGFfMiJdLFsxLDAsIlxcZXhpc3RzIVxccHNpIiwxLHsiY3VydmUiOi0yLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+\[\begin{tikzcd}
+	& K \\
+	\\
+	{\hat K} && L
+	\arrow["{\exists!\phi}"{description}, dashed, from=3-1, to=3-3]
+	\arrow["{\iota_1}"', from=1-2, to=3-1]
+	\arrow["{\iota_2}", from=1-2, to=3-3]
+	\arrow["{\exists!\psi}"{description}, curve={height=-12pt}, dashed, from=3-3, to=3-1]
+\end{tikzcd}\]
+    Writing out the commutativity condition we get
+    \begin{align*}
+        \iota_1 &= \psi \circ \iota_2 \\        
+        \iota_2 &= \phi \circ \iota_1 \\
+    \end{align*}
+    Combining these we obtain
+    $$\iota_1 = \psi \circ (\phi \circ \iota_1) = (\psi \circ \phi) \circ \iota_1$$
+    So $\psi \circ \phi$ has to be the identity on $\hat K$ and similarly $\phi \circ \psi$ is the identity on $L$. As such, these two maps are in fact isomorphisms and these are even uniquely determined. Hence any field satisfying the universal property is unique up to unique isomorphism. Now for the last statement; Maintaining the assumption that $L$ satisfies the universal property, let us now show that $K$ is dense in $L$. By this we of course mean that we want to show that the image $\iota_2(K)$ is dense in $L$. Knowing that $\iota_2(K) = \phi (\iota_1(K))$ and that $\overline{\iota_1(K)} = \hat K$ we obtain
+    $$\overline{\iota_2(K)} = \overline{\phi (\iota_1(K))} = \phi (\overline {\iota_1(K)}) = \phi(\hat K) = L$$
 \end{proof}
 
-
+REMARK: This theorem allows us to do the following. When we talk about the completion of $K$ we do not necessarily have to think about the concrete construction that we carried out, ie $R / \mfrak m$. Rather, we can just think of a field that satisfies the universal property instead. 
 
 Right now, we don't have an absolute value on $R / \mfrak m$, so saying that this field is complete would not make much sense. But it turns out that the absolute value on $K$ can be extended to $R / \mfrak m$ and with respect to this absolute value, $R / \mfrak m$ is indeed complete.
 
@@ -755,6 +783,38 @@ In algebraic number theory we very frequently study finite extensions of $\mbb Q
     $$(\mcal O / \mfrak p^{n+1}) / (\mfrak p^n / \mfrak p^{n+1}) \cong \mcal O / \mfrak p^{n}$$
     But since $\mfrak p^n / \mfrak p^{n+1}$ and $\mcal O / \mfrak p^{n}$ have finite order, also $\mcal O / \mfrak p^{n+1}$ must have finite order. By Lagrange's theorem, it now follows that $$\# (\mcal O / \mfrak p^{n+1}) = \# (\mcal O / \mfrak p^{n}) \cdot \# (\mfrak p^n / \mfrak p^{n+1}) = q^{n+1}$$
 \end{proof}
+
+
+\begin{proposition}
+    Let $K$ be a valued field and $(x_n)$ and $(y_n)$ sequences of $K$. If $(x_n)$ is Cauchy and $\lim_{n \to \infty} |x_n - y_n| = 0$ then $(y_n)$ is also Cauchy. If it is also known that $\lim_{n \to \infty} x_n = a$ then $\lim_{n \to \infty} y_n = a$.
+\end{proposition}
+
+\begin{proof}
+    Observe that
+    \begin{align}
+        |y_n - y_m| = |x_n - y_n + x_m - y_m + x_n - x_m|
+    \end{align}
+    A three fold application of the triangle inequality on the right hand side basically gives the result immediately. For the last part, use the triangle inequality on the right hand side of
+    $$|y_n - a| = |x_n - y_n + x_n - a|$$ 
+    and take the limit.
+\end{proof}
+
+
+
+
+% https://q.uiver.app/#q=WzAsNixbMCwyLCJcXG1hdGhjYWx7T30vXFxtYXRoZnJha3twfSJdLFsxLDIsIlxcbWF0aGNhbHtPfS9cXG1hdGhmcmFre3B9XjIiXSxbMiwyLCJcXG1hdGhjYWx7T30vXFxtYXRoZnJha3twfV4zIl0sWzMsMiwiXFxkb3RzIl0sWzQsMl0sWzEsMCwiXFxtYXRoY2FsIE8iXSxbMiwxLCJcXGxhbWJkYV8yIiwyXSxbMSwwLCJcXGxhbWJkYV8xIiwyXSxbMywyLCJcXGxhbWJkYV80IiwyXSxbNSwzXSxbNSwyXSxbNSwxXSxbNSwwXV0=
+\[\begin{tikzcd}
+	& {\mathcal O} \\
+	\\
+	{\mathcal{O}/\mathfrak{p}} & {\mathcal{O}/\mathfrak{p}^2} & {\mathcal{O}/\mathfrak{p}^3} & \dots & {}
+	\arrow["{\lambda_2}"', from=3-3, to=3-2]
+	\arrow["{\lambda_1}"', from=3-2, to=3-1]
+	\arrow["{\lambda_4}"', from=3-4, to=3-3]
+	\arrow[from=1-2, to=3-4]
+	\arrow[from=1-2, to=3-3]
+	\arrow[from=1-2, to=3-2]
+	\arrow[from=1-2, to=3-1]
+\end{tikzcd}\]
 
 %TODO
 \begin{theorem} \label{thm: Valuation ring in local field is compact}
