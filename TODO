@@ -4,3 +4,5 @@
 2. [ ] Add references
 3. [ ] Introduce the p-adic numbers
 4. [ ] Mention that convergence is unique
+5. [ ] Talk about completion with respect to a valuation
+6. [ ] Fix the definition of valuation. Right now we have only defined it for fields. This is an issue because we define valuations on things that are not fields

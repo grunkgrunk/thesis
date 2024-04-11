@@ -7,6 +7,7 @@
 \usepackage{quiver}
 % draw commutative diagrams
 \usepackage{tikz-cd}
+
 % \usepackage{charter} % use Helvetica font
 % \renewcommand{\familydefault}{\sfdefault} % set Helvetica as the default font
 
@@ -16,7 +17,6 @@
 
 
 \newcommand{\Span}{\operatorname{span}}
-
 \newcommand*{\argordot}[1]{%
     \def\arg{#1}%
     \ifx\arg\empty
@@ -56,6 +56,8 @@
 % commands for the trace, Tr and norm, N
 \newcommand{\tr}[1]{\text{Tr}(#1)}
 \newcommand{\norm}[1]{\text{N}(#1)} 
+\newcommand{\vp}{{v_{\mfrak p}}}
+
 \makeindex
 
 
@@ -673,51 +675,128 @@ Let us now look at some examples. We have already mentioned that $\mbb R$ is the
     Thus, $\hat v$ is discrete and normalized if $v$ is.
 \end{lemma}
 
-
-\begin{lemma} \label{lem: Fraction field of ring of integers is number field}
-    Let $K$ be a number field. The fraction field of $\mcal O$ is equal to $K$. In other words, every element of $K$ can be written as $\frac{\alpha}{\beta}$ for some $\alpha, \beta \in \mcal O$, where $\beta \neq 0$.
+\begin{lemma}
+    HMMM
+    Suppose $R,S$ are rings and that $I \subseteq R$ and $J \subseteq S$ are ideals. If 
+    $$R / I \cong S / J$$
+    Then $I = J \cdot R$
 \end{lemma}
 \begin{proof}
-    Let $F$ be the fraction field of $\mcal O$. Then $F \subseteq K$ as $F$ is the smallest field containing $\mcal O$. For the other inclusion, suppose for contradiction that $[K : F] > 1$. Take then an element, $x$, which is in $K$ but not in $F$. Next, find an integer $d$ so that $d \alpha$ is an algebraic integer. What this means is that $d \alpha \in \mcal O_K$, and therefore $d \alpha \in F$. But then $\alpha \in F$, contrary to our initial assumption. Hence $F = K$.
+    We have a surjection $R \to S / J$ and which maps $I$ to 0. Hence for every 
+\end{proof}
+
+
+\begin{proposition}\label{prop: Isomorphism of residue fields valued field and its completion}
+    Let $(K, v)$ be a valued field and $K_v$ the completion of $K$ with respect to $v$. We have
+    $$O_{\hat v} / \mfrak p_{\hat v} \cong O_v / \mfrak p_v$$
+    If $v$ is discrete then for all $n \geq 1$ we have
+    $$O_{\hat v} / \mfrak p_{\hat v}^n \cong O_v / \mfrak p_v^n$$
+\end{proposition}
+\begin{proof}
+    
+\end{proof}
+
+
+\begin{lemma} \label{lem: Fraction field of ring of integers is number field}
+    Let $K$ be a number field. The fraction field of $\mcal O_K$ is equal to $K$. In other words, every element of $K$ can be written as $\frac{\alpha}{\beta}$ for some $\alpha, \beta \in \mcal O$, where $\beta \neq 0$.
+\end{lemma}
+\begin{proof}
+    Let $F$ be the fraction field of $\mcal O_K$. Then $F \subseteq K$ as $F$ is the smallest field containing $\mcal O_K$. For the other inclusion, suppose for contradiction that $[K : F] > 1$. Take then an element, $x$, which is in $K$ but not in $F$. Next, find an integer $d$ so that $d \alpha$ is an algebraic integer. What this means is that $d \alpha \in \mcal O_K$, and therefore $d \alpha \in F$. But then $\alpha \in F$, contrary to our initial assumption. Hence $[K : F] = 1$ and so $F = K$.
+\end{proof}
+
+
+\begin{definition}[Localization at a prime]
+    Let $R$ be a ring and $\mfrak p$ a prime ideal. The localization of $R$ at $\mfrak{p}$ is the ring $R_\mfrak p = \{\frac{a}{b} \mid a \in R, b \notin \mfrak p \}$. The homomorphism $\tau : R \to R_\mfrak p$ given by $r \mapsto \frac{r}{1}$ is called the canonical map and $R_\mfrak p$ is a local ring with unique maximal ideal $\mfrak M = \{\frac{a}{b} \in R_\mfrak m | a \in \mfrak m, b \notin \mfrak m \}$.
+\end{definition}
+
+\begin{lemma} \label{lem: Canonical localization isomorphism}
+    $\text{Frac}(R / \mfrak p)$ is canonically isomorphic to $R_\mfrak p / \mfrak M$. In particular, if $\mfrak p$ is a maximal ideal then $R / \mfrak p \cong R_\mfrak p / \mfrak M$.
+\end{lemma}
+\begin{proof}
+    Firstly, $R / \mfrak p$ is an integral domain as $\mfrak p$ is a prime, so it makes sense to take the fraction field of this ring. Consider the composition of maps $R \hookrightarrow R_\mfrak p \twoheadrightarrow R_\mfrak p / \mfrak M$, with the first one being the canonical map and the second one the natural projection. Then $r \in R$ is sent to zero if and only if $\frac{r}{1} \in \mfrak M$ which is equivalent to $r \in \mfrak m$. Hence we get an induced injective homomorphism, $\phi$
+    $$R / \mfrak p \hookrightarrow R_\mfrak p / \mfrak M$$
+    which is given by $\phi(r + \mfrak p) = \frac{r}{1} + \mfrak M$. We know that $R_\mfrak p / \mfrak M$ is a field since $\mfrak M$ is a maximal ideal, so it follows from the universal property for the fraction field that there is a unique injective homomorphism $\sigma : \text{Frac}(R / \mfrak p) \to R_\mfrak p / \mfrak M$, extending $\phi$, which is given by $\sigma(\frac{\alpha}{\beta}) = \phi(\alpha)\phi(\beta)^{-1}$. Let us show that this map is surjective. Suppose that $\frac{a}{b} + \mfrak M  \in R_\mfrak p / \mfrak M$ with $a \in R$ and $b \notin \mfrak p$. Thus, $b + \mfrak p$ is non-zero in $R / \mfrak p$. We can now evaluate 
+    $$\sigma(\frac{a + \mfrak p}{b + \mfrak p}) = \phi(a + \mfrak p)\phi(b + \mfrak p)^{-1} = (\frac{a}{1} + \mfrak M) + (\frac{b}{1} + \mfrak M)^{-1} = \frac{a}{b} + \mfrak M$$ 
+    For the last statement, suppose that $\mfrak p$ is maximal. Then $R / \mfrak p$ is a field, so it is isomorphic to its fraction field. 
+\end{proof}
+
+
+
+\begin{lemma} \label{lem: Localization isomorphism}
+    Maybe we should instead show that 
+    Suppose $R$ is a ring and $\mfrak m \subseteq R$ is a maximal ideal. Let $R_\mfrak m$ be the localization of $R$ at $\mfrak m$ and let $\mfrak M$ be its unique maximal ideal. Then $\mfrak m R_\mfrak m = \mfrak M$ (SHOULD WE WRITE $\tau(\mfrak m)$ here??) and we have an isomorphism
+    $$R_\mfrak m / \mfrak M \cong R / \mfrak m$$ 
+\end{lemma}
+\begin{proof}
+    We have that $\mfrak M = \{\frac{a}{b} \in R_\mfrak m | a \in \mfrak m, b \notin \mfrak m \}$. As such it is clear that $\mfrak m R_\mfrak m = \mfrak M$. Consider the composition of maps $R \hookrightarrow R_\mfrak m \twoheadrightarrow R_\mfrak m / \mfrak M$, with the first one being the map $r \mapsto \frac{r}{1}$ and the second one the natural projection. Then $r \in R$ is sent to zero if and only if $\frac{r}{1} \in \mfrak M$ which is equivalent to $r \in \mfrak m$. Hence this map has kernel $\mfrak m$. It is also surjective; Take an element $x \in R_\mfrak m / \mfrak M$ and suppose that it is represented by $\frac{\alpha}{\beta} \in R_\mfrak m / \mfrak M$, with $\alpha \in R$ and $\beta \notin \mfrak m$. Since $\mfrak m$ is a maximal ideal we know that $\beta R + \mfrak m = R$, so we can find $\delta \in R$ and $\pi \in \mfrak m$ so that $1 = \delta \beta + \pi$. Now 
+    $$\frac{\alpha}{\beta} = \frac{\alpha}{\beta} \cdot 1 = \frac{\alpha (\delta \beta + \pi )}{\beta} = \alpha \delta + \frac{\alpha \pi}{\beta}$$
+    But $\frac{\alpha \pi}{\beta} \in \mfrak M$ since $\pi \in \mfrak m$ so $\pi \alpha \in \mfrak m$. Thus we have $x = \overline {\frac{\alpha}{\beta}} = \overline {\alpha \delta}$ in the quotient $R_\mfrak m / \mfrak M$. This shows that $\alpha \delta$ is mapped to the element $x$ establishing surjectivity and we get the isomorphism as desired. 
 \end{proof}
 
 
 \begin{proposition}
-    Let $R$ be a Dedekind domain and $K$ its field of fractions. For any prime $\mfrak p$ of $R$ there exists a valuation $v_\mfrak{p}$ on $R$ that extends to a valuation on $K$. This valuation is called the $\mfrak p$-adic valuation.
+    Let $O$ be a Dedekind domain and $K$ its field of fractions. For any prime $\mfrak p$ of $O$ there is a function, $\vp : O \to \mbb Z \cup \{\infty \}$ on $O$ so that $\vp(0) = \infty$ and that
+    \begin{equation}\label{eq: valuation}
+        \forall x \in O\setminus \{0 \}: \vp(x) = m \iff (x) = \mfrak p^m A \text{, $A$ an ideal of $O$ and $\mfrak p \nmid A$}. 
+    \end{equation}
+    It extends to a valuation on $K$, which we will also call $\vp$, which for $\frac{\alpha}{\beta} \in K$, is given by %where $\alpha,\beta \in O$, $\beta \neq 0$
+    $$v_\mfrak{p}(\frac{\alpha}{\beta}) = v_\mfrak{p}(\alpha) - v_\mfrak{p}(\beta)$$
+    The valuation $v_\mfrak{p}$ extends to the completion $K_\mfrak{p}$ of $K$ with respect to $v_\mfrak{p}$ and is also denoted by $v_\mfrak{p}$. Let $O_{v_p}$ be the valuation ring of $K$ and let $\mfrak{P}_{v_\mfrak{p}}$ be its unique maximal ideal. Similarly, let $O_\mfrak{p}$ be the valuation ring of $K_\mfrak{p}$ and $\hat{\mfrak{p}}$ its unique maximal ideal. We have the following;
+    
+    \begin{enumerate}
+        \item The valuation on $K$ and $K_\mfrak p$ is discrete if the valuation on $K$ is.
+        \item The localization of $O$ at $\mfrak p$, that is, the ring 
+        $$O_{(\mfrak p)} = \{\frac{\alpha}{\beta} \in K \mid \alpha \in O, \beta \notin \mfrak p\} =  \{\frac{\alpha}{\beta} \in K \mid \alpha \in O, \vp(\beta) = 0 \}$$
+        is the same ring as $O_{\vp}$.
+        \item The natural inclusions
+        $$O \hookrightarrow O_{(\mfrak p)} \hookrightarrow O_\mfrak p,$$
+        give rise to the equalities $\mfrak P_\vp = \mfrak p O_{(\mfrak p)}$ and $\hat {\mfrak p }= \mfrak p O_{\mfrak p}$, as well as the isomorphisms
+        $$
+        O / \mfrak{p} \cong O_{(\mfrak{p})} / \mfrak{P}_{v_{\mfrak{p}}} \cong O_{\mfrak{p}} / \hat{\mfrak{p}}
+        $$
+
+    \end{enumerate}
+    In particular, $K_\mfrak p$ is a local field if the valuation on $K$ is discrete and $O / \mfrak{p}$ is finite.
+      
+    
+    
+    
+    %The valuation $\vp$ extends to a valuation on $K_\mfrak p$ and this we also denote by $\vp$. For $x \in K_\mfrak p$, it is given by 
+    %$$\vp (x) = \lim_{n \to \infty} \vp(x_n)$$
+    %where $(x_n)$ is a Cauchy sequence in $K$ converging to $x$.
 \end{proposition}
 
-\begin{proof}[Valuation on Dedekind domains]
+\begin{proof}
     % USED, BUT NOT ARGUED FOR: 
     % - If v is discrete then the extension of v is also discrete
     % - The number field K coincides with the field of fractions of O_K
-    For any $\alpha \in R$ different from 0, we can consider the factorization
-    $$\alpha R = \mfrak p^k A$$
-    where $A$ is an ideal so that $\mfrak{p} \nmid A$ and $k \in \mbb N_0$. From this requirement, it follows that $k$ is uniquely determined because we have unique prime factorization of ideals in Dedekind domains. This means that we can define $v_\mfrak p(\alpha) = k$ and so we get a valuation on $R$,
-    $$v_\mfrak p : \mathcal O_K \to \mbb{Z} \cup \{\infty\}$$
-    once we formally define $v_\mfrak p(0) = \infty$. We can even extend this function to the fraction field, $K$, of $R$; For any $\frac{\alpha}{\beta} \in K$ $\alpha, \beta \in R$ where $\beta \neq 0$ we can now define
-    $$v'_\mfrak p(x) = v_\mfrak p \left(\frac{\alpha}{\beta}\right) = v_\mfrak p(\alpha) - v_\mfrak p(\beta)$$
-    This is a well defined function for if $\frac{\alpha}{\beta} = \frac{\alpha'}{\beta'}$ then $\alpha\beta' = \alpha'\beta \in R$ and applying $v_\mfrak{p}$ on both sides and using that it takes multiplication to addition we obtain
-    $$v_\mfrak{p}(\alpha) - v_\mfrak{p}(\beta) = v_\mfrak{p}(\alpha') - v_\mfrak{p}(\beta')$$
-    The function $v_\mfrak p'$ is an extension of $v_\mfrak p$ since $v'_\mfrak p(\frac{\alpha}{1}) = v_\mfrak p(\alpha) - v_\mfrak p (1) = v_\mfrak p(\alpha)$. For ease of notation we will refer to this extension simply as $v_\mfrak p$. We can now talk about the completion, $K_\mfrak p$ of $K$ with respect to $v_\mfrak p$. Denote by $\hat v_\mfrak p$ the valuation on $K_\mfrak p$. 
+    %For any $\alpha \in R$ different from 0, we can consider the factorization
+    %$$\alpha R = \mfrak p^k A$$
+    % where $A$ is an ideal so that $\mfrak{p} \nmid A$ and $k \in \mbb N_0$. 
+    The function $\vp$ on $O$ with the mentioned property is well defined since we have unique factorization of prime ideals in Dedekind domains. Let us now see that the function $\vp$ we have defined on $K$ is actually well defined. If $\frac{\alpha}{\beta} = \frac{\alpha'}{\beta'}$ then $\alpha\beta' = \alpha'\beta \in O$ and applying $\vp$ on both sides and using that it takes multiplication to addition we obtain
+    $$\vp(\alpha) - \vp(\beta) = \vp(\alpha') - \vp(\beta')$$
+    which shows that it is well defined. If we can show that all the properties in (\ref{eq: valuation}) are satisfied for the restriction of $\vp$ to $O$, we are done, since the function $\vp$ will then directly inherit all of these properties. It is immediate that $\vp(x) = \infty$ if and only if $x = 0$. Let now $x,y \in O$ and suppose both $x$ and $y$ are non-zero. We then have $\vp (x) = m$ and $\vp (y) = n$ and we can write
+    $$(x) = \mfrak{p}^m A, (y) = \mfrak{p}^n B$$
+    Thus, $(xy) = (x)(y) = \mfrak{p}^{m+n} AB$ and $\mfrak p \nmid AB$, so $\vp(xy) = m + n$. For the last property, let $d = \min\{m, n\}$. Then
+    $$(x + y) \subseteq (x) + (y) = \mfrak p^d (\mfrak p^{m-d} A + \mfrak p^{n-d} B)$$
+    From this we see that $\mfrak p^d \mid (x + y)$ and so $d \leq \vp (x+y)$. 
+    Note that if either $x$ or $y$ are 0, then these two properties follow immediately.
     
-    %Because of (\ref{lem: Image of valuation and completed valuation are the same}) we know that the valuation $\hat v_\mfrak p$ is discrete and normalized if $v_\mfrak p$ is. 
+    For (1.), suppose that the valuation on $O$ is discrete. Then the valuation on $K$ is certainly also discrete, and because of (\ref{lem: Image of valuation and completed valuation are the same}) the valuation on $K_\mfrak p$ is as well. For (2.), it is clear that we have the inclusion, $O_{(\mfrak p)} \subseteq O_\vp$. So let $\frac{x}{y} \in O_\vp$ with $x,y \in O$ and both $x$ and $y$ non-zero and let $u = \vp(x)$, $v = \vp(y)$. Since $\vp(\frac{x}{y})  \geq 0$ we have $u \geq v$. We can now write 
+    $$x O = \mfrak p^u A, \text{ and } y O = \mfrak p^v B$$
+    where $A,B$ are two ideals of $O$ so that $\mfrak p \nmid A$ and $\mfrak p \nmid B$. This means that $\mfrak p \nsupseteq B$, which implies that we can find $c \in B$ such that $c \notin \mfrak p$. But then $\vp(c) = 0$ and hence we are done if we can show that there is $b \in O$ so that $xc = yb$ as that would imply that $\frac{x}{y} = \frac{b}{c}$. Now, $xc \in x O$ and also $xc \in B$, meaning that $xc \in x O \cdot B$. But,
+    $$x O \cdot B = \mfrak p^u A B = \mfrak p^{u-v} A \mfrak p^v B = \mfrak p^{u-v} A \cdot y O$$   
+    So $xc \in \mfrak p^{u-v} A \cdot y O$ which means that we can find $b \in \mfrak p^{u-v} A$ such that $xc = by$. We conclude that $O_\vp = O_{(\mfrak p)}$.  
+    As for (3.), consider the natural inclusions 
+    $$O \hookrightarrow O_{(\mfrak p)} \hookrightarrow O_\mfrak p,$$
+    From (\ref{lem: Localization isomorphism}) we have that $\mfrak p O_{(\mfrak p)} = \mfrak P_\vp$. Since $O$ is a Dedekind domain, $\mfrak p$ is in fact a maximal ideal so by the same lemma it follows that $O / \mfrak p \cong O_{(\mfrak p)} / \mfrak P_\vp$. 
     
-    
-    Let now $\mfrak P$ be the unique maximal ideal of the valuation ring $\mcal O_{K_\mfrak p}$. Then $\mfrak p \mcal O_{K_\mfrak p}$ is an ideal of $\mcal O_{K_\mfrak p}$ so 
-    $$\mfrak P^e = \mfrak p \mcal O_{K_\mfrak p}$$
-    Suppose $v_\mfrak p$ is discrete and normalized. Then we can find an element $\pi \in K$ so that $\mfrak p = (\pi) \mcal O_K$ so that $v_\mfrak p(\pi) = 1$. Also $\hat v_\mfrak p$ is discrete and normalized, so we can similarly find an element $\hat \pi \in K_\mfrak p$ so that $\hat v_\mfrak p(\hat \pi) = 1$. 
-    
-    But $(\pi) \mcal O_K = \mfrak p$
-    
-    As the valuation ring $\mcal O_K$  
+    Let us show that $\hat p = \mfrak p O_\mfrak p$. 
 
+    For the last claim, if $K$ is discrete then by (1) in the proposition we know that the valuation on $K_\mfrak p$ is also discrete. If furthermore $O / \mfrak p$ is finite then so is the residue field $K_\mfrak p / O_\mfrak p$ because of the isomorphisms from (3). Hence $K_\mfrak p$ is in this case a local field.
 \end{proof}
-
-\begin{remark}
-    Because $v'_\mfrak p$ in the proof above is an extension of $v_\mfrak p$ we will typically just write $v_\mfrak p(x)$ instead of $v'_\mfrak p(x)$.
-\end{remark}
-
-This construction actually gives rise to some important examples.
+    
+Let us now see some examples using this construction.
  
 \begin{lemma}
     A PID is a Dedekind domain.
