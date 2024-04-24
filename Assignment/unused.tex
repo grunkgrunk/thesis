@@ -1,0 +1,119 @@
+
+\documentclass{article}
+\usepackage{amsmath} % for advanced math typesetting
+\usepackage{amssymb} % for additional math symbols
+\usepackage{amsthm} % for theorem environments
+\usepackage{mathtools} % for advanced math typesetting
+\usepackage{makeidx} % package for creating an index
+\usepackage{quiver}
+% draw commutative diagrams
+\usepackage{tikz-cd}
+
+% \usepackage{charter} % use Helvetica font
+% \renewcommand{\familydefault}{\sfdefault} % set Helvetica as the default font
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\coeff}{coeff}
+
+
+\newcommand{\Span}{\operatorname{span}}
+\newcommand*{\argordot}[1]{%
+    \def\arg{#1}%
+    \ifx\arg\empty
+        \,\cdot\,%
+    \else
+        #1%
+    \fi%
+}
+\DeclarePairedDelimiterX{\abs}[1]{\mid}{\mid}{\argordot{#1}}
+
+% Define theorem environment
+\newtheorem{theorem}{Theorem}[section]
+
+% Define definition environment
+\newtheorem{definition}{Definition}[section]
+
+% Define corollary environment
+\newtheorem{corollary}{Corollary}[section]
+
+% Define proposition environment
+\newtheorem{proposition}{Proposition}[section]
+
+% Define lemma environment
+\newtheorem{lemma}{Lemma}[section]
+
+% Define example environment
+\newtheorem{example}{Example}[section]
+
+% Define remark environment
+\newtheorem{remark}{Remark}[section]
+
+
+% Define aliases for \mathfrak and \mathcal and mathbb
+\newcommand{\mfrak}[1]{\mathfrak{#1}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\mbb}[1]{\mathbb{#1}}
+% commands for the trace, Tr and norm, N
+\newcommand{\tr}[1]{\text{Tr}(#1)}
+\newcommand{\norm}[1]{\text{N}(#1)} 
+\newcommand{\vp}{{v_{\mfrak p}}}
+
+\makeindex
+
+
+\begin{document}
+
+\begin{proposition}(Universal property for quotients) \label{prop: Universal property for quotients}
+    Let $R,S$ be a rings and $I \subseteq R$ an ideal. Suppose we have a function $f : R \to S$, which vanishes on $I$ and is an additive group homomorphism when restricted to $I$. Then there exists a uniquely determined function $$\bar f : R / I \to S$$
+    such that the following diagram commutes
+    % https://q.uiver.app/#q=WzAsMyxbMCwyLCJSL0kiXSxbMiwyLCJTIl0sWzEsMCwiUiJdLFswLDEsIlxcZXhpc3RzISBcXGJhciBmIiwyLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzIsMCwiXFxwaSIsMl0sWzIsMSwiZiJdXQ==
+\[\begin{tikzcd}
+	& R \\
+	\\
+	{R/I} && S
+	\arrow["{\exists! \bar f}"', dashed, from=3-1, to=3-3]
+	\arrow["\pi"', from=1-2, to=3-1]
+	\arrow["f", from=1-2, to=3-3]
+\end{tikzcd}\]
+    In this case we say that $f$ descends to the quotient, $R / I$. If $f$ is a ring map then so is $\bar f$.  
+\end{proposition}
+\begin{proof}
+    If there is a map $\bar f$ so that the diagram commutes then what that means is that we have, for all $r \in R$ 
+    $$\bar f (\pi(r)) = f(r)$$
+    But $\pi$ is surjective so this condition forces how $\bar f$ is defined, and hence $\bar f$ is unique if it exists. Suppose now that $x,y \in R$ so that $\bar x = \bar y$. Then $x-y \in I$ and so $f(x-y) = 0$, so $f(x) = f(y)$ as $f$ is an additive homomorphism when restricted to $I$. Hence $\bar f$ is well defined. If $f$ is a ring map, then $\bar f$ also be a ring map because the diagram commutes. 
+\end{proof}
+
+
+
+Suppose that $v$ is a valuation as above. Let us briefly go through some important properties. Note first that property 2. above makes $v$ into a homomorphism $v : K^* \to \mbb R$. Thus, if $x \in K^*$ has finite order, then also $v(x)$ has finite order. But then $v(x) = 0$ as $0$ is the only element in $\mbb R$ that has finite order with respect to addition. In particular, $v(-1) = 0$ so $v(-x) = v(-1) + v(x) = v(x)$ for all $x \in K$. It follows that $v(x + y) = v(y)$ if $v(x) > v(y)$, since
+$$v(y) = v(x + y - x) \geq \min \{v(x+y), v(x)\} \geq \min \{v(x), v(y)\} = v(y)$$
+
+
+There is another, perhaps more down-to-earth way of characterizing the completion of a field. But 
+
+Now for the alternative characterization.
+
+\begin{proposition}
+    Let $K$ be a valued field, $\hat K$ a complete valued field and $\hat \iota : K \to \hat K$ a homomorphism preserving the absolute value. Then $(\hat K, \hat \iota)$ is a completion of $K$ if and only if $K$ is dense in $\hat K$. 
+\end{proposition}
+\begin{proof}
+    Assume first that the pair $(\hat K, \hat \iota)$ is in fact the completion of $K$ and let us show that $K$ is dense in $\hat K$, by which we of course mean that the image $\hat \iota(K)$ is dense in $\hat K$. Now, as $\hat K$ is complete also $\overline K (= \overline{\hat \iota(K)})$ is complete since it is closed and contained in $\hat K$. Also, as $K$ is dense in $\overline K$ the inclusion  is a subfield of $\hat K$ (SHOW THIS). Thus, we have the inclusion map $\psi : \overline K \to \hat K$. This shows that $(\overline K, \hat \iota)$ satisfies the same universal property as $(\hat K, \hat \iota)$ and hence $(\overline K, \hat \iota)$ is the completion of $K$. (THIS PART IS UNFINISHED)
+
+    Let us now prove the converse. So suppose that $\hat \iota (K)$ is dense in $\hat K$ and that $(L, \iota)$ is a pair as in (\ref{def: Completion}). 
+\end{proof}
+
+
+Let us now look at some examples. We have already mentioned that $\mbb R$ is the completion of $\mbb Q$. We have the inclusion $\mbb Q \rightarrow \mbb R$ which preserves absolute values, so this statement follows if we are willing to accept that $\mbb R$ is complete and that $\mbb Q$ is dense in $\mbb R$. Here is another example. Suppose that $K$ is a field and consider the formal power series $K[[x]]$. As we have mentioned already this is a local ring with maximal ideal $\mfrak p = (x)$. Consider the valuation $v_mfrak{p}$ on $K[[x]]$ defined by
+
+\begin{theorem}[Ostrowski]
+    Suppose that $K$ is field which is complete with respect to an archimedian valuation. Then there is an isomorphism $\sigma$ from $K$ into $\mbb R$ or $\mbb C$ and a constant $s \in (0,1]$ so that
+    $$|x| = |\sigma(x)|^s$$
+    for all $x \in K$.
+\end{theorem}
+
+
+
+A nonarchimedian absolute value $\abs{}$ on a field $K$ extends to a nonarchimedian absolute value on $K(t)$ by setting $|f| = \max{|a_0|, ..., |a_n|}$ where $f \in K[x]$ and $f(x) = a_nx^n + ... + a_0$. For an arbitrary element $\frac{g}{h} \in K(x)$ where $h \neq 0$ we then define $|\frac{g}{h}| = |g| - |h|$. 
+
+\end{document}

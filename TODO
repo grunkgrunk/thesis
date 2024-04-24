@@ -5,4 +5,6 @@
 3. [ ] Introduce the p-adic numbers
 4. [ ] Mention that convergence is unique
 5. [ ] Talk about completion with respect to a valuation
-6. [ ] Fix the definition of valuation. Right now we have only defined it for fields. This is an issue because we define valuations on things that are not fields
+7. [ ] Look up the definition in milne for preserving absolute value
+8. [ ] Probably we need to construct the real numbers to ensure that 
+9. [ ] Make propositions easier to read by setting up the situation beforehand
