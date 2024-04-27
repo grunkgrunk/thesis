@@ -116,4 +116,23 @@ Let us now look at some examples. We have already mentioned that $\mbb R$ is the
 
 A nonarchimedian absolute value $\abs{}$ on a field $K$ extends to a nonarchimedian absolute value on $K(t)$ by setting $|f| = \max{|a_0|, ..., |a_n|}$ where $f \in K[x]$ and $f(x) = a_nx^n + ... + a_0$. For an arbitrary element $\frac{g}{h} \in K(x)$ where $h \neq 0$ we then define $|\frac{g}{h}| = |g| - |h|$. 
 
+
+
+\begin{theorem}\label{thm: Forms in two variables are decomposable}
+    Let $F(x, y)$ be a form of degree $k$ in two variables and let $\alpha$ be any root of $F(x, 1)$ and set $K = \mbb Q(\alpha)$. Then 
+    $$F(x, y) = N_{K / \mbb Q}(x + \alpha y)$$ 
+    In particular, $F$ is decomposable.
+\end{theorem}
+\begin{proof}
+    We can assume without loss of generality that $F(x, 1)$ is monic. Start by writing
+    $$F(x, y) = \sum_{i=0}^k a_i x^{k-i} y^i$$
+    where the $a_i$ are in $\mbb{Q}$. Since $F(x, 1)$ is monic we have $a_k = 1$. Now 
+    $$F(x, 1) = \sum_{i=0}^k a_i x^{k-i}$$
+    Which can be written as
+    $$\prod_{i=1}^k (x - \alpha_i)$$
+    in the splitting field for $F(x,1)$. The coefficients are symmetric functions of the roots, which we denote by $s_1(\alpha_1, ..., \alpha_k), ..., s_k(\alpha_1, ..., \alpha_k)$. Notice that $s_i(\alpha_1, ..., \alpha_k)$ is a monomial of degree $i$ in the variables $\alpha_i$. Hence $s_i(\alpha_1y, ..., \alpha_k y) = y^i s_i(\alpha_1, ..., \alpha_k)$ become the coefficients of 
+    $$\prod_{i=1}^k (x - \alpha_iy)$$
+    But these are exactly the coefficients of $F(x,y)$, when regarded as a polynomial in $x$ with coefficients in $\mbb{Q}[y]$. Thus, the above expression is in fact equal to $F(x,y)$ and is a factorization of it in terms of linear factors and hence it decomposable.
+\end{proof}
+
 \end{document}

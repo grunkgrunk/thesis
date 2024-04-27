@@ -15,6 +15,7 @@
 \DeclareMathOperator{\nullity}{nullity}
 \DeclareMathOperator{\coeff}{coeff}
 \DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Gal}{Gal}
 
 
 \newcommand{\Span}{\operatorname{span}}
@@ -169,42 +170,38 @@ It is clear that that $\omega(f g) = \omega(f) + \omega(g)$ for all $f,g \in K((
 
 \section{Forms and Modules}
 % forms
-A form $F(x_1, ..., x_m)$ in $m$ variables of degree $k$ is a homogenous polynomial of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension of $\mbb{Q}$, then it is called decomposable. The forms in 2 variables are actually always decomposable. 
+A form $F(x_1, ..., x_m)$ in $m$ variables of degree $k$ is a homogenous polynomial of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension, $K$, of $\mbb{Q}$, then it is called decomposable and in this case $K$ can in fact be chosen to be a number field [See Thm 1 p 79 Borevich]. The forms in 2 variables are actually always decomposable. We shall use this fact once we start looking at Thues theorem. (NOT SURE IF WE NEED A PROOF FOR THIS) Furthermore, $F$ is called reducible if it can be written as a product of two forms of degree strictly larger than 0. Otherwise it is called irreducible. Two forms are called equivalent if one can be obtained from the other by a linear change of variables with coefficients in $\mbb{Z}$. As an example,
+\begin{equation*}
+    u^2 + 3v^2 \text{ and } 7x^2 - 2xy + 4y^2
+\end{equation*}
+are equivalent since the second form can be obtained from the first by setting $u = 2x+y$ and $v = x-y$.  Two forms being equivalent clearly defines an equivalence relation on the set of forms. Observe that if $(x_0, y_0)$ is a solution to the second form above then $(u_0, v_0)$, with $u_0 = 2x_0 + y_0$ and $v_0 = x_0 - y_0$, is a solution to the first form above. In general, if we have a solution to an equation like (\ref{}), then we immediately have a solution to all forms equivalent to $F$. Let us assume that $K$ is a number field of degree $n$ over $\mbb Q$. Let $\mu_1, ..., \mu_k$ be elements in $K$. The set, $M$, consisting of all $\mbb{Z}$-linear combinations of these is called a module in $K$ and we will write $M = \{\mu_1, ..., \mu_k\}$ for this set. The $\mu_i$'s are called generators for the module and we can use them to construct a form. Let $F$ be the Galois closure of $K$ and let $G = \Gal(F / K)$ and let $H$ be the subgroup of $G$ corresponding to $L$. Set now $n = [G : H] = [K : \mbb Q ]$ and find $\sigma_1, ..., \sigma_n$ so that
+$G = \cup_{i=1}^n \sigma_i H$
+is a disjoint union. We have that
+$$\alpha = x_1 \mu_1 + ... x_k \mu_k$$
+with all the $x_i$ in $\mbb Z$. For ease of notation, let us denote by $N$ the field norm $N_{K/\mbb Q}$. We then see that
+\begin{align*}
+    N(\alpha) &= N(x_1 \mu_1 + ... + x_k \mu_k) \\ &= \prod_{i = 1}^n \sigma_i(x_1 \mu_1 + ... + x_k \mu_k)\\ 
+    &= \prod_{i = 1}^n \left(x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k) \right)
+\end{align*}
+This can clearly be regarded as a homomgenous polynomial of degree $n$ in the variables $x_1, ..., x_k$ and the coefficients are sums of products of the form $\prod_{i=1}^n \sigma_i (\mu_{\pi(i)})$ with $\pi$ being a map from $\{ 1, ..., n \}$ into $\{1, ..., k\}$. Let now $\sigma \in G$. Now of course $\sigma \sigma_i \in G$ so there is some $j \in {1, ..., n}$ so that $\sigma \sigma_i \in \sigma_j H$. If both $\sigma \sigma_i$ and $\sigma \sigma_{i'}$ were in $\sigma_j H$ then we would have $i = i'$ and therefore there is a permutation $\tau : \{1, ..., n\} \to \{1, ..., n\}$, depending on $\sigma$ so that $\sigma \sigma_i \in \sigma_{\tau(i)} H$. In other words, we can write $\sigma \sigma_i = \sigma_{\tau(i)}h_i$ for a suitable $h_i \in H$. But then 
+\begin{align*}
+    \sigma \prod_{i=1}^n \sigma_i (\mu_{\pi(i)}) &= \prod_{i=1}^n \sigma \sigma_i (\mu_{\pi(i)}) \\
+    &= \prod_{i=1}^n  \sigma_{\tau(i)}h_i(\mu_{\pi(i)}) \\
+    &= \prod_{i=1}^n  \sigma_{\tau(i)}(\mu_{\pi(i)}) \\
+    &= \prod_{i=1}^n  \sigma_{i}(\mu_{\pi(i)})
+\end{align*}
+Thus, the element $\prod_{i=1}^n  \sigma_{i}(\mu_{\pi(i)})$ is fixed by every single $\sigma \in G$ hence it must belong to $\mbb Q$ so the coefficients of $N(\alpha)$ must belong to $\mbb Q$ and hence it is a form. A form created in this way is called 
 
-\begin{theorem}\label{thm: Forms in two variables are decomposable}
-    Let $F(x, y)$ be a form of degree $k$ in two variables and let $\alpha$ be any root of $F(x, 1)$. Then 
-    $$F(x, y) = N_{\mbb Q (\alpha) / \mbb Q}(x + \alpha y)$$ 
-    In particular, $F$ is decomposable.
-\end{theorem}
 
-
-\begin{proof}
-    We can assume without loss of generality that $F(x, 1)$ is monic. Start by writing
-    $$F(x, y) = \sum_{i=0}^k a_i x^{k-i} y^i$$
-    where the $a_i$ are in $\mbb{Q}$. Since $F(x, 1)$ is monic we have $a_k = 1$. Now 
-    $$F(x, 1) = \sum_{i=0}^k a_i x^{k-i}$$
-    Which can be written as
-    $$\prod_{i=1}^k (x - \alpha_i)$$
-    in the splitting field for $F(x,1)$. The coefficients are symmetric functions of the roots, which we denote by $s_1(\alpha_1, ..., \alpha_k), ..., s_k(\alpha_1, ..., \alpha_k)$. Notice that $s_i(\alpha_1, ..., \alpha_k)$ is a monomial of degree $i$ in the variables $\alpha_i$. Hence $s_i(\alpha_1y, ..., \alpha_k y) = y^i s_i(\alpha_1, ..., \alpha_k)$ become the coefficients of 
-    $$\prod_{i=1}^k (x - \alpha_iy)$$
-    But these are exactly the coefficients of $F(x,y)$, when regarded as a polynomial in $x$ with coefficients in $\mbb{Q}[y]$. Thus, the above expression is in fact equal to $F(x,y)$ and is a factorization of it in terms of linear factors and hence it decomposable.
-\end{proof}
+If $M$ contains a basis for the vector space $K / \mbb{Q}$, then it is called a \textbf{full module}. Otherwise it is called a \textbf{nonfull module}.  
 
 
 
 
-It is called reducible if it can be written as the product of two forms of lower degree. Otherwise it is called irreducible. Two forms are called equivalent if one can be obtained from the other by a linear change of variables with coefficients in $\mbb{Q}$. This defines an equivalence relation on the set of forms. Consider the equation 
-$$F(x_1, ..., x_m) = a$$
-where $a$ is in $\mbb{Q}$. 
 
-Once we know the solutions to one form, we can transform them into solutions of an equivalent form. Thus, we \
-% An obvious but important property of equivalent forms is that if $F$ and $G$ are equivalent, then if we have a solution to $F(x_1, ..., x_m) = a$, then we can transform it into a solution $G(y_1, ..., y_m) = a$ and vice versa.
-
-% write a defintion 
-% \begin{definition}
-Let $\mu_1, ..., \mu_k$ be elements in $K$. The set, $M$, consisting of all $\mbb{Z}$-linear combinations of these is called a module in $K$ and the $\mu_i$'s are called the generators of the module. If $M$ contains a basis for the vector space $K / \mbb{Q}$, then it is called a \textbf{full module}. Otherwise it is called a \textbf{nonfull module}. By definition $M$ is a finitely generated abelian group and by the structure theorem, $M$ determines uniquely integers $r,s \geq 0$ and $d_1 \mid ... \mid d_s$, $d_i \geq 2$ such that
+By definition $M$ is a finitely generated abelian group and by the structure theorem, $M$ determines uniquely integers $r,s \geq 0$ and $d_1 \mid ... \mid d_s$, $d_i \geq 2$ such that
 $$M \cong \mbb{Z}^r \oplus \mbb{Z}/d_1\mbb{Z} \oplus ... \oplus \mbb{Z}/d_s\mbb{Z} $$
-But $M$ lives inside a field, which has no zero divisors, so $M$ must be a torsion-free $\mbb{Z}$-module, and so $s = 0$. Thus, $M \cong \mbb{Z}^r$, which means that $M$ is a free abelian group of rank $r$. The modules in $K$ can therefore be thought of as the finitely generated free abelian groups inside $K$ - This means that concepts such as rank and basis now make sense for modules. 
+But $M$ lives inside a field, which has no zero divisors, so $M$ must be a torsion-free $\mbb{Z}$-module, and so $s = 0$. Thus, $M \cong \mbb{Z}^r$, which means that $M$ is a free abelian group of rank $r$. The modules in $K$ can therefore be thought of as the finitely generated free abelian groups, which means that concepts such as rank and basis now make sense for modules.  
 % If $N$ is a subgroup of $M$, then $N$ is a free abelian group of rank $r' \leq r$, meaning that $N$ is also a module of $K$ of rank $r'$.
 In general, if we have a basis for $N$, say $\mu_1, ..., \mu_m$ and we choose to consider $\mbb Q$-linear combinations of these, say 
 \begin{equation} \label{eq:LinearCombination}
@@ -392,7 +389,7 @@ We are therefore interested in finding the units in the ring of algebraic intege
     Let $K$ be a field. A function $\abs{} : K \to \mbb R$, is called an absolute value if it happens to satisfy the properties
     \begin{itemize}
         \item $\abs{x} \geq 0$ for every $x \in K$. (Non-negativity)
-        \item $\abs{x} = 0$ if and only if $x = 0$. (Zero detection)
+        \item $\abs{x} = 0$ if and only if $x = 0$. (Positive definiteness)
         \item $\abs{xy} = \abs{x} \abs{y}$ for every $x,y \in K$. (Multiplicativity)
         \item $\abs{x + y} \leq \abs{x} + \abs{y}$ for every $x,y \in K$. (Triangle inequality)
     \end{itemize}
@@ -513,9 +510,8 @@ and as $q^s > 1$ it follows from the argument above that any absolute value corr
 \end{definition}
 
 A valuation ring $O$ is a local ring and it has maximal ideal $\mfrak p = \{x \in K \mid x^{-1} \notin O \}$ since the set $O \setminus \mfrak p$ consists of all units of $O$. Hence $O / \mfrak p$ is a field and it is called the residue field of $O$. Also, $O$ is integrally closed; Suppose that $x \in K$ is integral over $O$. That is we have $x^n + a_{n-1}x^{n-1} + ... + a_0 = 0$ where the $a_i$ all belong to $O$. Assume now for contradiction that $x \notin O$. That means that $x^{-1} \in O$ and so we can solve for $x$ in the equation above, meaning that $x \in O$, which is a contradiction. A valuation on a field can be used to construct a valuation ring.
-\begin{proposition}
+\begin{proposition}\label{prop: Valuation ring of a field}
     Let $K$ be a non-archimedian valued field with valuation $v$ and a valuation corresponding to $\abs{}$. Then
-    (THIS RING DOES NOT DEPEND ON THE CHOICE OF ABSOLUTE VALUE SO LONG AS IT BELONGS TO THE SAME PLACE)
     $$O := \{x \in K \mid  v(x) \geq 0 \}$$
     % = \{x \in K \mid |x| \leq 1 \}$$ 
     is a valuation ring and is called the valuation ring of $K$ with respect to $v$. It has field of fractions $K$ and it has unique maximal ideal
@@ -524,7 +520,7 @@ A valuation ring $O$ is a local ring and it has maximal ideal $\mfrak p = \{x \i
     $$O^* = \{x \in K \mid v(x) = 0\}$$
     If $v$ is discrete, then the valuation ring is a PID. If $v$ is normalized and $\pi \in O$ is a prime element then we have 
     \begin{itemize}
-        \item $K^* = (\pi) \times O^*$
+        \item $K^* = \{\pi^k \mid k \in \mbb Z \} \times O^*$
         \item $(\pi) = \mfrak{p}$
         \item The non-zero ideals of $O$ are given by
         $\mfrak p^n = \{x \in K : v(x) \geq n \}$
@@ -1019,8 +1015,37 @@ In algebraic number theory we study finite extensions of $\mbb Q$, known as numb
     A local field $K$ of characteristic 0 is the same thing as a finite extension of $\mbb Q_p$. Such a field is called a $\mfrak p$-adic number field. 
 \end{proposition}
 \begin{proof}
-    Suppose first that $K /\mbb Q_p$ is a finite extension of degree $n$. Then by (\ref{thm: Extension of absolute value}) the absolute value on $\mbb Q_p$ extends uniquely to the nonarchimedian absolute value $|\alpha| = \sqrt[n]{|N_{K/\mbb Q_p}|}$ on $K$ and $K$ is complete with respect to it. The absolute value on $\mbb Q_p$ is discrete, so this must also be the case for the absolute value on $K$. Let $\kappa$ be the residue field of $K$. To show that $\kappa$ has finitely many elements it suffices to show that the extension $\kappa / \mbb F_p$ is finite.
+    Suppose first that $K /\mbb Q_p$ is a finite extension of degree $n$. Then by (\ref{thm: Extension of absolute value}) the absolute value on $\mbb Q_p$ extends uniquely to the nonarchimedian absolute value $|\alpha| = \sqrt[n]{|N_{K/\mbb Q_p}|}$ on $K$ and $K$ is complete with respect to it. The absolute value on $\mbb Q_p$ is discrete, so this must also be the case for the absolute value on $K$. Let $\kappa$ be the residue field of $K$ and set $m = [\kappa : \mbb F_p]$. To show that $\kappa$ has finitely many elements it suffices to show that $m \leq n$ as that implies that $\# \kappa \leq p^n$. Suppose that $x_1, ..., x_n \in K$ are linearly dependent over $\mbb Q_p$. Then we can find $\lambda_1, ..., \lambda_n \in \mbb Q_p$ with at least one $\lambda_i \neq 0$ so that 
+    $$\lambda_1 x_1 + ... + \lambda_n x_n = 0.$$ 
+    The coefficient, $\lambda_i$, having the largest absolute value has to have absolute value strictly larger than 0, as otherwise $\lambda_i = 0$ which would imply that all coefficients are 0. Hence we can divide the above linear combination by $\lambda_i$ to achieve a linear combination where all coefficients have absolute value smaller than or equal to 1. In other words, a linear combination with coefficients in $\mbb Z_p$, the valuation ring of $\mbb Q_p$. But then the $i$th coefficient is 1, so this linear combination is still non-trivial when mapped to $\kappa$. (NOT COMPLETELY DONE WITH THIS ONE. ASK ABOUT IT)
+
+
+    (NOT VERY SURE ABOUT THIS PART EITHER)
+
+    On the other hand, suppose that $K$ is a local field with characteristic 0 and discrete valuation $v$. Let $O$ be the valuation ring of $K$ and $\mfrak p$ be its unique maximal ideal. The residue field of $K$ is then $\kappa = O / \mfrak p$ and as $K$ is a local field, we know that $\kappa$ is a finite field so its characteristic is a prime number, say $p$. But that means that $p$ is zero in $\kappa$, which is to say that $p \in \mfrak p$, meaning that $v(p) > 0$.  This implies (TODO: SHOW WHY) that $v$ and $v_p$ are equivalent valuations when restricted to $\mbb Q$. The closure of $\mbb Q$ in $K$ is the smallest closed containing $\mbb Q$ and as $K$ is complete, it is therefore the smallest complete set containing $\mbb Q$   
+    
+    therefore $\mbb Q_p$ and is contained in $K$. As $K$ is a metric space it is Hausdorff and by \ref{} $K$ is locally compact. It therefore follows by a theorem which can be found HERE that the $\mbb Q$-vector space $K$ has finite dimension. 
+    % see https://terrytao.wordpress.com/2011/05/24/locally-compact-topological-vector-spaces/
 \end{proof}
+
+
+\begin{lemma}\label{lem: x^|G| = 1}
+    Let $G$ be a group of order $n$. Then $x^n = 1$ for all $x \in G$.
+\end{lemma}
+\begin{proof}
+    Let $x \in G$ and consider the cyclic subgroup $H$ generated by $x$. As $G$ is finite so is $H$ so by Lagrange's theorem $|H| \mid n$ meaning that $n = |H|k$ for some $k \in \mbb Z$. As $H$ is cyclic we have $x^{|H|} = 1$ and so $x^n = 1^k = 1$.
+\end{proof}
+
+
+\begin{proposition}
+    Let $K$ be a local field, $O$ its valuation ring, $\mfrak p$ the maximal ideal of $O$, $\kappa$ its residue field and $q = \#\kappa$. Then $K^*$ contains $\mu_{q-1}$, the group of $(q-1)$st roots of unity and we have
+    $$K^* = \{\pi^k \mid k \in \mbb Z \} \times \mu_{q-1} \times U^{(1)}$$ 
+\end{proposition}
+\begin{proof}
+    Because of (\ref{prop: Valuation ring of a field}) we really only need to show that $O^* = \mu_{q-1} \times U^{(1)}$. From the natural projection $O \twoheadrightarrow \kappa$ we obtain a group homomorphism $\phi : O^* \to \kappa^*$. Let us first show that $O^*$ contains $\mu_{q-1}$. First, $\kappa^*$ is a group of order $q-1$ so if $z$ is any element in $\kappa^*$ then by (\ref{lem: x^|G| = 1}) we have $z^{q-1} = 1$ and so $f(x) = x^{q-1} - 1 \in O[x]$ splits into distinct linear factors over $\kappa$. Thus we have the factorization $f(x) \equiv (x-z) g(x) \pmod {\mfrak p}$ with $x - z$ and $g$ being coprime and both belonging to $\kappa[x]$. By Hensel's Lemma we get a factorization $f(x) = \alpha(x)\beta(x)$ where both $\alpha$ and $\beta$ are in $O[x]$ and where $\deg \alpha = \deg (x - z) = 1$. Hence $\alpha(x) = x - \zeta$ for some $\zeta \in O$. Hensel's Lemma also tells us that $x - \zeta \equiv x - z \pmod {\mfrak p}$, so $z \equiv \zeta \pmod{\mfrak p}$. In other words, $\phi(\zeta) = z$. Now since $\alpha(\zeta) = 0$ we have $f(\zeta) = 0$, that is, $\zeta$ is a $q-1$st root of unity and therefore in particular we have $\zeta \in O^*$. As $z$ was an arbitrary element of $\kappa^*$, we conclude that $f$ has all of its $q-1$ roots in $O^*$, all of which are distinct so $O^*$ contains $\mu_{q-1}$ and these are mapped bijectively onto $\kappa^*$ since $q- 1 = \# \kappa = \# \mu_{q-1}$. To show that $O^* = U^{(1)} \times \mu_{q-1}$ it suffices to show that $U^{(1)}\cap \mu_{q-1} = \{1\}$ and  $O^* = U^{(1)}\mu_{q-1}$. To do this, let us first show that $\ker \phi = U^{(1)}$. Saying that $\phi(x) = 1$ for some $x \in O^*$ is the same as saying that $1 \equiv x \pmod{\mfrak p}$ which is equivalent to $x - 1 \in \mfrak p$ which is also equivalent to $x \in 1 + \mfrak p = U^{(1)}$, so $\ker \phi = U^{(1)}$. Now if $x \in U^{(1)} \cap \mu_{q-1}$ then $\phi(x) = 1$ as $x \in U^{(1)}$ and as $x \in \mu_{q-1}$ we must have $x = 1$ since $\phi$ maps $\mu_{q-1}$ bijectively onto $\kappa^*$ and $\phi(1) = 1$ simply because $\phi$ is a homomorphism so $U{(1)} \cap \mu_{q-1} = \{ 1 \}$. Suppose that $u \in O^*$. Then $\phi(u) \in \kappa^*$ and we can find $\zeta^{-1} \in \mu_{q-1}$ so that $1 = \phi(u)\phi(\zeta^{1})$. But then $u\zeta^{-1} \in \ker \phi = U^{(1)}$, so we can write $u\zeta^{-1} = v$ for some $v \in U^{(1)}$. Hence $u = v \zeta$ showing that $O^* = U^{(1)}\mu_{q-1}$. We conclude that $O^* = U^{(1)} \times \mu_{q-1}$.
+\end{proof}
+
+
 
 
 \begin{lemma}\label{lem: Valuation ring mod power of prime is finite in local field}
@@ -1033,6 +1058,9 @@ In algebraic number theory we study finite extensions of $\mbb Q$, known as numb
     $$(\mcal O / \mfrak p^{n+1}) / (\mfrak p^n / \mfrak p^{n+1}) \cong \mcal O / \mfrak p^{n}$$
     But since $\mfrak p^n / \mfrak p^{n+1}$ and $\mcal O / \mfrak p^{n}$ have finite order, also $\mcal O / \mfrak p^{n+1}$ must have finite order. By Lagrange's theorem, it now follows that $$\# (\mcal O / \mfrak p^{n+1}) = \# (\mcal O / \mfrak p^{n}) \cdot \# (\mfrak p^n / \mfrak p^{n+1}) = q^{n+1}$$
 \end{proof}
+
+
+
 
 
 \begin{proposition}
@@ -1213,8 +1241,16 @@ We know from ? that there is an $n$ so that $\exp : \mfrak p^n \to U^{(n)}$ and 
     has infinitely many solutions (OVER WHAT SET?) then there exists a local manifold in which there is an analytic curve that parametrizes an infinite set of solutions over the $\mfrak{p}$-adic numbers.   
 \end{theorem}
 
+Suppose that $F$ is an irreducible, decomposable, nonfull form of degree $m$ and consider the equation
+$$F(x_1, ..., x_m) = c$$
 
-Let $K$ be a number field of degree $n$ and let $\mu_1, ..., \mu_m$ be a set of $\mbb{Q}$-linearly independent elements of $K$. These generate a nonfull module, $M$. Starting from these generators we can build a basis for $K$ over $\mbb{Q}$. We will call this basis $\mu_1, ..., \mu_m, \mu_{m+1}, ..., \mu_n$. Considering the module, call it $\bar M$, generated by these will give us a full module and $M \subset \bar M$. We wish to find solutions to the equation $N(\alpha) = a$, where $\alpha$ is in $M$. This is really the same as allowing $\alpha$ to be in $\bar M$, so finding solutions of the form
+
+Let $k$ be a number field and let $M$ be a non-full module generated by $\mu_1, ..., \mu_m \in k$. We can assume that these are linearly independent over $\mbb Q$ since they could otherwise be replaced by a linearly independent set of generators.  
+
+As $k$ is in particular a finite separable extension of $\mbb Q$, the primitive element theorem states that there is $\theta \in k$ so that $k = \mbb Q(\theta)$. Let $f$ be the minimal polynomial for $\theta$ over $\mbb Q$. Adjoining all the roots of $f$ to $\mbb Q$, we get a field, $K$, which has finite degree, $n$, over $\mbb Q$ and which is splitting field for the irreducible polynomial $f$. Hence $K$ is a number field and is Galois over $\mbb Q$. Let $\sigma_1, ..., \sigma_n$ be the elements of $\Gal(K/\mbb Q)$.  
+
+
+be a set of $\mbb{Q}$-linearly independent elements of $k$. These generate a nonfull module, $M$. Starting from these generators we can build a basis for $k$ over $\mbb{Q}$. We will call this basis $\mu_1, ..., \mu_m, \mu_{m+1}, ..., \mu_n$. Considering the module, call it $\bar M$, generated by these will give us a full module and $M \subset \bar M$. We wish to find solutions to the equation $N(\alpha) = a$, where $\alpha$ is in $M$. This is really the same as allowing $\alpha$ to be in $\bar M$, so finding solutions of the form
 $$\alpha = \sum_{i=1}^n x_i \mu_i$$
 where the $x_i$ are in $\mbb{Z}$, with the added restriction that 
 $$x_{m+1} = ... = x_n = 0$$
