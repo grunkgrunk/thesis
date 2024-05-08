@@ -135,4 +135,116 @@ A nonarchimedian absolute value $\abs{}$ on a field $K$ extends to a nonarchimed
     But these are exactly the coefficients of $F(x,y)$, when regarded as a polynomial in $x$ with coefficients in $\mbb{Q}[y]$. Thus, the above expression is in fact equal to $F(x,y)$ and is a factorization of it in terms of linear factors and hence it decomposable.
 \end{proof}
 
+
+Let $F$ be the Galois closure of $K$ and let $G = \Gal(F / \mbb Q)$ and let $H = \Gal(F / K)$. Set now $n = [G : H] = [K : \mbb Q ]$ and find $\sigma_1, ..., \sigma_n$ so that
+$G = \cup_{i=1}^n \sigma_i H$
+is a disjoint union. For ease of notation, let us denote by $N$ the field norm $N_{K/\mbb Q}$. For $x_1, ..., x_k \in \mbb Z$ we now define $F(x_1, ..., x_k) := N(x_1 \mu_1 + ... + x_k \mu_k)$. 
+
+Let now $\sigma \in G$. Of course $\sigma \sigma_i \in G$ so there is a unique $j \in \{1, ..., n\}$ so that $\sigma \sigma_i \in \sigma_j H$. If both $\sigma \sigma_i$ and $\sigma \sigma_{i'}$ were in $\sigma_j H$ then we would have $i = i'$ and therefore there is a permutation $\tau : \{1, ..., n\} \to \{1, ..., n\}$, depending on $\sigma$ so that $\sigma \sigma_i \in \sigma_{\tau(i)} H$. In other words, we can write $\sigma \sigma_i = \sigma_{\tau(i)}h_i$ for a suitable $h_i \in H$. But then as $h_i$ fixes $K$ we have 
+
+$$\sigma \sigma_i(\mu_j) = \sigma_{\tau(i)}h_i(\mu_j) = \sigma_{\tau(i)}(\mu_j)$$
+
+And therefore 
+
+\begin{align*}
+    \sigma \prod_{i = 1}^n \left(x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k) \right) &= \prod_{i = 1}^n \left(x_1 \sigma\sigma_i(\mu_1) + ... + x_k \sigma\sigma_i(\mu_k) \right) \\ 
+    &= \prod_{i = 1}^n \left(x_1 \sigma_{\tau(i)}(\mu_1) + ... + x_k \sigma_{\tau(i)}(\mu_k) \right) \\
+    &= \prod_{i = 1}^n \left(x_1 \sigma_{i}(\mu_1) + ... + x_k \sigma_{i}(\mu_k) \right)
+\end{align*}
+
+
+
+Once we have a module, we can of course consider the norm of the elements in it. Let $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb{C}$. We then have
+$$N(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n \sigma_i(x_1 \mu_1 + ... + x_k \mu_k) = \prod_{i = 1}^n x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k)$$
+
+
+
+Any term in this product occurs from choosing one of the $k$ terms in each of the $n$ factors, so multiplying this expression out, we get a homogenous polynomial in the variables $x_1, ..., x_n$. Let us think about what the coefficients of this polynomial are. Any term will have the form
+$$x_{i_1}\sigma_1(\mu_{i_1}) \dots x_{i_n}\sigma_n(\mu_{i_n}) = x_{i_1} ... x_{i_n} \sigma_1(\mu_{i_1})... \sigma_n(\mu_{i_n})$$
+where the $i_j$ signify which of the $k$ terms in the $n$ factors we chose. There could be many choices that lead to the same monomial, $x_{i_1}...x_{i_n}$. As such, the coefficient of this monomial will be
+$$\sum_{i} \sigma_1(\mu_{i_1})... \sigma_n(\mu_{i_n})$$
+where each $i$ in the sum corresponds to a unique way of choosing the $k$ terms in the $n$ factors. Acting with an embedding on the set of all embeddings will simply permute them. Thus, acting with an embedding on the above sum will just permute the order in which the terms are added. Thus, the sum is fixed by all embeddings. But this means that all coefficients are fixed by every single embedding, which means that the coefficients are in $\mbb{Q}$. Hence, $$F(x_1, ..., x_k) = N(x_1 \mu_1 + ... + x_k \mu_k)$$ 
+is a form, and we call it the form associated to the generators $\mu_1, ..., \mu_k$, of the module. Since there may be many generators that lead to the same module, the forms achieved in this way may not be equal. However, it turns out that they are equivalent. If $\nu_1, ...,\nu_s$ is another set of generators for the same module, then we can write each $\nu_i$ as a $\mbb{Z}$-linear combination of the $\mu_i$'s, i.e. for $j = 1, ..., s$, we have
+$\nu_j = \sum_{i=1}^k a_{ij} \mu_i$. Set for each $j = 1, ..., k$ 
+$$x_j = \sum_{i=1}^s a_{ji} y_i$$
+We see that
+$$\sum_{i=1}^s y_i \nu_i = \sum_{i=1}^s y_i \sum_{j=1}^k a_{ji} \mu_j = \sum_{j=1}^k (\sum_{i=1}^s a_{ji} y_i) \mu_j = \sum_{j=1}^k x_j \mu_j$$
+Which means that the forms associated to the generators $\mu_1, ..., \mu_k$ and $\nu_1, ..., \nu_s$ are equivalent. 
+
+We have seen that it is possible to construct forms from modules. The other direction is also possible. We have the theorem
+
+\begin{theorem}
+\end{theorem}
+
+Because of this correspondence between forms and norms of elements, we will now spend some more time investigating norms. 
+
+In general, if we have a basis for $N$, say $\mu_1, ..., \mu_m$ and we choose to consider $\mbb Q$-linear combinations of these, say 
+\begin{equation} \label{eq:LinearCombination}
+    a_1 \mu_1 + ... + a_m \mu_m = 0 
+\end{equation}
+Then we can always find an integer $c \neq 0$ so that $c a_i$ is an integer for all $i$. For example we can choose $c$ to be th product of all denominators of the $a_i$, all of which are non-zero. So if $m > n$ then we would be able to choose at least one of the $a_i$ to be non-zero. But that would mean that multiplying (\ref{eq:LinearCombination}) by a suitable $c$ would yield a non-trivial $\mbb Z$-linear combination, which is a contradiction. Hence the rank of a module has to be smaller than or equal to $n$. If we have $m = n$, then $N$ is a full module, because multiplication by $c \neq 0$ in (\ref{eq:LinearCombination}) will give a $\mbb Z$-linear combination of the $\mu_i$'s which is zero, which implies that the $ca_i$'s are all zero, which forces the $a_i$ to be zero. On the other hand, if $N$ is a full module, then it has rank $n$ since a basis for $K$ over $\mbb Q$ is in particular also linearly independent over $\mbb Z$. But then the $\mu_i$ must be a basis for $N$, so it has rank $n$. Thus the full modules are exactly the modules of rank $n$, and the nonfull modules are those of rank less than $n$.
+
+\begin{lemma}\label{lem:ModuleCanBeScaledToFitInsideCoefficientRing}
+    If $M$ is a full module then there exists a non-zero integer $b$ so that $bM \subseteq \mfrak D$.
+    \end{lemma}
+    \begin{proof}
+    By (\ref{lem:ElementsCanBeScaledToBeInCoefficientRing}) we can find a non-zero integer $c_i$ for every $\mu_i$ so that $c_i \mu_i$ is in $\mfrak D$. We can then take $b$ to be the product of all the $c_i$'s. This will be a non-zero integer, satisfying that $b \mu_i$ is in $\mfrak D$ for all $i$. It now follows from (\ref{lem:SufficientConditionForCoefficient}) that $bx$ is in $\mfrak D$ for all $x \in M$, meaning that 
+    that $b M \subseteq \mfrak D$.
+\end{proof}
+
+As all the $\mu_i$ belong to $K$ we can by (\ref{lem:ElementsCanBeScaledToBeInCoefficientRing}) find $b_i$ so that $b_i \mu_i \in \mfrak D$. Taking 
+
+
+This means that we can find non-zero integer $b$, so that $b \mu_1, ..., b \mu_n$ are all in $\mfrak D$. This is clearly still a basis for $K$ over $\mbb Q$, which means that $\mfrak D$ is full, and so
+
+
+
+Suppose we have a finite extension of fields, $K / k$. Multiplication by an element, $\alpha$, in $K$ can be regarded as a $k$-linear map, $\phi_\alpha(x) = \alpha x$, from $K$ to itself, and we have that $\phi_\alpha^k(x)$ = $\alpha^k x$, for $k \in \mbb N$. Hence, $\phi_\alpha^k(1) = \alpha^k$. The characteristic polynomial, $\chi_{\phi_\alpha}$, of $\phi_\alpha$ is then a monic polynomial with coefficients in $k$ and we have $\chi_{\phi_\alpha}(\phi_\alpha) = 0$. In words, this means that $\chi_{\phi_\alpha}(\phi_\alpha)$ is the zero map. Hence evaluating it in 1 gives a polynomial expression in $\alpha$ with coefficients in $k$ which equals 0. This means that $\alpha$ is a root of $\chi_{\phi_\alpha}$. We will therefore call the polynomial $\chi_{\phi_\alpha}$ the characteristic polynomial of $\alpha$ relative to the extension $K / k$.
+
+If now $K$ is instead a number field with degree $n$ over $\mbb{Q}$. If $\alpha$ now is an element in an order $\mfrak D \subseteq K$, and $\mu_1,  ..., \mu_n$ is a basis for $\mfrak D$ then we can write each $\alpha \mu_i \in \mfrak D$ as a linear combination with coefficients in $\mbb Z$, which means that the matrix representation of $x \mapsto \alpha x$ has integer entries, so the characteristic polynomial of $\alpha$ has integer coefficients. But as we saw above, $\alpha$ is a root of this polynomial, which is monic. Hence $\alpha$ is an algebraic integer and therefore $\mfrak D$ is a subring of the ring of algebraic integers, $\mcal O$. We therefore already know some things about $\mfrak D$. All its units are characterized by having norm $\pm 1$, the norm and trace of an element in $\mfrak D$ are integers, and if $\alpha \in \mfrak{D}$ then $\alpha$ divides $N(\alpha)$ in $\mfrak D$. But perhaps more interestingly, Dirichlet's unit theorem generalizes to orders, such as $\mfrak D$. We have the following result.
+
+
+
+
+\section{Solutions to $N(\mu) = a$, where $\mu$ is in a full module}
+
+
+Let $\mfrak{D}$ be the coefficient ring of a full module $M$ and assume that 
+$$N(\mu) = a,$$
+for some $\mu$ in $M$. We have that $\epsilon \mu$ is in $M$ if and only if  $\epsilon$ is in $\mfrak{D}$. So take now $\epsilon \mu \in M$ with $\epsilon \in \mfrak{D}$. We get
+$$N(\epsilon \mu) = N(\epsilon)N(\mu) = a N(\epsilon)$$
+This means that a single solution to 
+So if $\epsilon$ has norm 1, also $\epsilon \mu$ will be a solution. The units of $\mfrak{D}$ are the elements with norm $\pm 1$. 
+
+Maybe all we really need to show is what all of these solutions are like. Maybe we do not need all the other parts. 
+
+
+We obtain the following corollary
+\begin{corollary}
+    Assume $x_1, ..., x_k \in K$ and that $|x_i| > |x_j|$ for all $i \neq j$. Then $|x_1 + ... + x_k| = |x_i|$.
+\end{corollary}
+\begin{proof}
+    This follows by induction and the base case is clear. Suppose we have $x_1, ..., x_{k+1} \in K$ and assume without loss of generality that $x_1$ has absolute value strictly larger than all the other $k$ elements. Set now $A = x_2 + ... + x_{k+1}$. We have $|A| \leq \max\{|x_2|, ... , |x_{k+1}| \}$ so  $|x_1| > |A|$. By the above proposition we now have $|| $
+\end{proof}
+
+
+Since all the ideals of $O$ are powers of the maximal ideal, and the maximal ideal is generated by a single element, so every ideal is finitely generated. As $O$ is an integral domain, this means that it is in fact a Dedekind domain. 
+
+\begin{lemma}
+    Suppose that $K$ is a number field and that $v$ is a discrete valuation on $K$. Denote by $O_v$ the valuation ring of $v$. Then $O_K \subset O_v$. In particular, the valuation ring of the completion of $K$ with respect to $v$ contains $O$.
+\end{lemma}
+
+\begin{proof}
+    Let $\overline{R}^S$ denote the integral closure of $R$ in $S$. We know that $O_K$ is the integral closure of $\mbb Z$ inside of $K$ and also that the ring of fractions of $O_K$ is $K$. Furthermore, $\mbb Z \subseteq O_v$ and $O_v$ is integrally closed in its field of fractions, $F$, since it is a Dedekin domain. We have something like 
+
+    $$O_K = \overline {\mbb{Z}}^K \subseteq \overline {O_v}^K \subseteq \overline {O_v}^F = O_v$$ 
+    
+\end{proof}
+
+
+
+We know from ? that there is an $n$ so that $\exp : \mfrak p^n \to U^{(n)}$ and $\log : U^{(n)} \to \mfrak p^n$ are inverses of each other. By the above lemma, we know that the ring $\kappa_n = \mcal{O} / \mfrak p^n$ is finite, so also $\kappa_n^*$ is finite. So if $\alpha \in O$ is a unit then, since ring maps preserve units, $\bar \alpha \in \kappa_n$ is certainly also a unit. But then $\bar \alpha$ has finite order, since $\kappa_n^*$ is finite. In other words, we can find $k \in \mbb N$ so that $\bar \alpha^k = \bar 1$. But this is really just another way of saying that $\alpha^k$ is in $U^{(n)}$.
+
+
+
 \end{document}
