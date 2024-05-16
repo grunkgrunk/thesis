@@ -246,5 +246,34 @@ Since all the ideals of $O$ are powers of the maximal ideal, and the maximal ide
 We know from ? that there is an $n$ so that $\exp : \mfrak p^n \to U^{(n)}$ and $\log : U^{(n)} \to \mfrak p^n$ are inverses of each other. By the above lemma, we know that the ring $\kappa_n = \mcal{O} / \mfrak p^n$ is finite, so also $\kappa_n^*$ is finite. So if $\alpha \in O$ is a unit then, since ring maps preserve units, $\bar \alpha \in \kappa_n$ is certainly also a unit. But then $\bar \alpha$ has finite order, since $\kappa_n^*$ is finite. In other words, we can find $k \in \mbb N$ so that $\bar \alpha^k = \bar 1$. But this is really just another way of saying that $\alpha^k$ is in $U^{(n)}$.
 
 
+For elements $f \in K[[x]]$ we introduce the notation $[x^i]f$ to denote the $i$th coefficient of $f$. Suppose that we have a sequence $f_1, f_2, ... \in K[[x]]$ with each $f_i$ having the form 
+$$f_i = \sum_{j=0}^\infty a_{ij}x^j$$
+Define $P_{k,n} = \{ a_{1h_1} ... a_{nh_n} | h \in \mbb N_0^n,|h| = k \}$, where we by $|h|$ mean the sum of the entries of $h \in \mbb N^n_0$ and let $P_k = \bigcup_{n \in \mbb N_0} P_{k,n}$. Let $g_n = \prod_{i=1}^{n}f_i$. We claim that $[x_k]g_n = \sum_{c \in P_{k,n}} c$; when expanding out the brackets in the product $\prod_{i=1}^{n}f_i$ one ends up with a bunch of terms of degree $k$ and each such term corresponds exactly to an element in $P_{k,n}$. The process of collecting all of these terms is then just the number $[x_k]g_n$. Suppose that $f(x) = \sum_{i=0}^{\infty}$ and let us now consider the simpler case where each $f_i = f$. If $a_0 \neq 0$ then $P_0$ contains infinitely many non-zero elements since $a_0^n$ is non-zero for all $n$, as $a_0$ is a unit, and $a_0^n \in P_{0,n}$. If on the other hand $a_0 = 0$ then $P_{k,n} = \emptyset$ for all $n > k$. As each $P_{k,n}$ is finite it therefore follows that $P_k$ is finite for all $k \in \mbb N_0$, and so we conclude that $P_k$ contains only finitely many non-zero elements. This shows that if $f \in (x)$ and $g \in K[[x]]$ where $g(x) = \sum_{i = 0}^\infty a_i x^i$ we can define 
+$$g(f(x)) = \sum_{i = 0}^\infty a_i f(x)^i$$
+One way to think about this is that $g$ induces a function $g : (x) \to K[[x]]$. Composition also makes sense if $g$ is just a polynomial. In this case we can allow $f \in K[[x]]$. Observe that we can define the following elements in $K[[x]]$
+\begin{align*}
+    \exp(x) &= \sum_{n = 0}^\infty \frac{x^n}{n!} \\
+    \log (1 + x) &= \sum_{n = 1}^\infty (-1)^{n-1}\frac{x^n}{n}
+\end{align*}
+These are of course just the usual power series for the logarithm and the exponential function. Defining $F(x) = \log(1 + x)$ we have two induced functions $\exp : (x) \to K[[x]]$ and $F : (x) \to K[[x]]$. It is clear that $\exp (x) - 1 \in (x)$ and that $F(\exp (x) - 1) = \log (\exp (x)) = x$. Similarly $\exp(\log(1+x)) = 1+x$.
+
+
+
+
+(TALK ABOUT HOW THESE DEFINITION RELATE TO P-ADIC DEFINTIONS)
+(TODO)
+Next, see that exp f(u) = exp f(u), where f(u) is a p adic number, exp on the left hand side is the p adic exponential and exp on the right is the formal power series exponential function 
+
+
+
+The ring $K[[x]]$ is in fact a PID and a local ring, with maximal ideal $(x)$. One might therefore wonder if this ring is the valuation ring of some valued field. It turns out that it is. 
+
+This ring has no zero divisors, so we can consider its field of fractions, which we will denote by $K((x))$. (THIS FIELD OCCURS AS THE COMPLETION OF K[[x]]) We now have a field extension $K((x)) / K$, and hence we can think about which elements are algebraic over $K$. We have the following theorem
+
+
+\begin{proposition}
+    The completion of the rational functions $K(x)$ with respect to the valuation $v_\mfrak{p}$, where $\mfrak p = (x)$, is isomorphic to $K((x))$.  
+\end{proposition}
+
 
 \end{document}
