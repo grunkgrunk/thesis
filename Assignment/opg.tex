@@ -920,11 +920,8 @@ Next, let us define what is called a local manifold. These are closely related t
 Let $D$ be the set containing all $f \in K[[X_1, ..., X_n]]$ that converge in some $\epsilon$-neighborhood of the origin. This set is in fact a subring of $K[[X_1, ..., X_n]]$.
 
 \begin{definition}[Local manifold]
-    Assume $f_1, ..., f_m \in D$ all of which have zero constant term. The set $V(f_1, ..., f_m)$ of points $(\alpha_1, ..., \alpha_n) \in \tilde {K}^n$ belonging to some $\epsilon$-neighborhood of the origin so that $$f_1(\alpha_1, ... \alpha_n) = ... = f_m(\alpha_1, ..., \alpha_n) = 0$$
-    is called a local manifold. We will also sometimes refer to $V(f_1, ..., f_m)$ simply as $V$.
-    
-    
-    $$V = \{\alpha \in \tilde {K}^n \mid f_1 (\alpha) = ... = f_n(\alpha) = 0   \}$$
+    Assume $f_1, ..., f_m \in D$ all of which have zero constant term. The set $V$ of points $(\alpha_1, ..., \alpha_n) \in \tilde {K}^n$ belonging to some $\epsilon$-neighborhood of the origin so that $$f_1(\alpha_1, ... \alpha_n) = ... = f_m(\alpha_1, ..., \alpha_n) = 0$$
+    is called a local manifold. We say that the power series $f_1, ..., f_m$ determine $V$. 
 \end{definition}
 If $V$ and $W$ are two local manifolds we will by $V \subseteq W$ mean that there is an $\epsilon$-neighborhood around the origin, $U$, so that $U \cap V \subseteq U \cap W$. We write $V = W$ if and only if both $V \subseteq W$ and $W \subseteq V$.  
 Consider the set, $I_V$, of elements $f \in D$ that vanish on $V$ in some $\epsilon$-neighborhood of the origin. This set is an ideal of $D$.
@@ -935,11 +932,20 @@ Consider the set, $I_V$, of elements $f \in D$ that vanish on $V$ in some $\epsi
 % Two elements $f, g \in \overline D$ are equal if and only if $f - g \in I_V$, that is, if their difference 
 
 \begin{definition}[Curve]
-    A curve in $\tilde{K}^n$ is a collection of $n$ integral (WHAT IS MEANT BY THIS) formal power series, $\omega_1(X), ..., \omega_n(X)$ having coefficients in $K$ or a finite extension of $K$, not all identically zero, and with constant term zero. We say the curve lies on a manifold $V$, if for every power series $f \in I_V$ we have $$f(\omega_1(X), ..., \omega_n(X)) = 0$$
+    A curve in $\tilde{K}^n$ is a collection of $n$ integral (QUESTION: WHAT IS MEANT BY THIS) formal power series, $\omega_1(X), ..., \omega_n(X)$ having coefficients in $K$ or a finite extension of $K$, not all identically zero, and with constant term zero. We say the curve lies on a manifold $V$, if for every power series $f \in I_V$ we have $$f(\omega_1(X), ..., \omega_n(X)) = 0$$
 \end{definition}
-Not that a curve in the sense of this definition above is not a set of points. It is merely a collection of formal power series. We need the following theorems. Note that if $V = V(f_1, ..., f_n)$ is a local manifold then certainly, $f_1, ..., f_n \in I_V$. Thus if $\omega_1(X), ..., \omega_n(X)$ is a curve on $V$ then we have in particular that $f_i(\omega_1(X), ..., \omega_n(X)) = 0$ for all $i \in \{1, ..., n\}$. 
+Note that a curve in the sense of this definition above is not a set of points. It is merely a collection of formal power series. There is an easier way to test whether a curve is on a local manifold
+\begin{lemma}\label{lem: Curve is on manifold}
+    Suppose that $V$ is a local manifold and $\omega_1(X), ..., \omega_n(X)$ is a curve in $\tilde{K}^n$ and suppose $V$ is determined by the power series $f_1, ..., f_m$. If $f_i(\omega_1(X), ..., \omega_n(X)) = 0$ for every $i \in \{1, ..., m\}$ then the curve $\omega_1(X), ..., \omega_n(X)$ is on $V$.
+\end{lemma}
+\begin{proof}
+    Lemma 3, p. 303 Borevich states that the ideal $I_V$ is finitely generated and we can therefore assume that $f_1, ..., f_m$ generate $I_V$ (QUESTION: Why can we do this?). Take any $f \in I_V$. Then we can write $f = h_1 f_1 + ... + h_m f_m$ where the $h_i$ are in $D$. But then
+    $f(\omega_1(X), ..., \omega_m(X)) = 0$ so the curve is on $V$. 
+\end{proof}
 
-also that if $\omega_1(X), ..., \omega_n(X)$ is a curve on a manifold $V(f_1, ..., f_n)$ then 
+We need the following theorems. Note that if $V = V(f_1, ..., f_n)$ is a local manifold then certainly, $f_1, ..., f_n \in I_V$. Thus if $\omega_1(X), ..., \omega_n(X)$ is a curve on $V$ then we have in particular that $f_i(\omega_1(X), ..., \omega_n(X)) = 0$ for all $i \in \{1, ..., n\}$. 
+
+% THIS MIGHT NOT BE NEEDED
 \begin{theorem}\label{thm: The shape of a manifold}
     A local manifold is either equal to the set containing just the origin, or it contains a curve.
 \end{theorem}
@@ -1052,23 +1058,6 @@ In algebraic number theory we study finite extensions of $\mbb Q$, known as numb
 \begin{remark}\label{rem: Compactness is equivalent to sequential compactness}
     Since the absolute value $K$ induces a metric on $K$, it means that compactness is equivalent to sequential compactness. Thus every sequence in $O$ has a convergent subsequence.
 \end{remark}
-
-% we write it in another way
-In the real numbers we are used to that the function $u \mapsto \alpha^u$ is well-defined regardless of what $u$ and $\alpha$ is. For some fields this is not the case, and we will now see an example of this. 
-
-\begin{proposition}
-    Let $K$ be a local $\mfrak p$-adic number field and let $n$ be the smallest natural number so that we obtain an isomorphism $\mfrak p^n \cong U^{(n)}$ as in (???). Suppose $u,\alpha \in O$. Then the exponential function $\alpha^u = \exp(u \log \alpha)$ is well-defined whenever $u \in O$ and $\alpha \in U^{(n)}$.
-\end{proposition}
-\begin{proof}
-    Suppose that $u \in O$ and $\alpha \in U^{(n)}$. This means that $\log \alpha \in \mfrak p^n$ and so $u \log \alpha \in \mfrak p^n$ because $\mfrak p^n$ is an ideal. Thus, it makes sense to apply $\exp$ on $u \log \alpha$.
-\end{proof}
-
-\begin{lemma}
-    Suppose $\mfrak p$ is a prime of a local field $K$ and set $q = \# (O / \mfrak p^n)^*$. If $\alpha \in O_K$ and $\mfrak p \nmid \alpha$ then $\alpha^q \in U^{(n)}$. In particular, if $\epsilon$ is any unit of $O_K$ then $\epsilon^q \in U^{(n)}$.
-\end{lemma}
-\begin{proof}
-    First of all, the number $q$ is a natural number by \cref{lem: Valuation ring mod power of prime is finite in local field}. Take $\alpha$ in $O_K$ and suppose $\mfrak p \nmid \alpha$ for some prime $\mfrak p$ of $K$. This means that $\mfrak p$ does not occur in the prime factorization of $\alpha O_K$, which means that $\gcd(\alpha O_K, \mfrak p) = O_K$, hence also $\gcd(\alpha O_K, \mfrak p^n) = O_K$. But that means that $\alpha \beta + l = 1$ for some $l \in \mfrak p^n$ and $\beta \in O_K$, and so $\alpha$ is a unit in $O_K / \mfrak p^n$. But then $\overline{\alpha^q} = \overline 1$ in $O_K / \mfrak p^n$. Hence, $\alpha^q \in U^{(n)}$. Suppose now that $\epsilon$ is a unit in $O_K$. Then $\epsilon O_K = O_K$, meaning that $\mfrak p \nmid \epsilon$. By what we just proved, it now follows that $\epsilon^q \in U^{(n)}$. 
-\end{proof}
 
 
 
@@ -1305,7 +1294,7 @@ is exactly the same as finding the elements $\alpha \in M$ so that
 \begin{equation}
     N_{K / \mbb Q}(\alpha) = c
 \end{equation}
-Note that if $c = 0$ then $\alpha = 0$ (WE NEED TO VERIFY THIS). Thus we can assume that $c \neq 0$. (This is needed when we divide by $\sigma_j(\alpha)$)
+Note that if $c = 0$ then $\alpha = 0$, so the above equation is not really interesting in this case. Thus we will assume that $c \neq 0$.
 
 By \cref{lem: Basis for module is linearly independent over Q}, the elements $\mu_1, ..., \mu_m$ are linearly independent over $\mbb Q$, so we can extend them to a basis $\mu_1, ...,\mu_{m}, \mu_{m+1}, ... \mu_n$ for $K$ over $\mbb Q$. We then get a module $M' = \{ \mu_1, ..., \mu_n\}$ and we clearly have $M \subseteq M'$. Similar to what we have done previously, we define 
 \begin{align*}
@@ -1323,8 +1312,8 @@ Let now $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb C$. Le
 \end{proof}
 
 % Let $O_K$ denote the ring of integers of $K$ and 
-Let now $k$ be a natural number as in \cref{prop: Log and exp for local fields} so that the pair of maps $\log : U^{(k)} \to \hat {\mfrak p}^k$ 
-and $\exp : \hat {\mfrak p}^k : \to U^{(k)}$ are mutual inverses. Let $\mfrak D$ be the coefficient ring of $M'$. Using \cref{thm: Shape of solutions to N(x) = c for x in full module} we can pick $\phi_1, ..., \phi_t \in \mfrak D$ to be a fundamental system of units for $\mfrak D$, and a finite subset $\Gamma' \subseteq M_c'$ so that any $\alpha \in M_c$ can be written as
+Let now $k$ be a natural number so that the pair of maps $\log : U^{(k)} \to \hat {\mfrak p}^k$ 
+and $\exp : \hat {\mfrak p}^k : \to U^{(k)}$ are mutual inverses (this is the number $m$ in \cref{prop: Log and exp for local fields}). Let $\mfrak D$ be the coefficient ring of $M'$. Using \cref{thm: Shape of solutions to N(x) = c for x in full module} we can pick $\phi_1, ..., \phi_t \in \mfrak D$, $t = r + s - 1$, to be a fundamental system of units for $\mfrak D$, and a finite subset $\Gamma' \subseteq M_c'$ so that any $\alpha \in M_c$ can be written as
 $$\alpha = \gamma' \phi_1^{v_1} ... \phi_t^{v_t},$$
 for some $\gamma' \in \Gamma'$ and $v_i \in \mbb Z$. Since $\mfrak D \subseteq M'$ by \cref{prop: Coefficient ring properties} we have that $\phi_i$ is also a unit in $O_K$. Thus $\sigma_j(\phi_i)$ is a unit in $O_N$ so $\sigma_j(\phi_i) O_N = O_N$ meaning that $\hat {\mfrak p} \nmid \sigma_j(\phi_i)$. Using \cref{lem: Elements can be mapped to U^(k)} there is a number $q$ so that $\sigma_j(\phi_i)^q \in U^{(k)}$, so setting $\epsilon_i = \phi_i^q$ we now have $\sigma_j(\epsilon_i) \in U^{(k)}$. Let now $\Delta = \{\prod_{i = 1}^t \phi_i^{\rho_i} \mid \rho_i \in \{0, ..., q-1 \} \}$ and define $\Gamma = \{\delta \gamma \mid (\delta, \gamma) \in \Delta \times \Gamma' \}$. We see that we can now write the element $\alpha$ from above as
 \begin{equation}\label{eq: Writing of alpha in M'_c}
@@ -1332,7 +1321,10 @@ for some $\gamma' \in \Gamma'$ and $v_i \in \mbb Z$. Since $\mfrak D \subseteq M
 \end{equation}
 For an appropriate choice of $u_i$ and $\gamma \in \Gamma$. Consider now the special case where $\alpha \in M_c \subseteq M_c'$ and suppose that it is written as in \cref{eq: Writing of alpha in M'_c}. Since $\alpha \in M'$ we can also write 
 $\alpha = x_1 \mu_1 + ... + x_n \mu_n$ and since $\alpha \in M$, we must have 
-$$x_{m+1} = ... = x_n = 0$$ 
+
+\begin{equation}\label{eq: Restriction of variables}
+    x_{m+1} = ... = x_n = 0
+\end{equation}
 This restriction can be reformulated to something that is more convenient to work with. Let $\mu_1^*, ..., \mu_n^*$ be the dual basis of $\mu_1, ..., \mu_n$. The following computation shows that we can recover the $x_i$'s. 
 $$\tr_{K/\mbb Q}(\mu_i^* \alpha) = \tr_{K/\mbb Q} (\sum_{j=1}^n \mu_i^* x_j \mu_j) = \sum_{j=1}^n x_j \tr_{K/\mbb Q}(\mu_i^* \mu_j) = x_i$$ 
 Therefore the above restriction is the same as the requirement that
@@ -1354,7 +1346,7 @@ This function is well defined since if $\alpha \in U^{(k)}$ and $u \in O_\mfrak 
     L_j(u_1, ..., u_t) &= \sum_{i = 1}^{t} u_i \log \sigma_j(\epsilon_i), \text{ for } j \in \{1, ..., n \} \\
     A_{ij} &= \sigma_j(\gamma \mu_i^*), \text{ for } (i,j) \in \{1, ..., n\}^2 
 \end{align*}
-Note that the $L_j$ can be thought of as power series in $P := N_\mfrak{p}[u_1, ..., u_t]$. These have constant term 0 so it makes sense to consider the formal power series $\exp L_j(u_1, ..., u_t) \in P$. This means that we can define
+Note that the $L_j$ can be thought of as power series in $P := N_\mfrak{p}[[u_1, ..., u_t]]$. These have constant term 0 so it makes sense to consider the formal power series $\exp L_j(u_1, ..., u_t) \in P$. This means that we can define
 $$G_i(u_1, ..., u_t) = \sum_{j = 1}^n A_{ij} \exp L_j(u_1, ..., u_t) \text{ for } i \in \{m+1, ..., n \}$$
 Note that the $G_i$ all belong to $P$ and also have constant term 0. The $G_i$ also converge for all $(u_1, ..., u_t) \in O_\mfrak p^t$, so these are analytic functions. Observe that we can now rewrite \cref{eq: Restriction of variables using trace} to
 \begin{equation}\label{eq: Restriction of variables in terms of power series}
@@ -1364,25 +1356,25 @@ Note that the $G_i$ all belong to $P$ and also have constant term 0. The $G_i$ a
 
 Assume that there are infinitely many solutions in integers to \cref{eq: Initial equation of interest}. Thus we have infinitely many solutions of the shape \cref{eq: Writing of alpha in M'_c}. But as $\Gamma$ has only finitely many elements, there has to exists some $\gamma \in \Gamma$ giving rise to an infinite subset of solutions,
 $$S_\gamma := \{\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mid (u_1, ..., u_t) \in \mbb Z^t \} \subseteq M_c$$
-We get an injective homomorphism $\iota : S_\gamma \to \mbb Z^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mapsto (u_1, ..., u_t)$. Now take a sequence, $(\alpha_s)$, of distinct elements in $S_\gamma$. We get a sequence $U_s = \iota(\alpha_s) \in \mbb Z^t \subseteq O_\mfrak p^t$. As the elements $\alpha_s$ all belong to $M_c$ the tuples $\iota(\alpha_s)$ satisfy \cref{eq: Restriction of variables using trace} hence also \cref{eq: Restriction of variables in terms of power series}. Therefore we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable, (STATE THIS IN A THEOREM SOMEWHERE), and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic they are continuous (NEED A PROOF FOR THIS), we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Since $\iota$ is injective, we have the following result. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
+As the $\epsilon_i$ are independent units, we get an injective homomorphism $\iota : S_\gamma \to O_\mfrak p^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mapsto (u_1, ..., u_t)$. Now take a sequence, $(\alpha_s)$ in $S_\gamma$. We get a sequence $U_s = \iota(\alpha_s) \in O_\mfrak p^t$. As the elements $\alpha_s$ all belong to $M_c$ the tuples $\iota(\alpha_s)$ satisfy \cref{eq: Restriction of variables using trace} hence also \cref{eq: Restriction of variables in terms of power series}. Therefore we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable, (STATE THIS IN A THEOREM SOMEWHERE), and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic they are continuous (NEED A PROOF FOR THIS), we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Since $\iota$ is injective, we have the following result. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
 \begin{align*}
     G_i(u_1, ..., u_r) &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^* + v_1, ..., u_r^* + v_r) \\ 
     &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^*, ..., u_r^*) \exp L_j(v_1, ..., v_r)
 \end{align*}
 Setting $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_r^*)$ and $H_i(v_1, ..., v_r) = \sum_{j = 1}^n A_{ij}^* L_j(v_1, ..., v_r)$, we get
-$G_i(u_1, ..., u_r) = H_i(v_1, ..., v_r)$. We get yet another reformulation of \cref{eq: Restriction of variables using trace}
+$G_i(u_1, ..., u_r) = H_i(v_1, ..., v_r)$. We get yet another reformulation of \cref{eq: Restriction of variables}
 \begin{equation}\label{eq: Equations inducing a manifold}
     H_i(v_1, ..., v_t) = 0 \text{ for all } i \in \{m+1, ..., n\}   
 \end{equation}
-Let $V$ be the local manifold determined by this system. From what we showed above there are infinitely many solutions in any neighborhood of the origin. Therefore, by \cref{thm: The shape of a manifold}, $V$ contains an analytic curve. We summarize what we have found in the following theorem.
+As the $G_i$ are formal power series with constant term 0, the $H_i$ are also formal power series with constant term 0. These converge on $O_\mfrak p^t$ hence also on $\hat {\mfrak p}^t$, which is an $\epsilon$-neighborhood of the origin (with $\epsilon$ = 1). Hence we get a local manifold, $V$, determined by \cref{eq: Equations inducing a manifold}. From what we showed above there are infinitely many solutions in any neighborhood of the origin. Therefore, by \cref{thm: The shape of a manifold}, $V$ contains an analytic curve. We summarize what we have found in the following theorem. (QUESTION: DO WE EVEN NEED TO SAY THAT IT CONTAINS AN ANALYTIC CURVE)
 
 \begin{theorem}\label{thm: Skolems method}
     If \cref{eq: Initial equation of interest} has infinitely many solutions in integers, then there exists $\gamma \in \Gamma$ which determines a local manifold, $V$, given by \cref{eq: Equations inducing a manifold} and it contains an analytic curve. 
 \end{theorem}
 
 \begin{corollary}\label{cor: Any curve on V gives a solution to a system of equations}
-    Let $\omega_1(X), ..., \omega_t(X)$ be any curve on the manifold $V$ determined by \cref{eq: Last reformulation of initial equations} and define $P_j = L_j(\omega_1(X), ..., \omega_t(X))$ for $j \in \{1, ..., n\}$. The $\omega_i$ are formal power series with coefficients in a finite extension, $N_\bullet$ of $N_\mfrak p$. The $P_j$ satisfy the system of equations
-    \begin{equation}\label{eq: System that can also be solved}\tag{$\triangle$}
+    Let $\omega_1(X), ..., \omega_t(X)$ be any curve on the manifold $V$ determined by \cref{eq: Equations inducing a manifold} and define $P_j = L_j(\omega_1(X), ..., \omega_t(X))$ for $j \in \{1, ..., n\}$. The $\omega_i$ are formal power series with coefficients in a finite extension, $N_\bullet$ of $N_\mfrak p$. The $P_j$ satisfy the system of equations
+    \begin{equation}\label{eq: System that can also be solved}
     \begin{aligned}
         \sum_{j=1}^n A^*_{ij}\exp P_j(t) &= 0 \text{, for all } i \in \{ m+1, ..., n \} \\
         \sum_{j=1}^n B_{ij}P_j(t) &= 0 \text{, for all } i \in \{1,  ..., n-t\},
@@ -1429,14 +1421,14 @@ We have yet another corollary
     Suppose $f(x,y)$ is an irreducible form with integer coefficients, of degree $n \geq 3$ and that $f(x,1)$ has at least one complex root. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for some fixed $c \in \mbb{Z}$.
 \end{theorem}
 \begin{proof}
-    By assumption we can write 
+    To prove this, we want to use the results obtained in this section. To that we need to show that $f$ is decomposable and nonfull (by assumption, $f$, is already). Since $f$ is a form of degree $n$ we know that we can write
     $$f(x,y) = \sum_{i = 0}^n a_i x^{i} y^{n-i}$$
     % In order to apply (\cref{thm Skolems method}) we need to first of all make sure that $f$ is nonfull and decomposable. 
     where the $a_i$ are in $\mbb Z$. We must have that $a_n \neq 0$, since otherwise $y$ would divide $f(x,y)$ which is impossible since $f$ is irreducible. Let $h(x) = f(x,1)$. We have that $h$ is a polynomial of degree $n$ with leading coefficient $a_n$. The leading term of $a_n^{n-1} h(x)$ is $a_n^nx^n = (a_n x)^n$, so $h$ can be regarded as a monic polynomial in the variable $t$ using the substitution $a_n x \mapsto t$. So assume without loss of generality that $h$ is monic, i.e. that $a_n = 1$. Let $K = \mbb Q(\beta)$, where $\beta$ is a root of $h$. This extension has degree $n$ over $\mbb Q$ since $h$ is of degree $n$ and is irreducible. Let now $\sigma_1, ..., \sigma_n$ be the $n$ embeddings from $K$ into $\mbb C$ and set $N = \mbb Q(\sigma_1(\beta), ..., \sigma_n(\beta))$. Since $f$ is a form in two variables we know from \cref{prop: Forms of two variables are decomposable} that $f$ is decomposable. In fact we see from the proof of this proposition that
     $$f(x, y) = N_{K / \mbb Q}(x + \theta y)$$
-    We can now consider the module $M$ generated by $\mu_1 = 1$ and $\mu_2 = \beta$. These are linearly independent over $\mbb Q$ so the rank, $m$, of this module is 2 and since $n \geq 3$ we have $m < n$. This shows that $f$ is a nonfull form. Assume now that $f(x,y) = c$ has infinitely many solutions in integers. Then we cannot have $c = 0$ as the only solution in this case is $(x,y) = (0,0)$ so assume $c \neq 0$. We have just verified that $f$ is a decomposable and nonfull form and it is irreducible by assumption. From the proof of \cref{thm: Skolems method} we now obtain $\gamma \in \Gamma$ and independent units $\epsilon_1, ..., \epsilon_t$ giving rise to a local manifold $V$ determined by \cref{eq: Last reformulation of initial equations}. We get an injective map $\iota : S_\gamma \to O_\mfrak p^t$ and a sequence $(\alpha_s)$ of distinct elements in $S_\gamma$ so that $U^*_s = \iota(\alpha_s)$ so that $U^*_s \to (u_1^*, ..., u_t^*)$. Write $U^*_s = (u_{1s}, ..., u_{ts})$ and $u_{is} = u_i^* + v_{is}$ and define the sequence $V_s = (v_{1s}, ..., v_{ts})$. We have $V_s \in V$ and it converges to the origin. Let $W$ be the local manifold given by 
+    We can now consider the module $M$ generated by $\mu_1 = 1$ and $\mu_2 = \beta$. These are linearly independent over $\mbb Q$ so the rank, $m$, of this module is 2 and since $n \geq 3$ we have $m < n$. This shows that $f$ is a nonfull form. Assume now that $f(x,y) = c$ has infinitely many solutions in integers. Then we cannot have $c = 0$ as the only solution in this case is $(x,y) = (0,0)$ so assume $c \neq 0$. We have just verified that $f$ is a decomposable and nonfull form and it is irreducible by assumption. From the proof of \cref{thm: Skolems method} we now obtain $\gamma \in \Gamma$ and independent units $\epsilon_1, ..., \epsilon_t$ giving rise to a local manifold $V$ determined by \cref{eq: Last reformulation of initial equations}. We get an injective map $\iota : S_\gamma \to O_\mfrak p^t$ and a sequence $(\alpha_s)$ of distinct elements in $S_\gamma$ so that $U^*_s = \iota(\alpha_s)$ and $U^*_s \to (u_1^*, ..., u_t^*) \in O_\mfrak p^t$. Write $U^*_s = (u_{1s}, ..., u_{ts})$ and $u_{is} = u_i^* + v_{is}$ and define the sequence $V_s = (v_{1s}, ..., v_{ts})$. We have $V_s \in V$ and it converges to the origin. Let $W$ be the local manifold given by 
     $$\prod_{i \leq k < l \leq n} (L_k(v_1, ...v_t) - L_l(v_1, ...,  v_t)) = 0$$
-    If we have any curve, $\tau_1(X), ..., \tau_t(X)$ on $V$ then we can invoke \cref{cor: Result to prove thues theorem} to conclude that there exists distinct $k$ and $l$ so that $L_{k}(\tau_1(X), ..., \tau_t(X))= L_{l}(\tau_1(X), ..., \tau_t(X))$. This implies that the curve $\tau_1(X), ..., \tau_t(X)$ is also on $W$. (MAYBE WE NEED TO EXPAND ON THIS). Using \cref{remark: One manifold is contained in another} we get that $V \subseteq W$, that is there is an $\epsilon$-neighborhood around the origin so that $U \cap V \subseteq U \cap W$. As such, there is an $N \in \mbb N$ so that for all $s \geq N$ we have $V_s \in W$. Thus we can find distinct $k$ and $l$ so that $L_k(V_s) = L_l(V_s)$ for infinitely many $s \geq N$. So there are infinitely many $s_1, s_2 \in \mbb N$, $s_1 \neq s_2$ so that $L_k(V_{s_1}) = L_l(V_{s_2})$. Let $\alpha = \alpha_{s_1}$ and $\alpha' = \alpha_{s_2}$ and write $\alpha = x + y \beta$ and $\alpha' = x' + y'\beta$. We can write $\alpha = \gamma \epsilon_1^{u_1}...\epsilon_t^{u_t}$. Set now 
+    If we have any curve, $\tau_1(X), ..., \tau_t(X)$ on $V$ then we can invoke \cref{cor: Result to prove thues theorem} to conclude that there exists distinct $k$ and $l$ so that $L_{k}(\tau_1(X), ..., \tau_t(X))= L_{l}(\tau_1(X), ..., \tau_t(X))$. This implies that the curve $\tau_1(X), ..., \tau_t(X)$ is also on $W$. (QUESTION: Why? Do we use that $I_A$ is generated by the equations that define it? (A is some manifold)). Using \cref{remark: One manifold is contained in another} we get that $V \subseteq W$, that is there is an $\epsilon$-neighborhood around the origin, $U$, so that $U \cap V \subseteq U \cap W$. Since $(V_s)$ converges to the origin there is an $N \in \mbb N$ so that for all $s \geq N$ we have $V_s \in W$. Thus we can find distinct $k$ and $l$ so that $L_k(V_s) = L_l(V_s)$ for infinitely many $s \geq N$. Therefore there are infinitely many $s_1, s_2 \in \mbb N$, $s_1 \neq s_2$ so that $L_k(V_{s_1}) = L_l(V_{s_2})$. Choose any such $s_1$ and $s_2$ and set $\alpha = \alpha_{s_1}$ and $\alpha' = \alpha_{s_2}$. Let us write $\alpha = x + y \beta$ and $\alpha' = x' + y'\beta$. Furthermore, since $\alpha \in S_\gamma$, we can write $\alpha = \gamma \epsilon_1^{u_1}...\epsilon_t^{u_t}$. Set now 
     \begin{align*}
         u_i &= u_i^* + v_i \\
         c_j &= \sigma_j(\gamma)\sigma_j(\epsilon_1)^{u_1^*}...\sigma_j(\epsilon_t)^{u_t^*}
@@ -1449,27 +1441,18 @@ We have yet another corollary
     $$\frac{\sigma_j(\alpha)}{c_j} = \frac{\sigma_k(\alpha)}{c_k}$$
     Similarly we obtain 
     $$\frac{\sigma_j(\alpha')}{c_j} = \frac{\sigma_k(\alpha')}{c_k}$$
-    Therefore
+    Since $\alpha$ and $\alpha'$ have norm $c \neq 0$ they are both non-zero. Hence we now have
     $$\frac{x + y \sigma_j(\beta)}{x' + y' \sigma_j(\beta)} = \frac{x + y \sigma_k(\beta)}{x' + y' \sigma_k(\beta)}$$
     So
-    $(xy' - x'y)(\sigma_k(\beta) - \sigma_j(\beta)) = 0$
+    $(xy' - x'y)(\sigma_k(\beta) - \sigma_j(\beta)) = 0$.
     But $\sigma_k$ and $\sigma_j$ are distinct embeddings since $k \neq j$ and they are determined by their action on $\beta$. Hence $\sigma_k(\beta) - \sigma_j(\beta) \neq 0$ so we must have 
     $$xy' - x'y = 0$$
     Thus there is $d \in \mbb Q$ so that
-    $$\alpha = d\alpha'$$
-    So $$N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(d) N_{K/\mbb Q}(\alpha')$$
-    But $N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(\alpha')$ so $1 = N_{K/\mbb Q}(d) = d^n$. Hence $d = \pm 1$ so $\alpha = \pm \alpha'$. But then it is impossible for all the elements of $(\alpha_s)$ to be distinct contrary to our assumption so $S_\gamma$ cannot be infinite, meaning that there aren't infinitely many solutions to 
-
-    
-    
-    
-    We will now show that any neighborhood of the origin contains a point of $V$ which is not in $W$. This is of course a contradiction to $V \subseteq W$, so there must be only finitely many solutions. 
-
+    $\alpha = d\alpha',$ so $$N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(d) N_{K/\mbb Q}(\alpha')$$
+    But $N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(\alpha')$ so $1 = N_{K/\mbb Q}(d) = d^n$. Hence $d = \pm 1$ so $\alpha = \pm \alpha'$. But then it is impossible for all the elements of $(\alpha_s)$ to be distinct contrary to our assumption so $S_\gamma$ cannot be infinite, meaning that there has to be only finitely many solutions to $f(x, y) = c$. 
 \end{proof}
 
-It is clear that forms of degree 1 can have infinitely many solutions. What about the forms of degree 2?
-
-Consider the form $F(x,y) = x^2 - 2y^2$ and the equation 
+It is clear that forms of degree 1 can have infinitely many solutions. What about the forms of degree 2? Consider the form $F(x,y) = x^2 - 2y^2$ and the equation 
 $$F(x, y) = 7$$
 Suppose we already have a solution, $(x,y)$. Then also $(3x + 4y, 2x + 3y)$ is a solution. Thus a single solution can inductively produce infinitely many distinct. But $(3,1)$ is indeed a solution, and therefore $F(x, y) = 7$ has infinitely many solutions. This highlights the importance of the assumption that the degree of $F$ must be greater than or equal to 3.   
 
