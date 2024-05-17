@@ -97,18 +97,34 @@ Let $K$ we a number field of degree $n$ over the rationals.
 
 \section{Introduction}
 
-\section{Dual basis}
-Let $\omega_1, ..., \omega_n$ be a basis for $K$ over $k$ and choose $n$ elements, $c_1, ..., c_n$, in $k$. We know that the $n \times n$ matrix, $\tr {\omega_i \omega_j}$, is non-singular since $$0 \neq \text{disc}(\omega_1, ..., \omega_n) = |\tr(\omega_i \omega_j)|^2$$
-This means that there is a unique solution, $x_1, ..., x_n \in k$, to the $n$ equations
-$$\sum_{j=1}^n \tr(\omega_i \omega_j) x_j = \frac{c_i}{n} \quad (i = 1, ..., n)$$
-Let $\alpha = \sum_{j=1}^n x_j \omega_j$. Using rules of the trace, we get for any $i$ that
-$$c_i = \sum_{j=1}^n \tr(x_j \omega_i \omega_j) = \tr(\sum_{j=1}^n x_j \omega_i \omega_j) = \tr(\alpha \omega_i)$$
-Thus, we have demonstrated that for any choice of $c_1, ..., c_n \in k$, there is a unique $\alpha \in K$ such that $\tr(\alpha \omega_i)= c_i$. Now choose $c_{ij} = \delta_{ij}$, where $\delta_{ij}$ is the Kronecker delta. For every $i = 1, ..., n$ we get a unique $\omega_i^* \in K$ such that $\tr(\omega_i^* \omega_j) = c_{ij}$ for $j = 1, ..., n$. We call $\omega_1^*, ..., \omega_n^*$ the dual basis of $\omega_1, ..., \omega_n$. It is indeed a basis. Assume that 
-$$\sum_{i=1}^n x_i \omega_i^* = 0.$$
-Multiplying by $\omega_j$ and taking the trace, we get
-$$0 = \tr(\sum_{i=1}^n x_i \omega_i^* \omega_j) = \sum_{i=1}^n x_i \tr(\omega_i^* \omega_j) = x_j,$$
-which shows that all the $x_j$'s are zero. Thus, the $\omega_i^*$'s are linearly independent and as there are $n$ of them, they form a basis.
 
+\section{Dual basis}
+
+\begin{proposition}\label{prop: Existence of dual basis}
+    Suppose that $K/k$ is a field extension of degree $n$. Given any basis $\mu_1, ..., \mu_n$ for $K$ over $k$ there exists a basis, $\mu_1^*, ..., \mu_n^*$ called the dual basis of $\mu_1, ..., \mu_n$ so that 
+    $$\tr_{K/k}(\mu_i^* \mu_j) = \begin{cases*}
+        1 \text{ if } i = j \\
+        0 \text{ otherwise }
+    \end{cases*}$$
+\end{proposition}
+
+\begin{proof}
+For ease of notation we will write $\tr$ instead of $\tr_{K/k}$. Choose $n$ elements, $c_1, ..., c_n$, in $k$. We know that the $n \times n$ matrix, $(\tr (\mu_i \mu_j))$, is non-singular since $$0 \neq \text{disc}(\mu_1, ..., \mu_n) = |\tr(\mu_i \mu_j)|^2$$
+This means that there is a unique solution, $x_1, ..., x_n \in k$, to the $n$ equations
+$$\sum_{j=1}^n \tr(\mu_i \mu_j) x_j = \frac{c_i}{n} \quad (i = 1, ..., n)$$
+Let $\alpha = \sum_{j=1}^n x_j \mu_j$. Using rules of the trace, we get for any $i$ that
+$$c_i = \sum_{j=1}^n \tr(x_j \mu_i \mu_j) = \tr(\sum_{j=1}^n x_j \mu_i \mu_j) = \tr(\alpha \mu_i)$$
+Thus, we have demonstrated that for any choice of $c_1, ..., c_n \in k$, there is a unique $\alpha \in K$ such that $\tr(\alpha \mu_i)= c_i$. For $(i,j) \in \{1, ..., n\}^2$ we now define 
+$$c_{ij} = \begin{cases*}
+    1 \text{ if } i = j \\
+    0 \text{ otherwise }
+\end{cases*}$$
+For every $i \in \{1, ..., n \}$ we get a unique $\mu_i^* \in K$ such that $\tr(\mu_i^* \mu_j) = c_{ij}$ for $j \in \{ 1, ..., n \}$. To show that $\mu_1^*, ..., \mu_n^*$ is a basis, it suffices to show that they are linearly independent over $k$. So suppose that
+$$\sum_{i=1}^n x_i \mu_i^* = 0.$$
+Multiplying by $\mu_j$ and taking the trace, we get
+$$0 = \tr(\sum_{i=1}^n x_i \mu_i^* \mu_j) = \sum_{i=1}^n x_i \tr(\mu_i^* \mu_j) = x_j,$$
+which shows that $x_j = 0$ is zero. Doing this for all $j \in \{1, ..., n \}$ we get $x_1 = ... = x_n = 0$.
+\end{proof}
 
 
 
@@ -1356,7 +1372,7 @@ Note that the $G_i$ all belong to $P$ and also have constant term 0. The $G_i$ a
 
 Assume that there are infinitely many solutions in integers to \cref{eq: Initial equation of interest}. Thus we have infinitely many solutions of the shape \cref{eq: Writing of alpha in M'_c}. But as $\Gamma$ has only finitely many elements, there has to exists some $\gamma \in \Gamma$ giving rise to an infinite subset of solutions,
 $$S_\gamma := \{\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mid (u_1, ..., u_t) \in \mbb Z^t \} \subseteq M_c$$
-As the $\epsilon_i$ are independent units, we get an injective homomorphism $\iota : S_\gamma \to O_\mfrak p^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mapsto (u_1, ..., u_t)$. Now take a sequence, $(\alpha_s)$ in $S_\gamma$. We get a sequence $U_s = \iota(\alpha_s) \in O_\mfrak p^t$. As the elements $\alpha_s$ all belong to $M_c$ the tuples $\iota(\alpha_s)$ satisfy \cref{eq: Restriction of variables using trace} hence also \cref{eq: Restriction of variables in terms of power series}. Therefore we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable, (STATE THIS IN A THEOREM SOMEWHERE), and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic they are continuous (NEED A PROOF FOR THIS), we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Since $\iota$ is injective, we have the following result. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
+As the $\epsilon_i$ are independent units, we get an injective homomorphism $\iota : S_\gamma \to O_\mfrak p^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mapsto (u_1, ..., u_t)$. Now take a sequence of distinct elements, $(\alpha_s)$, in $S_\gamma$. We get a sequence $U_s = \iota(\alpha_s) \in O_\mfrak p^t$ and as $\iota$ is injective, the elements of this sequence are also distinct. As the elements $\alpha_s$ all belong to $M_c$ the tuples $U_s$ satisfy \cref{eq: Restriction of variables in terms of power series}. Therefore we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable, (STATE THIS IN A THEOREM SOMEWHERE), and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic they are continuous (NEED A PROOF FOR THIS), we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
 \begin{align*}
     G_i(u_1, ..., u_r) &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^* + v_1, ..., u_r^* + v_r) \\ 
     &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^*, ..., u_r^*) \exp L_j(v_1, ..., v_r)
@@ -1373,29 +1389,23 @@ As the $G_i$ are formal power series with constant term 0, the $H_i$ are also fo
 \end{theorem}
 
 \begin{corollary}\label{cor: Any curve on V gives a solution to a system of equations}
-    Let $\omega_1(X), ..., \omega_t(X)$ be any curve on the manifold $V$ determined by \cref{eq: Equations inducing a manifold} and define $P_j = L_j(\omega_1(X), ..., \omega_t(X))$ for $j \in \{1, ..., n\}$. The $\omega_i$ are formal power series with coefficients in a finite extension, $N_\bullet$ of $N_\mfrak p$. The $P_j$ satisfy the system of equations
+    Let $\omega_1(X), ..., \omega_t(X)$ be any curve on the manifold $V$ determined by \cref{eq: Equations inducing a manifold} and define $P_j = L_j(\omega_1(X), ..., \omega_t(X))$ for $j \in \{1, ..., n\}$. These are power series with coefficients in a finite extension, $N_\bullet$ of $N_\mfrak p$. There exists a matrix $B_{ij}$ with coefficients in $N_\bullet$ so that the $P_j$ satisfy the system of equations
     \begin{equation}\label{eq: System that can also be solved}
     \begin{aligned}
         \sum_{j=1}^n A^*_{ij}\exp P_j(t) &= 0 \text{, for all } i \in \{ m+1, ..., n \} \\
         \sum_{j=1}^n B_{ij}P_j(t) &= 0 \text{, for all } i \in \{1,  ..., n-t\},
     \end{aligned}
 \end{equation}
-    Where the matrices $(A^*_{ij})$ and $(B_{ij})$ both have $N_\bullet$-linearly independent rows.
+    The matrix $(A^*_{ij})$ has     $N_\bullet$-linearly independent rows and $(B_{ij})$ can be chosen so that it also has $N_\bullet$-linearly independent rows. 
 \end{corollary}
 \begin{proof}
-    Since $\omega_1(X), ..., \omega_t(X)$ is a curve on $V$ we have in particular that
+    Since $\omega_1(X), ..., \omega_t(X)$ is a curve on $V$ each $\omega_i(X)$ has coefficients in a finite extension $N_\bullet$ of $N_\mfrak p$ and therefore the $P_j$ have coefficients in $N_\bullet$. Because $\omega_1(X), ..., \omega_t(X)$ is a curve on $V$ we know in particular that
 \begin{equation}\label{eq: Last reformulation of initial equations}
     H_i(\omega_1(X), ..., \omega_t(X)) = 0 \text{ for all } i \in \{m+1, ..., n\}
 \end{equation}
-Considering how the $H_i$ are defined we see that the above is just a different way of spelling out the first equation in \cref{eq: System that can also be solved}. The matrix $(A_{ij})$ is invertible because the $\gamma \mu_i^*$ constitute a basis for $K$ over $\mbb{Q}$ so the discriminant of this basis is non-zero and it equals $|\sigma_j(\gamma \mu_i^*)|^2 = |A_{ij}|^2$ so $|A_{ij}| \neq 0$. Since $\exp$ sends elements to $U^{(k)}$ and $0 \notin U^{(k)}$ we have $\exp L_j(v_1, ..., v_t) \neq 0$ for all $(v_1, ..., v_t) \in O_\mfrak p^t$. Since $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_t^*) \in N_\mfrak p$ we have
+Considering how the $H_i$ are defined we see that the above is just a different way of spelling out the first equation in \cref{eq: System that can also be solved}. The matrix $(A_{ij})$ is invertible because the $\gamma \mu_i^*$ constitute a basis for $K$ over $\mbb{Q}$ so the discriminant of this basis is non-zero and it equals $|\sigma_j(\gamma \mu_i^*)|^2 = |A_{ij}|^2$ so $|A_{ij}| \neq 0$. Since $\exp$ sends elements to $U^{(k)}$ and $0 \notin U^{(k)}$ we have $\exp L_j(v_1, ..., v_t) \neq 0$ for all $(v_1, ..., v_t) \in O_\mfrak p^t$. Since $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_t^*) \in N_\mfrak p \subseteq N_\bullet$.
 $$|A_{ij}^*| = |A_{ij}| \prod_{j = 1}^n L_j(u_1^*, ..., u_t^*) \neq 0$$  
-Thus $(A_{ij}^*)$ is invertible. 
-
-% We claim that there is an $n-t \times n$ matrix, $B$, with entries in $N_\bullet$ and with rows which are linearly independent over $N_\bullet$ so that
-% \begin{align*}
-%   %  \sum_{j=1}^n A^*_{ij}\exp P_j(t) &= 0 \text{, for all } i \in \{ m+1, ..., n \} \\
-%     \sum_{j=1}^n B_{ij}P_j(t) &= 0 \text{, for all } i \in \{1,  ..., n-t\},
-% \end{align*}
+Thus the rows of $(A_{ij}^*)$ are linearly independent over $N_\bullet$.
 
 Let $U = \Span_{N_\bullet} \{ \omega_1(X), ..., \omega_t(X) \}$ and notice that each $P_j$ is in $U$. This means we can define the following linear map
 \begin{align*}
@@ -1451,6 +1461,94 @@ We have yet another corollary
     $\alpha = d\alpha',$ so $$N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(d) N_{K/\mbb Q}(\alpha')$$
     But $N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(\alpha')$ so $1 = N_{K/\mbb Q}(d) = d^n$. Hence $d = \pm 1$ so $\alpha = \pm \alpha'$. But then it is impossible for all the elements of $(\alpha_s)$ to be distinct contrary to our assumption so $S_\gamma$ cannot be infinite, meaning that there has to be only finitely many solutions to $f(x, y) = c$. 
 \end{proof}
+
+\section*{Discussion of Thue's theorem}
+A natural question to ask when looking at any theorem is to ask which assumptions can be dropped or altered without changing the conclusion of the theorem too much. This is what we will explore in the case of \cref{thm: Thues theorem}. 
+\subsection*{The number of variables}
+The following example shows that the theorem no longer holds if we swap out the form $f(x, y)$ with a form with more variables. 
+
+\begin{example}
+Consider the field $K = \mbb Q(\sqrt 2, \sqrt 3)$. This field has degree 4 over $\mbb Q$ and $$1, \sqrt 2, \sqrt 3, \sqrt 6$$ is a basis for it by example (2) p. 526 in dummit and foote. Note that $K$ is splitting field for the separable polynomial $(x^2 - 2)(x^2 - 3)$ so $K$ is Galois over $\mbb Q$. The automorphisms on $K$ are determined by their action on $\sqrt 2$ and $\sqrt 3$ and these must be sent to $\pm \sqrt 2$ and $\pm \sqrt 3$ respectively. There are four ways of doing this, and as $K$ is Galois all of these possibilities yield an automorphism. Using this information we find that $F(x,y,z) := N_{K /\mbb Q}(x + y\sqrt 2 + z \sqrt 3)$ is equal to
+\begin{equation}\label{eq: Linear factorization}
+    (x + y\sqrt 2 + z \sqrt 3)(x - y\sqrt 2 + z \sqrt 3)(x + y\sqrt 2 - z \sqrt 3)(x - y\sqrt 2 - z \sqrt 3)
+\end{equation}
+which after a (cumbersome) computation turns to be equal to  
+$$x^4 + 4y^4 + 9z^4 - 4x^2y^2 - 6x^2z^2 - 12y^2z^2$$
+The module $\{1, \sqrt 2, \sqrt 3\}$ has rank 3 as the generators are linearly independent over $\mbb Q$, so this module is nonfull and hence $F$ is a nonfull form. It is also clearly decomposable as $F$ splits into linear factors over $K$. Furthermore $F$ is irreducible; Clearly, none of the linear factors in \cref{eq: Linear factorization} are forms. Hence if $F$ were reducible, then there has to be a pair of these linear factors that multiply to a form. Consider for example
+$$(x + y\sqrt 2 + z \sqrt 3)(x - y\sqrt 2 + z \sqrt 3) = x^2 - 2 y^2 + 2 \sqrt 3 x z + 3 z^2$$
+This is certainly not a form as the coefficients are not in $\mbb Q$. As the isomorphisms in $\Gal(K / \mbb Q)$ permute the linear factors in \cref{eq: Linear factorization} this shows that no pair of linear factors multiply to a form and therefore $F$ must be irreducible. Observe that 
+\begin{align}\label{eq: F is square of a norm}
+    F(x,y,0) &= x^4 + 4y^4 - 4x^2y^2 = (x^2 - 2y^2)^2  \\
+    &= N_{\mbb Q(\sqrt 2) / \mbb Q}(x + y \sqrt 2)^2 \notag
+    % F(x, 0,z) &=  x^4 + 9z^4 - 6x^2z^2 = (x - 3y)^2 \\ 
+    % &= N_{\mbb Q(\sqrt 3) / \mbb Q}(x + z \sqrt 3)^2
+\end{align}
+Consider the full module $\{1, \sqrt 2\}$ inside $\mbb Q(\sqrt 2)$. Let's look at the equation 
+$$N_{\mbb Q(\sqrt 2) / \mbb Q}(x + y \sqrt 2) = 1$$
+Applying \cref{lem: writing of elements of Mc} we have $t = r+s -1 =  2 + 0 - 1 = 1$ so there has to be infinitely many solutions in integers to this equation and therefore, because of \cref{eq: F is square of a norm} there are infinitely many solutions to the equation $F(x, y, z) = 1$. 
+\end{example}
+In the above example we got an infinite number of solutions because the module $\{1, \sqrt 2, \sqrt 3 \}$ inside $\mbb Q(\sqrt 2, \sqrt 3)$ contains the submodule $\{1, \sqrt 2\}$, which is a full module when regarded as a module inside $\mbb Q(\sqrt 2)$. The fact that we get infinitely many solutions can, more abstractly, be attributed to the fact that $\{1, \sqrt 2, \sqrt 3 \}$ is what is called a degenerate module. Let's define what we mean by this
+\begin{definition}\label{def: Degenerate module}
+    Let $K$ be a number field and $M$ a module with generators $\mu_1, ..., \mu_m$ and consider the vector space $L = \Span_{\mbb Q}\{\mu_1, ..., \mu_m \}$. If $L$ contains a subspace $L'$ so that $\gamma K' = L'$ for some subfield $K'$ of $K$ and $\gamma \in K$ and $K'$ is neither $\mbb Q$ or a quadratic imaginary field then we say that $M$ is degenerate. Otherwise the module is called non degenerate.
+\end{definition}
+We see that the module $\{1, \sqrt 2, \sqrt 3 \}$ inside $\mbb Q(\sqrt 2, \sqrt 3)$ is certainly degenerate since for example $\mbb Q(\sqrt 2) = \Span_{\mbb Q} \{1, \sqrt 2 \}$. Also all full modules in a field different from $\mbb Q$ or an imaginary quadratic field are degenerate - just consider the span over $\mbb Q$ of any basis of such a module. For an example of a non-degenerate module look at the module $M = \{1, \beta \}$ from the proof of \cref{thm: Thues theorem}. One can of course argue for this using the definition directly. But it also follows directly from the following fact combined with \cref{thm: Thues theorem}.
+\begin{fact}
+    Assume $K$ is a number field and $M$ is a degenerate module and suppose that there is $\alpha \in M$ so that 
+    $$N_{K / \mbb Q}(\alpha) = c$$
+    Then there are infinitely such $\alpha \in M$.
+\end{fact}
+\begin{proof}
+    By assumption we have that $k' = \gamma L'$, where $k'$, $L'$ and $\gamma$ are as in \cref{def: Degenerate module}. We have that 
+    $$N_{K / \mbb Q}(\alpha) = N_{K' / \mbb Q}(N_{K / K'}(\alpha)) = c$$
+    Hence $\beta = N_{K / K'}(\alpha) \in K'$ is a solution to the equation
+    \begin{equation}\label{eq: Infinitely many solutions to subequation}
+        N_{K' / \mbb Q}(\beta) = c
+    \end{equation}
+    Pick now a full module $N$ in $K'$ that contains $\beta$. As $K'$ is neither $\mbb Q$ or a quadratic field it follows from \cref{lem: writing of elements of Mc} that $t > 0$ and so there are infinitely many solutions to \cref{eq: Infinitely many solutions to subequation} and therefore there are infinitely many solutions to 
+    %This can be done since we can pick a basis for $K'$ over $\mbb Q$ where $\beta$ is one of these elements. 
+
+    NOT DONE WITH THIS
+\end{proof}
+Of course this does in no way imply that there are only finitely many solutions to
+$$N_{K/\mbb Q}(\alpha) = c$$
+for $\alpha$ in some fixed non degenerate module. But if it turned out to be true we would obtain a generalization of \cref{thm: Thues theorem}. 
+
+% USE THIS
+% https://encyclopediaofmath.org/wiki/Diophantine_equations
+
+\subsection*{Baker}
+
+If one could prove that there are only a finite number of solutions to , where $\alpha$ is in some non degenerate 
+
+
+is a number field of degree $n \geq 3$ and  module $\{\mu_1, \mu_2 \}$ of rank 2 inside a number field that has degree $n \geq 3$. 
+
+
+
+Talk about similar modules here
+
+
+
+
+This is something that never happens for the modules of rank 2. a theta1 + b theta2 = a + theta1
+
+ca theta1 + cb theta2 = c 
+
+
+
+x t1 + y t2 = 1/c
+
+
+
+
+
+
+
+It might be the case that forms connected to modules which don't have a property like this always have a finite number of solutions. 
+
+
+
+A natural question to ask is which assumptions in \cref{thm: Thues theorem} can be dropped to achieve the same conclusion. As \cref{lem: writing of elements of Mc} illustrates there can only be finitely many solutions in a full module if $t = 0$. This happens exactly when $r = 0$ and $s = 1$ or $r = 1$ and $s = 0$. 
 
 It is clear that forms of degree 1 can have infinitely many solutions. What about the forms of degree 2? Consider the form $F(x,y) = x^2 - 2y^2$ and the equation 
 $$F(x, y) = 7$$
