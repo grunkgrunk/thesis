@@ -9,6 +9,8 @@
 % draw commutative diagrams
 \usepackage{tikz-cd}
 
+\usepackage{natbib}
+
 
 % \usepackage{charter} % use Helvetica font
 % \renewcommand{\familydefault}{\sfdefault} % set Helvetica as the default font
@@ -18,7 +20,10 @@
 \DeclareMathOperator{\coeff}{coeff}
 \DeclareMathOperator{\Frac}{Frac}
 \DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\tr}{Tr}
 
+
+\newcommand{\norm}[1]{\text{N}(#1)}
 
 \newcommand{\Span}{\operatorname{span}}
 \newcommand*{\argordot}[1]{
@@ -61,12 +66,7 @@
 \newcommand{\mcal}[1]{\mathcal{#1}}
 \newcommand{\mbb}[1]{\mathbb{#1}}
 % commands for the trace, Tr and norm, N
-\newcommand{\tr}{\text{Tr}}
-
-
-
-
-\newcommand{\norm}[1]{\text{N}(#1)} 
+ 
 \newcommand{\vp}{{v_{\mfrak p}}}
 
 \makeindex
@@ -81,21 +81,34 @@
 
 \begin{document}
 
+
 % TODO: Write an introduction, saying that there has been developed mathematics that does not require a complex root as we do. There are even results giving an upper bound on the number of solutions to the thue equation. We will not do that here - we will just show that under certain circumstances, there are only finitely many solutions.So the result is not as strong, but the proof is more elegant. It does not require much analysis at all. 
 
 \tableofcontents
 
 
 
-Let $K$ we a number field of degree $n$ over the rationals.
-
-% Quickly build up to a point where the problem can be phrased. Then explain what theory is need and maybe motivate it.
-
-
-
-
-
 \section{Introduction}
+
+Diophantine equations, named after the greek mathematician Diophantus, are polynomial equations in multiple variables where only integer solutions are of interest. These have been studied for a very long time and are known for being notoriously hard to solve. Therefore we often ask simpler questions like: Does this equation even have a solution? If it has finitely many solutions, can we then obtain an upper bound on the number of these? These are the kinds of questions we will be asking in this thesis. To make life simpler we will restrict our attention to a certain type of diophantine equations, namely those of the type
+$$N_{K / \mbb Q}(x_1 \mu_1 + ... + x_m \mu_m) = c,$$
+where $K$ is an algebraic number field, $\mu_1, ..., \mu_m \in K$ and $x_1, ..., x_m \in \mbb Z$. It can be shown that any polynomial equation, $f(x,y) = c$, with coefficients in $\mbb Q$ is an example of a form of this type, and adding a suitable number of additional assumption on $f$, we get \cref{thm: Thues theorem} which says that this equation only has finitely many solutions. This theorem was proven in 1909 by the Norwegian mathematician Axel Thue, and further advancements have been made since. Notably, Alan Baker showed in 1969 that the solutions can be bounded and he even managed to weed out some of the assumptions in the original theorem by Thue. This allows for an implementation of an algorithm that, in principle, could find all solutions to equations like this.  
+
+ 
+
+% Thesis about Thues theorem, proven using skolems method
+
+% Diophantine equations, what are they. Talk briefly about some history. These kinds of problems are easy to understand but hard to solve. Give some examples.
+
+% Use Hilberts 10th problem to illustrate that diophantine equations are hard to solve
+
+% Use this to motivate the need of looking at simpler classes of diophantine equations.
+
+% Explain what norm forms are and how these come about. For some of these, we know all solution. For others the problem is harder. It is possible to view the harder equations as "subequations" of the easier ones, and view the solutions as those we know, along with some extra resictions. These restrictions can be reformulated in a way that allows the use of analytical methods. This eventually leads to skolems method, and the proof of thues theorem makes heavy use of this. 
+
+
+
+ 
 
 
 \section{Dual basis}
@@ -151,30 +164,68 @@ We can also consider the fraction field of $K[[x]]$ and we will denote this fiel
     then we must have $0 = a_0 = ... = a_n$. A similar argument can be made when $\omega(f) < 0$ and thus $f$ cannot be algebraic when $\omega(f) \neq 0$. Lastly, suppose that $\omega(f) = 0$. This means that $f$ has a non-zero constant term, say $a_0 \in K$. For contradiction, assume that $f$ is algebraic over $K$. Then also $f - a_0$ would be algebraic. But that cannot be the case since $\omega(f - a_0) > 0$ and so $f$ is not algebraic.  
 \end{proof}
 
+(BE MORE PRECISE ABOUT THE SETUP)
+\begin{proposition}
+    We have $\log((1+x)(1+y)) = \log(1+x) + \log(1+y)$
+    for all $x,y \in \mfrak p$. 
+\end{proposition}
+\begin{proof}
+    First let us define 
+    $$f(x) = \log(1+x)$$
+    We want to show that $f(y + (1 + y)x) = f(x) + f(y)$. First we see that
+    $$f'(x) = \sum_{n = 0}^\infty (-1)^n x^n = \frac{1}{1+x}$$
+    This sum converges on $\mfrak p$ because $f$ converges on this set. Fix some $y \in \mfrak p$. We set
+    $$g(x) = f(y + (1 + y)x)$$
+    This also converges for all $x \in \mfrak p$. Using the chain rule we get
+    $$g'(x) = f'(y + (1 + y)x)(1 + y) = \frac{1+y}{1+y + (1+y)x} = \frac{1}{1+x}$$
+    Thus $g(x) = f(x) + c$ for some $c \in K$. As $f(0) = 0$ we now have $f(y) = g(0) = f(0) + c = c$ meaning that $g(x) = f(x) + f(y)$, which is what we wanted to show. 
+\end{proof}
 
+
+
+
+Suppose that $K$ is a field of characteristic 0 and that it is complete with respect to a valuation, $v$. Say that we have a power series $f \in K[[X]]$,  
+$$f(X) = \sum_{n = 0} a_n X^n.$$
+The set $C$ containing all points $x \in K$ so that $f(x)$ converges is called the region of convergence for $f$. 
+%In fact $C = \{x \in K \mid v(x) \geq \mu \}$ where $\mu = \min_{x \in C} v(x)$. 
+We get an induced function $f : C \to K$ given by $x \mapsto f(x)$ and this function is continuous. Differentiating the power series, $f$, induces another function, which also has $C$ as its region of convergence (REFER TO SOMETHING HERE). (REMARK THAT WE CANNOT EXPECT IT TO BE THE CASE THAT h(X) = f(g(X)) WHEN REGARDING THEM AS FUNCTIONS). Example where this goes wrong in $\mbb Q_2$: $f(x) = \exp(x)$ and $g(x) = 2x^2 - 2x$ and $h(x) = f(g(x))$
 
 \section{Forms and Modules}
 % forms
-A form $F(x_1, ..., x_m)$ in $m$ variables of degree $k$ is a homogenous polynomial of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension, $K$, of $\mbb{Q}$, then it is called decomposable and in this case $K$ can in fact be chosen to be a number field [See Thm 1 p 79 Borevich]. The following proposition provides some examples of forms that are decomposable.
+A form $F(x_1, ..., x_m)$ in $m$ variables of degree $k$ is a homogenous polynomial in the variables $x_1, ..., x_m$ of degree $k$ with coefficients in $\mbb{Q}$. If it splits into linear factors in some extension, $K$, of $\mbb{Q}$, then it is called decomposable and in this case $K$ can in fact be chosen to be a number field [See Thm 1 p 79 Borevich]. The following proposition provides some examples of forms that are decomposable.
 
+(HAVE A LOOK AT THIS AGAIN)
 \begin{proposition}\label{prop: Forms of two variables are decomposable}
-    Any form, $F(x,y)$, in two variables is decomposable.
+    Let $F(x,y) = \sum_{i=0}^m a_i x^{m-i}y^{i}$ be a form of degree $m$ where $a_0 \neq 0$. Then over the splitting field for $F(x,1)$ we have the factorization
+    $$F(x, y) = a_0(x - \alpha_1)...(x - \alpha_m)$$
 \end{proposition}
 \begin{proof}
-    Assume that $F$ has degree $m$ and notice that we can write $F(x, y) = y^mF(\frac{x}{y}, 1) = y^m G(\frac{x}{y})$ where $G$ is in $\mbb Q[t]$ having degree $r \leq m$. As $G$ is just a polynomial we can factor it into linear terms over its splitting field, $K$,
-    $$G(t) = \prod_{i=1}^r(a_it + b_i)$$
-    Now,
-    $$F(x,y) = y^m G(\frac{x}{y}) = y^m \prod_{i=1}^r(a_i\frac{x}{y} + b_i) = y^{m-r}\prod_{i=1}^r(a_ix + b_iy) $$
-    Thus, $F(x,y)$ is decomposable as it splits into linear factors over $K$. 
-
+    Since $a_0 \neq 0$ we must have $y \nmid F(x, y)$. Let $G(t) = F(t, 1)$. This is a polynomial in $\mbb Q[t]$ with degree $m$. We can now write
+    $F(x, y) = y^mF(\frac{x}{y}, 1) = y^m G(\frac{x}{y})$. As $G$ is just a polynomial we can factor it into linear terms over its splitting field, $K$
+    $$G(t) = a_0 (t - \alpha_i) ... (t - \alpha_m)$$
+    This means that
+    $$F(x,y) = y^mG(\frac{x}{y}) =  a_0 (x + \alpha_iy) ... (x - \alpha_m y)$$
+    Thus, $F(x,y)$ is decomposable as it splits into linear factors over $K$.  
 \end{proof}
+\begin{remark}\label{remark: Forms of two variables are decomposable}
+    Consider the special case where $F(x,y)$ is also irreducible and $a_0 = 1$. It then follows that $F(x,1)$ is also irreducible of degree $m$ so adjoining any of its roots $\alpha$ to $\mbb Q$ gives an extension, $K$, of degree $m$. The $\alpha_i$ in the factorization of $G$ above are then the conjugates of $\alpha$ so setting $\theta = -\alpha$ we obtain
+    $$F(x,y) = N_{K / \mbb Q}(x + y \theta)$$
+\end{remark}
+
 We shall use this fact once we start looking at Thue's theorem. 
 
-A form $F$ is called reducible if it can be written as a product of two forms of degree strictly larger than 0. Otherwise it is called irreducible. Two forms are called integrally equivalent if one can be obtained from the other by a linear change of variables with coefficients in $\mbb{Z}$. As an example,
-\begin{equation*}
-    u^2 + 3v^2 \text{ and } 7x^2 - 2xy + 4y^2
-\end{equation*}
-are integrally equivalent since the second form can be obtained from the first by setting $u = 2x+y$ and $v = x-y$.  Two forms being integrally equivalent clearly defines an equivalence relation on the set of forms. Observe that if $(x_0, y_0)$ is a solution to the second form above then $(u_0, v_0)$, with $u_0 = 2x_0 + y_0$ and $v_0 = x_0 - y_0$, is a solution to the first form above. In general, if we have a solution to an equation like (\ref{}), then we immediately have a solution to all forms integrally equivalent to $F$. Let us assume that $K$ is a number field of degree $n$ over $\mbb Q$ and let $\mu_1, ..., \mu_k$ be elements in $K$. The set, $M$, consisting of all $\mbb{Z}$-linear combinations of these is called a module in $K$ and we will write $M = \{\mu_1, ..., \mu_k\}$ for this set. The $\mu_i$'s are called generators for the module and we can use them to construct a form; As $K$ is in particular a finite separable extension of $\mbb Q$, the primitive element theorem states that there is $\theta \in K$ so that $K = \mbb Q(\theta)$. Let $f$ be the minimal polynomial for $\theta$ over $\mbb Q$. Adjoining all the roots of $f$ to $\mbb Q$, we get a field, $N$, which has finite degree, $n$, over $\mbb Q$ and which is splitting field for the irreducible polynomial $f$. Hence $N$ is a number field and is Galois over $\mbb Q$. Let $G = \Gal(N / \mbb Q)$ and $H = \Gal(N / K)$. Now $n = [K : \mbb Q] = [G : H]$ so we can find $\sigma_1, ..., \sigma_n$ so that
+A form $F$ is called reducible if it can be written as a product of two forms of degree strictly larger than 0. Otherwise it is called irreducible. Two forms of the same degree are called integrally equivalent if one can be obtained from the other and vice versa by a linear change of variables with coefficients in $\mbb{Z}$. Two forms being integrally equivalent clearly defines an equivalence relation on the set of forms having some fixed degree. If $F(x_1, ..., x_m)$ and $G(y_1, ..., y_l)$ are integrally equivalent, then knowing all the solutions to $F(x_1, ..., x_m) = a$ is exactly the same as knowing all the solutions to $G(y_1, ..., y_l) = a$.  
+
+% Example does not work
+% As an example,
+% \begin{equation*}
+%     u^2 + 3v^2 \text{ and } 7x^2 - 2xy + 4y^2
+% \end{equation*}
+% are integrally equivalent since the second form can be obtained from the first by setting $u = 2x+y$ and $v = x-y$. .
+
+% Observe that if $(x_0, y_0)$ is a solution to the second form above then $(u_0, v_0)$, with $u_0 = 2x_0 + y_0$ and $v_0 = x_0 - y_0$, is a solution to the first form above. In general, if we have a solution to an equation like (\ref{}), then we immediately have a solution to all forms integrally equivalent to $F$. 
+
+Let us assume that $K$ is a number field of degree $n$ over $\mbb Q$ and let $\mu_1, ..., \mu_k$ be elements in $K$. The set, $M$, consisting of all $\mbb{Z}$-linear combinations of these is called a module in $K$ and we will write $M = \{\mu_1, ..., \mu_k\}$ for this set. The $\mu_i$'s are called generators for the module and we can use them to construct a form; As $K$ is in particular a finite separable extension of $\mbb Q$, the primitive element theorem states that there is $\theta \in K$ so that $K = \mbb Q(\theta)$. Let $f$ be the minimal polynomial for $\theta$ over $\mbb Q$. Adjoining all the roots of $f$ to $\mbb Q$, we get a field, $N$, which has finite degree, $n$, over $\mbb Q$ and which is splitting field for the irreducible polynomial $f$. Hence $N$ is a number field and is Galois over $\mbb Q$. Let $G = \Gal(N / \mbb Q)$ and $H = \Gal(N / K)$. Now $n = [K : \mbb Q] = [G : H]$ so we can find $\sigma_1, ..., \sigma_n$ so that
 $G = \cup_{i=1}^n \sigma_i H$
 is a disjoint union. For $x_1, ..., x_k \in \mbb Z$ we now set $F(x_1, ..., x_k) = N_{K/\mbb Q}(x_1 \mu_1 + ... + x_k \mu_k)$ and we observe that 
 \begin{align*}
@@ -257,7 +308,7 @@ since the $\mu_i$ constitute a basis for $K$ over $\mbb Q$. Choose now an intege
 
 In particular \ref{prop: Valuations on Dedekin domains} says that there are units $\epsilon_1, ..., \epsilon_t$ such that every element in $V$ has a unique representation of the form $\epsilon_1^{u_1}...\epsilon_t^{u_t}$, where all the $u_i$ belong to $\mbb Z$. These units are called a fundamental system for $\mfrak D$.  
 
-We say that two elements, $\alpha,\beta$ in a a full module $M$ are \textbf{associated} if there is a unit $\epsilon \in \mfrak D$ so that $\alpha = \epsilon \beta$. Note that when $M$ is equal to its own coefficient ring, this concept is exactly the same as that of being associated in rings. Being associated elements in $M$ defines an equivalence relation on $M$, and from now on we will denote this relation as $\sim$. Define now for some $c \in \mbb N$ the subsets
+We say that two elements, $\alpha,\beta$ in a a full module $M$ are \textbf{associated} if there is a unit $\epsilon \in \mfrak D$ so that $\alpha = \epsilon \beta$. Note that when $M$ is equal to its own coefficient ring, this concept is exactly the same as that of being associated in rings. Being associated elements in $M$ defines an equivalence relation on $M$, and from now on we will denote this relation as $\sim$. Define now for $c \in \mbb N$ the subsets
 \begin{align*}
     M_c &= \{ \alpha \in M \mid N(\alpha) = c\} \\
     \overline M_c &= \{ \alpha \in M \mid | N(\alpha) | = c\}
@@ -321,16 +372,9 @@ Note that an element $\epsilon \in \mfrak D$ is a unit if and only if $N_{K/\mbb
 
     Let now $[\gamma'_1], ..., [\gamma'_l]$ be all the elements of $M_c / \sim$ and let $\alpha \in M_c$. By \cref{lem: writing of elements of Mc}, there is a unique $\gamma'_i$ and a unit $\epsilon \in \mfrak D$ of norm 1 so that $\alpha = \gamma'_i \epsilon$. For odd $n$ the statement in the proposition now follows once we set $\gamma_i = \gamma_i'$ and $k = l$. When $n$ is even, we can consider all products $\zeta \gamma'_i$, where $\zeta \in \mfrak D$ is a root of unity. There are only finitely many of these products, and we can denote them by $\gamma_1, ..., \gamma_k$. All of these belong to $M_c$ since the roots of unity have norm 1 and the statement now follows for when $n$ is even.
 \end{proof}
-
-\begin{corollary}
-    There exists an independent system of units, $\epsilon_1, ..., \epsilon_t$ and a finite number of elements, $\gamma_1, ..., \gamma_k$ so that 
-    $$M_c = \{ \gamma \epsilon_1^{u_1}...\epsilon_t^{u_t}\}$$
-    so that
-\end{corollary}
-
-
-
-Consider for example the field $\mbb Q(i)$. This field has degree 2 over $\mbb Q$ and both embeddings into $\mbb C$ are complex. Hence $r = 0$ so $t = 0$ so there are only finitely many elements in $M_c$. This holds in general for every imaginary quadratic field.
+\begin{remark}\label{rem: When does a full module have finitely many solutions}
+    Observe that if $t = 0$ then the above theorem says that there can only be finitely many elements in $M_c$. Since $t = r + s - 1$, this happens if and only if $K$ is an imaginary quadratic field or $\mbb Q$.    
+\end{remark}
 
 \section{Fields with an absolute value}
 
@@ -460,7 +504,7 @@ A valuation ring $O$ is a local ring and it has maximal ideal $\mfrak p = \{x \i
     Let $K$ be a non-archimedian valued field with valuation $v$ and let $\abs{}$ be a corresponding absolute value. Then
     $$O := \{x \in K \mid  v(x) \geq 0 \} = \{x \in K \mid  \abs{x} \leq 1 \}$$
     % = \{x \in K \mid |x| \leq 1 \}$$ 
-    is a valuation ring and is called the valuation ring of $K$ with respect to $v$. It has field of fractions $K$ and it has unique maximal ideal
+    is a valuation ring and is called the valuation ring of $K$ with respect to $v$ (or equivalently, with respect to $\abs{}$). The ring $O$ has field of fractions $K$ and it has unique maximal ideal
     $$\mfrak p = \{x \in K \mid v(x) > 0 \} = \{x \in K \mid |x| < 1 \}$$
     Its units are
     $$O^* = \{x \in K \mid v(x) = 0\} = \{x \in K \mid \abs{x} = 1 \}$$
@@ -484,7 +528,7 @@ A valuation ring $O$ is a local ring and it has maximal ideal $\mfrak p = \{x \i
     
 \end{proof}
 
-There is in fact another way of constructing the valuation ring. Suppose $K$ is complete with respect to a discrete valuation. For each $n$ we have the natural projection 
+Suppose $K$ is complete with respect to a discrete valuation. For each $n$ we have the natural projection 
 $$O \xrightarrow{\pi_n} O / \mfrak p^n.$$ 
 We have the inclusions $\mfrak p \supset \mfrak p^2 \supset ...$, which implies that every element in $\mfrak p^{n+1}$ is sent to zero under this map, giving us a commutative diagram
 $$\begin{tikzcd}
@@ -679,10 +723,6 @@ let us first recall the following proposition
 
 
 Let $(K, \abs{})$ be a nonarchimedian valued field with $\hat K$ its completion and let $v$ be a valuation on $K$ corresponding to $\abs{}$. We can extend the valuation on $K$ to a valuation on $\hat K$; Let $x \in \hat K$ be represented by the Cauchy sequence $(x_n)$ in $K$ and suppose that $x = 0$. Then $(x_n)$ converges to 0 and that means that $v(x_n) \to \infty$. On the other hand, if $(x_n)$ does not converge to 0, then by what we showed above, the sequence $(|x_n|)$ must eventually become a non-zero constant and hence the sequence $(v(x_n))$ becomes constant at some point as well and therefore it converges. Hence we obtain a valuation, $\hat v$, on $\hat K$ by defining $\hat v(x_n) = \lim_{x \to \infty} v(x_n)$. Note that this shows that $\hat v$ and $v$ have the same value group and in particular, if $v$ is discrete then so is $\hat v$. We will sometimes speak about the completion with respect to a valuation $v$. By this we mean the completion of the field with respect to an absolute value corresponding to $v$. 
-
-\begin{theorem}[Approximation theorem]\label{thm: Approximation theorem}
-    Suppose $\abs{}_1, ..., \abs{}_n$ are pairwise inequivalent absolute values on a field $K$ and suppose that we have $(a_1, ..., a_n) \in K^n$. Then for any given $\epsilon > 0$ there is an $x \in K$ so that $|x - a_i| < \epsilon$ for all $i = 1, ..., n$. 
-\end{theorem}
 
 
 \begin{lemma}[Hensel's Lemma]
@@ -921,12 +961,9 @@ Let us now see some examples using this construction.
 
 
 \section{Local manifold}
+ 
 
-Suppose that $K$ is a field of characteristic 0 and that it is complete with respect to a valuation, $v$. Say that we have a power series $f \in K[[X]]$,  
-$$f(X) = \sum_{n = 0} a_n X^n.$$
-The set $C$ containing all points $x \in K$ so that $f(x)$ converges is called the region of convergence for $f$. 
-%In fact $C = \{x \in K \mid v(x) \geq \mu \}$ where $\mu = \min_{x \in C} v(x)$. 
-We get an induced function $f : C \to K$ given by $x \mapsto f(x)$ and this function is continuous. (PROVE THIS OR PROVIDE A REFERENCE) 
+(PROVE THIS OR PROVIDE A REFERENCE) 
 
 % For the first claim assume $x_0 \in C$. Because of (\cref{lem:SufficientConditionForConvergence}) this is the same as saying that $v(a_nx_0^n) \to \infty$. Thus, for all $x \in K$ with $v(x) \geq v(x_0)$ we have that $v(a_nx^n) \geq v(a_nx_0^n)$ so $f(x)$ also converges, that is, $x \in C$. A power series, like $f$, is continuous in its region of convergence; Note that $f(x) \to a_0$ for $x \to 0$ and $f(0) = a_0$ so $f$ is continuous at 0. Let now $c$ be any element in the region of convergence for $f$. We get a new power series $f_c(x) := f(x + c)$ by expanding each term $a_n(x+c)^n$ and this new power series is also continuous at 0. That is $f_c(x) \to f_c(0)$ as $x \to 0$ and therefore $f(x) \to f(c)$ as $x \to c$, meaning that $f$ is also continuous at $c$. 
 Suppose $U$ is an open neighborhood around a point $x_0 \in K^n$ and that we have a function $f : U \to K$ and a formal power series $g \in K[[X_1, ..., X_n]]$ that converges to $f(x)$ for all $x \in U$. Then the function $f$ is called an analytic function and is said to be represented by the formal power series $g$. If $f' : U' \to K$ is another analytic function, with $U'$ another open neighborhood around $x_0$, and also represented by $g$, we will consider $f$ and $f'$ to be equal if $U \subseteq U'$ or $U' \subseteq U$.
@@ -1079,14 +1116,52 @@ In algebraic number theory we study finite extensions of $\mbb Q$, known as numb
 
 \section{Logarithms and Exponentials}
 In this section, $K$ is a $\mfrak p$-adic field. As such it is by \cref{prop: Characterization of local fields} a finite extension of $\mbb Q_p$ and by \cref{thm: Extension of absolute value} the valuation $v_p$ on $\mbb Q_p$ therefore extends uniquely to $K$. This valuation is discrete so there is $\pi \in K$ so that $v_p(\pi) = \frac{1}{e} > 0$ is the smallest attainable strictly positive value for this function. Hence defining $\vp = e v_p$ we get a normalized valuation on $K$. In this section we will see how one can define logarithm- and exponential functions on $K$. We start by looking at the formal power series 
-\begin{align*}
-    \log(1+X) &= \sum_{k = 1}^\infty (-1)^{k+1}\frac{X^k}{k} \\
-    \exp(X) &= \sum_{k = 1}^\infty \frac{X^k}{k!} 
-\end{align*}
+\begin{align}
+    \log(1+X) &= \sum_{k = 1}^\infty (-1)^{k+1}\frac{X^k}{k} \label{logarithm series} \\
+    \exp(X) &= \sum_{k = 1}^\infty \frac{X^k}{k!} \label{exponential series} 
+\end{align}
 To emphasize that these are really just formal power series, we have written the variable in uppercase. As the coefficients of both belong to $\mbb Q$ these are certainly elements of $K[[X]]$.
 
+(ADD SOME TEXT HERE EXPLAINING THAT WE WANT TO USE THESE AS FUNCTIONS ON K)
 
-(ADD BETTER ARGUMENT FOR LOG AND EXP ACTUALLY BEING HOMOMORPHISMS)
+We define $U^{(k)} := 1 + \mfrak p^k$ for $k \in \mbb N_0$. Each of these are multiplicative groups and we have $U^{(0)} = O^*$. The group $U^{(1)}$ is called the principal units. 
+
+\begin{proposition}
+    There is a uniquely determined group homomorphism taking multiplication to addition,
+    $$\log : K^* \to K$$
+    so that $\log p = 0$ and for $(1 + z) \in U^{(1)}$ this function is given by
+    $$\log (1 + z) = \sum_{k = 1}^\infty (-1)^{k+1}\frac{z^k}{k}$$    
+\end{proposition}
+\begin{proof}
+    We first show that $\log$ actually converges on principal units. So suppose $(1 + z) \in U^{(1)}$. Then $z \in \mfrak p$ and so $v_p(z) > 0$, which means that $c = p^{v_p(z)} > 0$. (WE THINK OF $v_p$ as extended to $K$.) Thus we can apply the usual logarithm and get $v_p(z) = \frac{\ln c}{\ln p}$. If $k$ is any natural number, then we always have $$p^{v_p(k)} \leq k,$$ since $p^{v_p(k)}$ divides $k$. Applying $\ln$ to both sides of this inequality is valid, as both sides are strictly positive and from doing so we get 
+    $$v_p(k) \ln p \leq \ln k$$
+    and so,
+    $$v_p(k) \leq \frac{\ln k}{\ln p}$$
+    Now for any $k \in \mbb N$ we get
+    \begin{align*}
+        v_p(\frac{z^k}{k}) &= v_p(z^k) - v_p(k)  \\
+        &= kv_p(z) - v_p(k) \\
+        &\geq k \frac{\ln c}{\ln p} - \frac{\ln k}{\ln p} \\
+        &= \frac{\ln c^k / k}{\ln p}
+    \end{align*}
+    Clearly, $\ln c^k / k \to \infty$ as $k \to \infty$. Hence, $v_p(\frac{z^k}{k}) \to \infty$ as $k \to \infty$. By \cref{lem:SufficientConditionForConvergence}, this means that the sum $z - \frac{z^2}{2} + \frac{z^3}{3} - ...$ converges. We have the following equality of formal power series
+    $$\log((1+z)(1+y)) = \log(1+z) + \log(1+y)$$
+    So if $1+z, 1+y \in U^{(1)}$ then also $(1+z)(1+y) \in U^{(1)}$ meaning that all the series occurring in the above equation converge. (THIS ARGUMENT IS NOT GOOD ENOUGH)
+    
+    
+    Thus $\log : U^{(1)} \to K$ is a homomorphism. Suppose that $\alpha \in K^*$ and that $\pi \in K$ is an element so that $v_\mfrak p(\pi) = 1$. By \cref{prop: Factorization of elements in K^*} there exists a unique elements $k_\alpha \in \mbb Z$, $\zeta_\alpha \in \mu_{q-1}$ and $u_\alpha \in U^{(1)}$ (WHAT IS $q$??) so that $\alpha = \pi^{k_\alpha} \zeta_\alpha u_\alpha$, and we have $v_\mfrak p(\alpha) = k_\alpha$. 
+    $v_\mfrak p = e v_p$. Note that $v_{\mfrak p} (p) = e$. So as $p \in K^*$ we can write $p = \pi^{e}\zeta_p u_p$. Let us now define $\log \pi = -\frac{1}{e}\log u_p$. Since $\log$ is 0 on all of $U^{(1)}$ we now get an extension of $\log$ to all of $K^*$ by setting
+    $$\log \alpha = v_\mfrak p(\alpha)\log(\pi) + \log(u_\alpha)$$
+    This function is continuous because addition of continuous functions are continuous and it is also a homomorphism by inheritance. Furthermore we have that
+    $$\log p = e\log(\pi) + \log(u_p) = \frac{-e\log u_p}{e} + \log(u_p) = 0 $$
+    Suppose that we have another extension, $\lambda : K^* \to K$, of $\log$ so that $\lambda(p) = 0$ and which is also a homomorphism. Note first that for any $\alpha \in K^*$ we have
+    $$\lambda(\alpha) = \lambda(\pi^{v_\mfrak p(\alpha)}\zeta_\alpha u_\alpha) = {v_\mfrak p(\alpha)}\lambda(\pi) + \lambda(\zeta_\alpha) + \lambda(u_\alpha)$$ 
+    By assumption we know that $\log(u_\alpha) = \lambda(u_\alpha)$ since $u_\alpha \in U^{(1)}$. Hence 
+    $$\lambda(\alpha) - \log(\alpha) = {v_\mfrak p(\alpha)}(\lambda(\pi)-\log(\pi))  + \lambda(\zeta_\alpha)$$
+    So to show that $\lambda = \log$ it suffices to show that $\lambda$ vanishes on $\mu_{q-1}$ and that $\lambda(\pi) = \log(\pi)$. Take any $\zeta \in \mu_{q-1}$. Since $\zeta^{q-1} = 1$ and $\lambda(1) = 0$ we see that
+    $$\lambda(\zeta) = \frac{1}{q-1}\lambda(\zeta^{q-1}) = 0$$
+    By assumption $0 = \lambda(p) - \log(p)$. Since $\lambda(\zeta_p) = 0$ and $v_\mfrak p(p) = e \neq 0$ we must have $\lambda(\pi) - \log(\pi) = 0$.
+\end{proof}
 
 
 \begin{lemma}(Legendre's formula)
@@ -1115,7 +1190,7 @@ To emphasize that these are really just formal power series, we have written the
 \end{proof}
 
 Using this result we can prove the following
-
+% Do we even need this?
 \begin{lemma}
     Assume that $k \in \mbb Z$ and suppose that $k = \sum_{i = 0}^{r} a_i p^i$ is the $p$-adic expansion of $k$. Then we have that 
     $$v_p(k!) = \frac{k - s_k}{p - 1}$$
@@ -1142,41 +1217,6 @@ Using this result we can prove the following
 
 \end{proof}
 
-We define $U^{(k)} := 1 + \mfrak p^k$ for $k \in \mbb N_0$. Each of these are multiplicative groups and we have $U^{(0)} = O^*$. The group $U^{(1)}$ is called the principal units.
-
-\begin{proposition}
-    Let $K$ be a $\mfrak{p}$-adic number field. There is a uniquely determined group homomorphism taking multiplication to addition,
-    $$\log : K^* \to K$$
-    so that $\log p = 0$ and for $(1 + z) \in U^{(1)}$ this function is given by
-    $$\log (1 + z) = \sum_{k = 1}^\infty (-1)^{k+1}\frac{z^k}{k}$$    
-\end{proposition}
-\begin{proof}
-    We first show that $\log$ actually converges on principal units. So suppose $(1 + z) \in U^{(1)}$. Then $z \in \mfrak p$ and so $v_p(z) > 0$, which means that $c = p^{v_p(z)} > 0$. (WE THINK OF $v_p$ as extended to $K$.) Thus we can apply the usual logarithm and get $v_p(z) = \frac{\ln c}{\ln p}$. If $k$ is any natural number, then we always have $$p^{v_p(k)} \leq k,$$ since $p^{v_p(k)}$ divides $k$. Applying $\ln$ to both sides of this inequality is valid, as both sides are strictly positive and from doing so we get 
-    $$v_p(k) \ln p \leq \ln k$$
-    and so,
-    $$v_p(k) \leq \frac{\ln k}{\ln p}$$
-    Now for any $k \in \mbb N$ we get
-    \begin{align*}
-        v_p(\frac{z^k}{k}) &= v_p(z^k) - v_p(k)  \\
-        &= kv_p(z) - v_p(k) \\
-        &\geq k \frac{\ln c}{\ln p} - \frac{\ln k}{\ln p} \\
-        &= \frac{\ln c^k / k}{\ln p}
-    \end{align*}
-    Clearly, $\ln c^k / k \to \infty$ as $k \to \infty$. Hence, $v_p(\frac{z^k}{k}) \to \infty$ as $k \to \infty$. By \cref{lem:SufficientConditionForConvergence}, this means that the sum $z - \frac{z^2}{2} + \frac{z^3}{3} - ...$ converges. We have the following equality of formal power series
-    $$\log((1+z)(1+y)) = \log(1+z) + \log(1+y)$$
-    So if $1+z, 1+y \in U^{(1)}$ then also $(1+z)(1+y) \in U^{(1)}$ meaning that all the series occurring in the above equation converge. Thus $\log : U^{(1)} \to K$ is a homomorphism. Suppose that $\alpha \in K^*$ and that $\pi \in K$ is an element so that $v_\mfrak p(\pi) = 1$. By \cref{prop: Factorization of elements in K^*} there exists a unique elements $k_\alpha \in \mbb Z$, $\zeta_\alpha \in \mu_{q-1}$ and $u_\alpha \in U^{(1)}$ (WHAT IS $q$??) so that $\alpha = \pi^{k_\alpha} \zeta_\alpha u_\alpha$, and we have $v_\mfrak p(\alpha) = k_\alpha$. 
-    $v_\mfrak p = e v_p$. Note that $v_{\mfrak p} (p) = e$. So as $p \in K^*$ we can write $p = \pi^{e}\zeta_p u_p$. Let us now define $\log \pi = -\frac{1}{e}\log u_p$. Since $\log$ is 0 on all of $U^{(1)}$ we now get an extension of $\log$ to all of $K^*$ by setting
-    $$\log \alpha = v_\mfrak p(\alpha)\log(\pi) + \log(u_\alpha)$$
-    This function is continuous because addition of continuous functions are continuous and it is also a homomorphism by inheritance. Furthermore we have that
-    $$\log p = e\log(\pi) + \log(u_p) = \frac{-e\log u_p}{e} + \log(u_p) = 0 $$
-    Suppose that we have another extension, $\lambda : K^* \to K$, of $\log$ so that $\lambda(p) = 0$ and which is also a homomorphism. Note first that for any $\alpha \in K^*$ we have
-    $$\lambda(\alpha) = \lambda(\pi^{v_\mfrak p(\alpha)}\zeta_\alpha u_\alpha) = {v_\mfrak p(\alpha)}\lambda(\pi) + \lambda(\zeta_\alpha) + \lambda(u_\alpha)$$ 
-    By assumption we know that $\log(u_\alpha) = \lambda(u_\alpha)$ since $u_\alpha \in U^{(1)}$. Hence 
-    $$\lambda(\alpha) - \log(\alpha) = {v_\mfrak p(\alpha)}(\lambda(\pi)-\log(\pi))  + \lambda(\zeta_\alpha)$$
-    So to show that $\lambda = \log$ it suffices to show that $\lambda$ vanishes on $\mu_{q-1}$ and that $\lambda(\pi) = \log(\pi)$. Take any $\zeta \in \mu_{q-1}$. Since $\zeta^{q-1} = 1$ and $\lambda(1) = 0$ we see that
-    $$\lambda(\zeta) = \frac{1}{q-1}\lambda(\zeta^{q-1}) = 0$$
-    By assumption $0 = \lambda(p) - \log(p)$. Since $\lambda(\zeta_p) = 0$ and $v_\mfrak p(p) = e \neq 0$ we must have $\lambda(\pi) - \log(\pi) = 0$.
-\end{proof}
 \begin{proposition}\label{prop: Log and exp for local fields}
     The formal power series 
     \begin{align*}
@@ -1371,8 +1411,8 @@ Note that the $G_i$ all belong to $P$ and also have constant term 0. The $G_i$ a
 %Fix $\gamma \in \Gamma$. The above tells us that if $\alpha \in M_c$ if and only if $\alpha$ can be written as in \cre\f{eq: Writing of alpha in M'_c} and that the corresponding tuple, $(u_1, ..., u_t)$, from this equation satisfies \cref{eq: Restriction of variables in terms of power series}. 
 
 Assume that there are infinitely many solutions in integers to \cref{eq: Initial equation of interest}. Thus we have infinitely many solutions of the shape \cref{eq: Writing of alpha in M'_c}. But as $\Gamma$ has only finitely many elements, there has to exists some $\gamma \in \Gamma$ giving rise to an infinite subset of solutions,
-$$S_\gamma := \{\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mid (u_1, ..., u_t) \in \mbb Z^t \} \subseteq M_c$$
-As the $\epsilon_i$ are independent units, we get an injective homomorphism $\iota : S_\gamma \to O_\mfrak p^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u^t} \mapsto (u_1, ..., u_t)$. Now take a sequence of distinct elements, $(\alpha_s)$, in $S_\gamma$. We get a sequence $U_s = \iota(\alpha_s) \in O_\mfrak p^t$ and as $\iota$ is injective, the elements of this sequence are also distinct. As the elements $\alpha_s$ all belong to $M_c$ the tuples $U_s$ satisfy \cref{eq: Restriction of variables in terms of power series}. Therefore we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable, (STATE THIS IN A THEOREM SOMEWHERE), and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic they are continuous (NEED A PROOF FOR THIS), we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
+$$S_\gamma := \{\gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t} \mid (u_1, ..., u_t) \in \mbb Z^t \} \subseteq M_c$$
+As the $\epsilon_i$ are independent units, we get an injective homomorphism $\iota : S_\gamma \to O_\mfrak p^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t} \mapsto (u_1, ..., u_t)$. Now take a sequence of distinct elements, $(\alpha_s)$, in $S_\gamma$. We get a sequence $U_s = \iota(\alpha_s) \in O_\mfrak p^t$ and as $\iota$ is injective, the elements of this sequence are also distinct. As the elements $\alpha_s$ all belong to $M_c$ the tuples $U_s$ satisfy \cref{eq: Restriction of variables in terms of power series}. Therefore we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable, (STATE THIS IN A THEOREM SOMEWHERE), and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic they are continuous (NEED A PROOF FOR THIS), we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
 \begin{align*}
     G_i(u_1, ..., u_r) &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^* + v_1, ..., u_r^* + v_r) \\ 
     &= \sum_{j = 1}^n A_{ij} \exp L_j(u_1^*, ..., u_r^*) \exp L_j(v_1, ..., v_r)
@@ -1431,14 +1471,16 @@ We have yet another corollary
     Suppose $f(x,y)$ is an irreducible form with integer coefficients, of degree $n \geq 3$ and that $f(x,1)$ has at least one complex root. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for some fixed $c \in \mbb{Z}$.
 \end{theorem}
 \begin{proof}
-    To prove this, we want to use the results obtained in this section. To that we need to show that $f$ is decomposable and nonfull (by assumption, $f$, is already). Since $f$ is a form of degree $n$ we know that we can write
-    $$f(x,y) = \sum_{i = 0}^n a_i x^{i} y^{n-i}$$
+    To prove this, we want to use the results obtained in this section and to do that it suffices to show that $f$ is decomposable and nonfull. Since $f$ is a form of degree $n$ we know that we can write
+    $$f(x,y) = \sum_{i = 0}^n a_i x^{n-i} y^{i}$$
     % In order to apply (\cref{thm Skolems method}) we need to first of all make sure that $f$ is nonfull and decomposable. 
-    where the $a_i$ are in $\mbb Z$. We must have that $a_n \neq 0$, since otherwise $y$ would divide $f(x,y)$ which is impossible since $f$ is irreducible. Let $h(x) = f(x,1)$. We have that $h$ is a polynomial of degree $n$ with leading coefficient $a_n$. The leading term of $a_n^{n-1} h(x)$ is $a_n^nx^n = (a_n x)^n$, so $h$ can be regarded as a monic polynomial in the variable $t$ using the substitution $a_n x \mapsto t$. So assume without loss of generality that $h$ is monic, i.e. that $a_n = 1$. Let $K = \mbb Q(\beta)$, where $\beta$ is a root of $h$. This extension has degree $n$ over $\mbb Q$ since $h$ is of degree $n$ and is irreducible. Let now $\sigma_1, ..., \sigma_n$ be the $n$ embeddings from $K$ into $\mbb C$ and set $N = \mbb Q(\sigma_1(\beta), ..., \sigma_n(\beta))$. Since $f$ is a form in two variables we know from \cref{prop: Forms of two variables are decomposable} that $f$ is decomposable. In fact we see from the proof of this proposition that
-    $$f(x, y) = N_{K / \mbb Q}(x + \theta y)$$
-    We can now consider the module $M$ generated by $\mu_1 = 1$ and $\mu_2 = \beta$. These are linearly independent over $\mbb Q$ so the rank, $m$, of this module is 2 and since $n \geq 3$ we have $m < n$. This shows that $f$ is a nonfull form. Assume now that $f(x,y) = c$ has infinitely many solutions in integers. Then we cannot have $c = 0$ as the only solution in this case is $(x,y) = (0,0)$ so assume $c \neq 0$. We have just verified that $f$ is a decomposable and nonfull form and it is irreducible by assumption. From the proof of \cref{thm: Skolems method} we now obtain $\gamma \in \Gamma$ and independent units $\epsilon_1, ..., \epsilon_t$ giving rise to a local manifold $V$ determined by \cref{eq: Last reformulation of initial equations}. We get an injective map $\iota : S_\gamma \to O_\mfrak p^t$ and a sequence $(\alpha_s)$ of distinct elements in $S_\gamma$ so that $U^*_s = \iota(\alpha_s)$ and $U^*_s \to (u_1^*, ..., u_t^*) \in O_\mfrak p^t$. Write $U^*_s = (u_{1s}, ..., u_{ts})$ and $u_{is} = u_i^* + v_{is}$ and define the sequence $V_s = (v_{1s}, ..., v_{ts})$. We have $V_s \in V$ and it converges to the origin. Let $W$ be the local manifold given by 
+    where the $a_i$ are in $\mbb Z$. We must have that $a_0 \neq 0$, since otherwise $y$ would divide $f(x,y)$ which is impossible since $f$ is irreducible. Let $h(x) = f(x,1)$. We have that $h$ is a polynomial of degree $n$ with leading coefficient $a_0$. The leading term of $a_0^{n-1} h(x)$ is $a_0^nx^n = (a_0 x)^n$, so $h$ can be regarded as a monic polynomial in the variable $t$ using the substitution $a_0 x \mapsto t$. So assume without loss of generality that $h$ is monic, i.e. that $a_0 = 1$. It now follows from \cref{remark: Forms of two variables are decomposable} that  
+    \begin{equation}\label{eq: f(x,y) is a norm form}
+        f(x, y) = N_{K / \mbb Q}(x + \theta y)
+    \end{equation}
+    where $K = \mbb Q(\theta)$ is a number field of degree $n$ with embeddings $\sigma_1, ..., \sigma_n$ from $K$ into $\mbb C$. Consider the module $M$ generated by $\mu_1 = 1$ and $\mu_2 = \theta$. These are linearly independent over $\mbb Q$ so the rank, $m$, of this module is 2 and since $n \geq 3$ we have $m < n$. This shows that $f$ is a nonfull form. Assume now that $f(x,y) = c$ has infinitely many solutions in integers. Then we cannot have $c = 0$ as the only solution in this case is $(x,y) = (0,0)$ so assume $c \neq 0$. We have just verified that $f$ is a decomposable and nonfull form and it is irreducible by assumption. Using the notation from the proof of \cref{thm: Skolems method} we now obtain $\gamma \in \Gamma$ and independent units $\epsilon_1, ..., \epsilon_t \in \mfrak D$ giving rise to a local manifold $V$ determined by \cref{eq: Last reformulation of initial equations}. We get an injective map $\iota : S_\gamma \to O_\mfrak p^t$ and a sequence $(\alpha_s)$ of distinct elements in $S_\gamma$ so that $U^*_s = \iota(\alpha_s)$ and $U^*_s \to (u_1^*, ..., u_t^*) \in O_\mfrak p^t$. Write $U^*_s = (u_{1s}, ..., u_{ts})$ and $u_{is} = u_i^* + v_{is}$ and define the sequence $V_s = (v_{1s}, ..., v_{ts})$. We have $V_s \in V$ and it converges to the origin. Let $W$ be the local manifold given by 
     $$\prod_{i \leq k < l \leq n} (L_k(v_1, ...v_t) - L_l(v_1, ...,  v_t)) = 0$$
-    If we have any curve, $\tau_1(X), ..., \tau_t(X)$ on $V$ then we can invoke \cref{cor: Result to prove thues theorem} to conclude that there exists distinct $k$ and $l$ so that $L_{k}(\tau_1(X), ..., \tau_t(X))= L_{l}(\tau_1(X), ..., \tau_t(X))$. This implies that the curve $\tau_1(X), ..., \tau_t(X)$ is also on $W$. (QUESTION: Why? Do we use that $I_A$ is generated by the equations that define it? (A is some manifold)). Using \cref{remark: One manifold is contained in another} we get that $V \subseteq W$, that is there is an $\epsilon$-neighborhood around the origin, $U$, so that $U \cap V \subseteq U \cap W$. Since $(V_s)$ converges to the origin there is an $N \in \mbb N$ so that for all $s \geq N$ we have $V_s \in W$. Thus we can find distinct $k$ and $l$ so that $L_k(V_s) = L_l(V_s)$ for infinitely many $s \geq N$. Therefore there are infinitely many $s_1, s_2 \in \mbb N$, $s_1 \neq s_2$ so that $L_k(V_{s_1}) = L_l(V_{s_2})$. Choose any such $s_1$ and $s_2$ and set $\alpha = \alpha_{s_1}$ and $\alpha' = \alpha_{s_2}$. Let us write $\alpha = x + y \beta$ and $\alpha' = x' + y'\beta$. Furthermore, since $\alpha \in S_\gamma$, we can write $\alpha = \gamma \epsilon_1^{u_1}...\epsilon_t^{u_t}$. Set now 
+    If we have any curve, $\tau_1(X), ..., \tau_t(X)$ on $V$ then we can invoke \cref{cor: Result to prove thues theorem} to conclude that there exists distinct $k$ and $l$ so that $L_{k}(\tau_1(X), ..., \tau_t(X))= L_{l}(\tau_1(X), ..., \tau_t(X))$. This implies that the curve $\tau_1(X), ..., \tau_t(X)$ is also on $W$. (QUESTION: Why? Do we use that $I_A$ is generated by the equations that define it? (A is some manifold)). Using \cref{remark: One manifold is contained in another} we get that $V \subseteq W$, that is there is an $\epsilon$-neighborhood around the origin, $U$, so that $U \cap V \subseteq U \cap W$. Since $(V_s)$ converges to the origin there is an $N \in \mbb N$ so that for all $s \geq N$ we have $V_s \in W$. Thus we can find distinct $k$ and $l$ so that $L_k(V_s) = L_l(V_s)$ for infinitely many $s \geq N$. Therefore there are infinitely many $s_1, s_2 \in \mbb N$, $s_1 \neq s_2$ so that $L_k(V_{s_1}) = L_l(V_{s_2})$. Choose any such $s_1$ and $s_2$ and set $\alpha = \alpha_{s_1}$ and $\alpha' = \alpha_{s_2}$. Let us write $\alpha = x + y \theta$ and $\alpha' = x' + y'\theta$. Furthermore, since $\alpha \in S_\gamma$, we can write $\alpha = \gamma \epsilon_1^{u_1}...\epsilon_t^{u_t}$. Set now 
     \begin{align*}
         u_i &= u_i^* + v_i \\
         c_j &= \sigma_j(\gamma)\sigma_j(\epsilon_1)^{u_1^*}...\sigma_j(\epsilon_t)^{u_t^*}
@@ -1452,10 +1494,10 @@ We have yet another corollary
     Similarly we obtain 
     $$\frac{\sigma_j(\alpha')}{c_j} = \frac{\sigma_k(\alpha')}{c_k}$$
     Since $\alpha$ and $\alpha'$ have norm $c \neq 0$ they are both non-zero. Hence we now have
-    $$\frac{x + y \sigma_j(\beta)}{x' + y' \sigma_j(\beta)} = \frac{x + y \sigma_k(\beta)}{x' + y' \sigma_k(\beta)}$$
+    $$\frac{x + y \sigma_j(\theta)}{x' + y' \sigma_j(\theta)} = \frac{x + y \sigma_k(\theta)}{x' + y' \sigma_k(\theta)}$$
     So
-    $(xy' - x'y)(\sigma_k(\beta) - \sigma_j(\beta)) = 0$.
-    But $\sigma_k$ and $\sigma_j$ are distinct embeddings since $k \neq j$ and they are determined by their action on $\beta$. Hence $\sigma_k(\beta) - \sigma_j(\beta) \neq 0$ so we must have 
+    $(xy' - x'y)(\sigma_k(\theta) - \sigma_j(\theta)) = 0$.
+    But $\sigma_k$ and $\sigma_j$ are distinct embeddings since $k \neq j$ and they are determined by their action on $\theta$. Hence $\sigma_k(\theta) - \sigma_j(\theta) \neq 0$ so we must have 
     $$xy' - x'y = 0$$
     Thus there is $d \in \mbb Q$ so that
     $\alpha = d\alpha',$ so $$N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(d) N_{K/\mbb Q}(\alpha')$$
@@ -1468,7 +1510,7 @@ A natural question to ask when looking at any theorem is to ask which assumption
 The following example shows that the theorem no longer holds if we swap out the form $f(x, y)$ with a form with more variables. 
 
 \begin{example}
-Consider the field $K = \mbb Q(\sqrt 2, \sqrt 3)$. This field has degree 4 over $\mbb Q$ and $$1, \sqrt 2, \sqrt 3, \sqrt 6$$ is a basis for it by example (2) p. 526 in dummit and foote. Note that $K$ is splitting field for the separable polynomial $(x^2 - 2)(x^2 - 3)$ so $K$ is Galois over $\mbb Q$. The automorphisms on $K$ are determined by their action on $\sqrt 2$ and $\sqrt 3$ and these must be sent to $\pm \sqrt 2$ and $\pm \sqrt 3$ respectively. There are four ways of doing this, and as $K$ is Galois all of these possibilities yield an automorphism. Using this information we find that $F(x,y,z) := N_{K /\mbb Q}(x + y\sqrt 2 + z \sqrt 3)$ is equal to
+Consider the field $K = \mbb Q(\sqrt 2, \sqrt 3)$. This field has degree 4 over $\mbb Q$ and $$1, \sqrt 2, \sqrt 3, \sqrt 6$$ is a basis for it by \citep[Example (2), p. 526]{dummit}. Note that $K$ is splitting field for the separable polynomial $(x^2 - 2)(x^2 - 3)$ so $K$ is Galois over $\mbb Q$. The automorphisms on $K$ are determined by their action on $\sqrt 2$ and $\sqrt 3$ and these must be sent to $\pm \sqrt 2$ and $\pm \sqrt 3$ respectively. There are four ways of doing this, and as $K$ is Galois all of these possibilities yield an automorphism. Using this information we find that $F(x,y,z) := N_{K /\mbb Q}(x + y\sqrt 2 + z \sqrt 3)$ is equal to
 \begin{equation}\label{eq: Linear factorization}
     (x + y\sqrt 2 + z \sqrt 3)(x - y\sqrt 2 + z \sqrt 3)(x + y\sqrt 2 - z \sqrt 3)(x - y\sqrt 2 - z \sqrt 3)
 \end{equation}
@@ -1491,27 +1533,29 @@ In the above example we got an infinite number of solutions because the module $
 \begin{definition}\label{def: Degenerate module}
     Let $K$ be a number field and $M$ a module with generators $\mu_1, ..., \mu_m$ and consider the vector space $L = \Span_{\mbb Q}\{\mu_1, ..., \mu_m \}$. If $L$ contains a subspace $L'$ so that $\gamma K' = L'$ for some subfield $K'$ of $K$ and $\gamma \in K$ and $K'$ is neither $\mbb Q$ or a quadratic imaginary field then we say that $M$ is degenerate. Otherwise the module is called non degenerate.
 \end{definition}
-We see that the module $\{1, \sqrt 2, \sqrt 3 \}$ inside $\mbb Q(\sqrt 2, \sqrt 3)$ is certainly degenerate since for example $\mbb Q(\sqrt 2) = \Span_{\mbb Q} \{1, \sqrt 2 \}$. Also all full modules in a field different from $\mbb Q$ or an imaginary quadratic field are degenerate - just consider the span over $\mbb Q$ of any basis of such a module. For an example of a non-degenerate module look at the module $M = \{1, \beta \}$ from the proof of \cref{thm: Thues theorem}. One can of course argue for this using the definition directly. But it also follows directly from the following fact combined with \cref{thm: Thues theorem}.
+We see that the module $\{1, \sqrt 2, \sqrt 3 \}$ inside $\mbb Q(\sqrt 2, \sqrt 3)$ is certainly degenerate since for example $\mbb Q(\sqrt 2) = \Span_{\mbb Q} \{1, \sqrt 2 \}$. Also all full modules in a field different from $\mbb Q$ or an imaginary quadratic field are degenerate - just consider the span over $\mbb Q$ of any basis of such a module. For an example of a non-degenerate module look at the module $M = \{1, \beta \}$ from the proof of \cref{thm: Thues theorem}. One can of course argue for this using the definition directly. But it also follows from the following fact combined with the statement of \cref{thm: Thues theorem}.
 \begin{fact}
-    Assume $K$ is a number field and $M$ is a degenerate module and suppose that there is $\alpha \in M$ so that 
+    Assume $K$ is a number field and $M$ is a degenerate module. There exists $c \in \mbb Z$ so that there are infinitely many solutions, $\alpha \in M$, to the equation
     $$N_{K / \mbb Q}(\alpha) = c$$
-    Then there are infinitely such $\alpha \in M$.
 \end{fact}
 \begin{proof}
-    By assumption we have that $k' = \gamma L'$, where $k'$, $L'$ and $\gamma$ are as in \cref{def: Degenerate module}. We have that 
-    $$N_{K / \mbb Q}(\alpha) = N_{K' / \mbb Q}(N_{K / K'}(\alpha)) = c$$
-    Hence $\beta = N_{K / K'}(\alpha) \in K'$ is a solution to the equation
-    \begin{equation}\label{eq: Infinitely many solutions to subequation}
-        N_{K' / \mbb Q}(\beta) = c
-    \end{equation}
-    Pick now a full module $N$ in $K'$ that contains $\beta$. As $K'$ is neither $\mbb Q$ or a quadratic field it follows from \cref{lem: writing of elements of Mc} that $t > 0$ and so there are infinitely many solutions to \cref{eq: Infinitely many solutions to subequation} and therefore there are infinitely many solutions to 
-    %This can be done since we can pick a basis for $K'$ over $\mbb Q$ where $\beta$ is one of these elements. 
-
-    NOT DONE WITH THIS
+    By assumption we have that $K' = \gamma L'$, where $K'$, $L'$ and $\gamma \in K$ are as in \cref{def: Degenerate module}. Set $M' = L' \cap M$. Then $\gamma^{-1}M'$ is a full module inside $K'$ and since $K'$ is neither $\mbb Q$ or a quadratic imaginary field, we know from \cref{thm: Shape of solutions to N(x) = c for x in full module,rem: When does a full module have finitely many solutions} that there exists $c' \in \mbb Z$ so that 
+    $$N_{K' / \mbb Q}(\xi) = c'$$ 
+    has infinitely many solutions $\xi \in \gamma^{-1}M'$ (take for example $c' = 1$). Take any such solution, $\xi$, and also set $c_\bullet = N_{K / \mbb Q}(\gamma)c_\bullet^m$, where $m = [K : K']$. We get
+    $$N_{K / \mbb Q}(\xi \gamma) = N_{K / \mbb Q}(\xi) N_{K / \mbb Q}(\gamma) = (N_{K' / \mbb Q}(\xi))^m N_{K / \mbb Q}(\gamma) = c$$  
+    Since $\xi\gamma \in M' \subseteq M$ the result now follows.
 \end{proof}
-Of course this does in no way imply that there are only finitely many solutions to
-$$N_{K/\mbb Q}(\alpha) = c$$
-for $\alpha$ in some fixed non degenerate module. But if it turned out to be true we would obtain a generalization of \cref{thm: Thues theorem}. 
+This raises the question: If $M$ is a non degenerate module, is it then always the case that there are only finitely many solutions to $N_{K/\mbb Q}(\alpha) = c$
+for $\alpha \in M$? If this turned out to be true we would obtain a generalization of \cref{thm: Thues theorem}.
+
+\subsection*{Improvements made by Alan Baker}
+Alan Baker improved \cref{thm: Thues theorem} significantly. Quoting \citep[Theorem 4.1]{baker} he showed the following
+\begin{theorem}
+    Let $K$ be a number field of degree $d$, let $\alpha_1, ..., \alpha_n$ be $n \geq 3$ distinct algebraic integers in $K$ and let $\mu$ be a non-zero algebraic integer. The equation
+    $$f(x, y) := (x - \alpha_1 y) ... (x - \alpha_n y) = \mu$$
+    has only finitely many solutions in algebraic integers $x$ and $y$ in $K$ and these can be effectively determined.  
+\end{theorem}
+As we can see we obtain a much stronger result that what we arrived at in \cref{thm: Thues theorem} and under much milder conditions too. Of course $f$ will still be a homogenous polynomial of degree $n$, but the coefficients need not be in $\mbb Q$ so $f$ need not be a form. In the proof of \cref{thm: Thues theorem} we made heavy use of the fact that $f(x, y)$ was a norm form. We have no guarantee that $f$ in the theorem above is such a form. As such it might not come as a surprise that the proof of the above theorem relies on very different tools than those covered in this text. 
 
 % USE THIS
 % https://encyclopediaofmath.org/wiki/Diophantine_equations

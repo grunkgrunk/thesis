@@ -18,3 +18,28 @@ Not 100% sure that all solutions can be recovered using integral equivalence.
 Should we assume that the c in F(x_1, ..., x_m) = 0 is different from 0? It seems to cause problems when this c is 0. 
 
 
+Why does the norm form have coefficients in Q?
+
+
+
+TODO
+
+Read thru the text
+Rearrange stuff
+
+Mention that underlying equality of power series does not imply that the equality holds when plugging in numbers. Also, what happens when the power series has multiple variables?
+
+
+
+Mention the theorem of baker and address the improvements he made. Figure out how to translate this theorem into a form that looks like the one thue originally showed
+    Seems like we only need to assume that f is of two variables and of degree larger than or equal 3, so that f(x, 1) is a separable polynomial (over )
+
+
+
+ALL QUESTIONS
+
+- |x|_1 < 1 implies |x|_2 < 1 actually implies that |x|_2 < 1 implies |x|_1 < 1
+
+- Why do we need the existence of a curve?
+
+- In what way does the theorem of baker 
