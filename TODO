@@ -11,10 +11,10 @@
 [ ] Find a nicer way to refer to theorems and lemmas and so on 
 [ ] Talk about notation conventions. Say that K is always a field of degree n over Q, Say that we write $N$ for the field norm N_K/Q, say what r and s means when writing n = 2s + r. 
 [ ] Swap out \overline K for \tilde K in the defintion for local manifold.
-
-
-
+[ ] Teichmuller lifts
 
 Maybe reformulate the theorem for skolems method
+
+Maybe mention Corolarry 5.1.2
 
 If F(x1, ... ,xn) = c has infinitely many solutions there is a solution in power series to a certain system of equations.  
