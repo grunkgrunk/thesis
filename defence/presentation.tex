@@ -1,0 +1,492 @@
+\documentclass{beamer}
+
+\newtheorem{proposition}{Proposition}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx} % for including images
+\usepackage{ulem}
+\usepackage{amsmath} % for advanced
+\usepackage{graphicx}
+\usepackage{amssymb} % for additional math symbols
+\usepackage{amsthm} % for theorem environments
+\usepackage{mathtools} % for advanced math typesetting
+\usepackage{bm}
+%\usepackage{enumitem}
+\usepackage{xcolor}
+% \setlist[enumerate,1]{label=\Roman*.} % This sets Roman numerals as the default for level 1 lists
+\usepackage{quiver}
+% draw commutative diagrams
+\usepackage{tikz-cd}
+% \usetikzlibrary{cd}
+% \usepackage{stix}
+
+\usepackage{makeidx} % package for creating an index
+% draw commutative diagrams
+%\usetikzlibrary{cd}
+% \usepackage{charter} % use Helvetica font
+% \renewcommand{\familydefault}{\sfdefault} % set Helvetica as the default font
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\coeff}{coeff}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\tr}{Tr}
+
+\newcommand{\norm}[1]{\text{N}(#1)}
+
+\newcommand{\Span}{\operatorname{span}}
+\newcommand*{\argordot}[1]{
+	\def\arg{#1}
+	\ifx\arg\empty
+    	\,\cdot\,
+	\else
+    	#1
+	\fi
+}
+\DeclarePairedDelimiterX{\abs}[1]{\mid}{\mid}{\argordot{#1}}
+
+
+
+% Define aliases for \mathfrak and \mathcal and mathbb
+\newcommand{\mfrak}[1]{\mathfrak{#1}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\mbb}[1]{\mathbb{#1}}
+% commands for the trace, Tr and norm, N
+ 
+\newcommand{\vp}{{v_{\mfrak p}}}
+\usetheme{Madrid}
+
+\numberwithin{equation}{section}
+
+\title{$\mfrak p$-adic Numbers and Skolem's Method}
+\institute{University of Copenhagen}
+\author{Daniel Grunkin}
+\date{\today}
+
+\begin{document}
+% 45 minutes for the presentation.
+
+\frame{\titlepage} % Creates the title page
+
+\begin{frame}
+	\frametitle{What we will cover} 
+	\tableofcontents
+\end{frame}
+
+\section{Introduction}
+
+
+
+\begin{frame}
+	\frametitle{Diophantine equations}
+	What is a Diophantine equation?
+	% Questions about these are typically easy to state but hard to answer. Here is an example:
+
+	% The question we will be dealing with
+\end{frame}
+
+\subsection{The general question}
+\begin{frame}
+	\frametitle{Diophantine equations}
+	% Questions about these are typically easy to state but hard to answer. Here is an example:
+
+	% The question we will be dealing with
+	\textbf{Question:} Given a Diophantine equation, can we determine if it has infinitely many solutions?
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Hilbert's 10th problem}
+There is no algorithm that can determine if an arbitrary Diophantine equation has a solution.
+\end{frame}
+
+\begin{frame}
+	\frametitle{An equation where we can answer the question}
+	Consider the equation $$x^2 - 2y^2 = 7.$$
+	A solution is $x = 3$ and $y = 1$ and if $(x,y)$ is a solution then so is $(3x + 4y, 2x + 3y)$. Thus, there are infinitely many solutions to this equation.
+\end{frame}
+
+\subsection{Connecting the question to algebraic number theory}
+\begin{frame}
+	\frametitle{Another approach}
+    Let $K = \mbb Q(\sqrt 2)$. Then
+    $$N_{K / \mbb Q}(x + y\sqrt 2) = x^2 - 2y^2$$
+    Let $\mfrak D$ be the coefficient ring for $\langle 1, \sqrt 2 \rangle$. By Dirichlet's Unit theorem
+	$$\mfrak D^* = W \times V$$
+	with $W$ finite and $V$ free abelian with rank $r + s - 1 = 2 + 0 - 1 = 1$.
+	Consider again $$x^2 - 2y^2 = 7$$
+	% Thus, there are infinitely many solutions to $x^2 - 2y^2 = 7$. These are all associated units and in fact there are only finitely many solutions up to associates.
+\end{frame}
+
+\begin{frame}
+	Consider Pell's equation $x^2 - ny^2 = 1$, $n$ not a square.
+\end{frame}
+
+% \begin{frame}
+% 	\frametitle{Forms connected to modules}
+% 	Let $K$ be a number field of degree $n$ and let $\mu_1, ..., \mu_m \in K$. Define $M = \langle \mu_1, ..., \mu_m \rangle$ and consider 
+% 	$$F(x_1, ...,x_m) = N_{K/\mbb Q}(x_1\mu_1 + ... + x_m \mu_m)$$ \\
+% 	% This is indeed a form
+% 	% Mention full and non full
+% 	% Could have chosen other set of generators for M. These are integrally equivalent.
+% 	\pause
+% 	How might we find solutions to $F(x_1, ..., x_m) = c$?
+% \end{frame}
+
+\begin{frame}
+	\frametitle{A more general case}
+	Let $K$ be a number field, $\mu_1, ..., \mu_n$ a basis and assume $$F(x_1, ..., x_n) = N_{K / \mbb Q}(x_1 \mu_1 + \cdots + x_n \mu_n)$$
+	Does $F(x_1, ..., x_n) = c$, $c \in \mbb Q$, have infinitely many solutions? 
+	% Can we still make use of Dirichlet's unit theorem?  
+\end{frame}
+
+% Look at this more generally.
+\begin{frame}
+	Let $M = \langle \mu_1, ..., \mu_n \rangle$. Then there is a finite set $\Gamma$ of elements of norm $c$ and independent units of norm 1, $\epsilon_1, ..., \epsilon_t \in \mfrak D^*$, so that 
+	for all $\alpha \in M$ we have
+	% Mention that this is always a form.
+	$$N_{K / \mbb Q}(\alpha) = c$$
+	if and only if 
+	$$\alpha = \gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t}$$
+	% for $u_i \in \mbb Z$ and $\gamma \in \Gamma$. 
+	
+	Here $t = r+s -1$. So to answer the question...\\ 
+	% Immediate consequences: 
+	
+	% Pell equations have infinitely many solutions ($x^2 - ny^2 = 1$, $n$ not a square). 	
+	
+	% This is a consequence of Diritchlet's unit theorem.
+	% So if t > 0 and there is at least one solution, then there are infinitely many solutions.
+	% In particular, there are, up to associates, only finitely many solutions to $F(x_1, ..., x_n) = c$. When there are fewer than $n$ variables things become more complicated. 
+
+	% This also means that if there are infinitely many solutions, then there is a gamma parametrizing an infinite familiy of solutions.
+\end{frame}
+
+\section{Thue's Theorem}
+\begin{frame}
+	\frametitle{Thue's Theorem}	
+	\begin{theorem}[Thue]\label{thm: Thues theorem introduction}
+		Suppose $f(x,y)$ is an irreducible form of degree $n \geq 3$. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for any non-zero $c \in \mbb{Q}$.
+	\end{theorem}
+	With the additional requirement that $f(x,1)$ has an imaginary root, Thoralf Skolem proved this theorem.  
+\end{frame}
+
+% \begin{frame}
+% 	Let us show this, but let us first make some more general observations.
+% \end{frame}
+\subsection{General considerations}
+\begin{frame}
+	\frametitle{Some general considerations}
+	Suppose $K$ is a number field with basis $\mu_1, ..., \mu_n$ and suppose $F$ is an irreducible form so that 
+	$F(x_1, ..., x_m) = N_{K/\mbb Q}(x_1 \mu_1 + \cdots + x_m \mu_m)$ with $m < n$. Consider the equation 
+	$$F(x_1, ..., x_m) = c$$ 
+
+	Does this equation have finitely many solutions?
+\end{frame}
+
+\begin{frame}
+	Let
+	\begin{align*}
+		M = \langle \mu_1, ..., \mu_m \rangle \text{ and } M' = \langle \mu_{1}, ..., \mu_{m}, \mu_{m+1}, ..., \mu_{n} \rangle 	
+	\end{align*}
+\end{frame}
+\begin{frame}
+	Finding the solutions to
+	$$F(x_1, ..., x_m) = c$$
+	is the same as finding $\alpha := x_1 \mu_1 + ... + x_n \mu_n \in M'$ so that $N_{K/\mbb Q}(\alpha) = c$ under the requirement
+	\begin{align*}
+		x_{m+1} = ... = x_n = 0
+	\end{align*} 
+\end{frame}
+
+\begin{frame}
+	% Let $\mu_1^*, ..., \mu_n^*$ be the dual basis of $\mu_1, ..., \mu_n$ and let $\sigma_1, ..., \sigma_n$ be the $n$ embeddings $K \hookrightarrow \mbb C$. Then
+	Now,
+	\begin{align*}
+		x_{m+1} = ... = x_n = 0
+	\end{align*}
+	is the same as
+	\begin{align*}
+		\tr_{K / \mbb Q}(\mu_{m+1}^* \alpha) = ... = \tr_{K / \mbb Q}(\mu_n^* \alpha) = 0
+	\end{align*}
+	which is again the same as the equations
+	\begin{align*}
+		\sum_{j=1}^{n} \sigma_j(\mu_i^* \alpha) = 0, \text{ for } i \in \{m+1, ..., n\}
+	\end{align*}
+
+\end{frame}
+
+\begin{frame}
+	Since $\alpha \in M'$ and $N_{K/\mbb Q}(\alpha) = c$ we can write $$\alpha = \gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t}$$
+	for $u_i \in \mbb Z$ and $\gamma \in \Gamma$. So
+	\begin{align*}
+		\sum_{j=1}^{n} \sigma_j(\gamma \mu_i^*)\sigma_j(\epsilon_1)^{u_1} ... \sigma_j(\epsilon_t)^{u_t}  = \sum_{j=1}^{n} \sigma_j(\mu_i^* \alpha) = 0, \text{ for } i \in \{m+1, ..., n\}.
+	\end{align*}
+\end{frame}
+
+\begin{frame}
+	Suppose $K = \mbb Q(\beta)$ and set $N = \mbb Q(\sigma_1(\beta), ..., \sigma_n(\beta))$. Pick a prime $\mfrak p$ of $O_N$. We get a valuation $\vp$ on $N$ and it extends to the completion $N_\mfrak p$. Let $O_\mfrak p$, the valuation ring in $N_\mfrak p$.
+	% \begin{itemize}
+	% 	\item ,
+	% 	\item $\hat {\mfrak p}$, the maximal ideal of $O_\mfrak p$,
+	% 	\item $U^{(k)} = 1 + \hat {\mfrak p}^k$.
+	% \end{itemize}
+\end{frame}
+\begin{frame}
+	% Choose $k$ so that $\log : U^{(k)} \to \hat {\mfrak p}^k$ and $\exp : \hat {\mfrak p}^k \to U^{(k)}$ are mutual inverses. 
+ 
+	
+	% $\sigma_j(\epsilon_i) \in U^{(k)}$. We then have
+	%$\sigma_j(\epsilon_i)^{u_i} = \exp(u_i \log(\sigma_j(\epsilon_i)))$.
+	Consider again
+	$$\sum_{j=1}^{n} \sigma_j(\gamma \mu_i^*)\sigma_j(\epsilon_1)^{u_1} ... \sigma_j(\epsilon_t)^{u_t} = 0$$
+	The $\epsilon_i \in \mfrak D^*$ can be chosen so that it makes sense to allow $u_i \in O_\mfrak p$. 
+
+	
+	Setting 
+	$A_{ij} = \sigma_j(\gamma \mu_i^*)$ and $L_j(u_1, ..., u_t) = \sum_{i=1}^{t} u_i \log(\sigma_j(\epsilon_i))$ we now define
+
+	\begin{align*}
+		G_i(u_1, ..., u_t) := \sum_{j = 1}^n A_{ij} \exp L_j(u_1, ..., u_t)
+	\end{align*}
+
+\end{frame}
+
+\begin{frame}
+	Suppose $F(x_1, ..., x_m) = c$ has infinitely many solutions. Then there is $\gamma \in \Gamma$ so that $S_\gamma = \{\gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t} \mid u_i \in \mbb Z \} \subseteq M$ is an infinite set of elements with norm $c$. We have an injective homomorphism
+	$\iota : S_\gamma \hookrightarrow O_\mfrak p^t$. Let $\alpha_s$ be a sequence of unique elements of $S_\gamma$. Then $U_s = \iota(\alpha_s)$ is a sequence of unique elements of $O_\mfrak p^t$. Hence there is a convergent subsequence $U^*_s$ of $U_s$ converging to $u^* = (u_1^*, ..., u_t^*) \in O_\mfrak p$ $\implies$ infinitely many points in any neighborhood of $u^*$. Note also that we now have a subsequence $\alpha_s^*$ of $\alpha_s$ so that $U_s^* = \iota(\alpha_s^*)$.
+	% Thus there are infinitely many points in any open around u^*.
+
+	% Valuation ring is compact as it is closed and contained in a compact. The product of compacts is compact. Compactness implies sequential compactness in metric space.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Shifting to the origin}
+	Let $(u_1, ..., u_t) \in O_\mfrak p^t$ and write $u_k = u_k^* + v_k$ and set $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_t^*)$. We get for $i \in \{m+1, ..., n\}$
+	$$G_i(u_1, ... , u_t) = \sum_{j = 1}^n A_{ij}^* \exp L_j(v_1, ..., v_t) =: H_i(v_1, ..., v_t)$$
+	The $H_i$ define a local manifold, $V$, and it contains infinitely many points in any $\epsilon$-neighborhood of the origin. Hence $V$ contains an analytic curve. 
+\end{frame}
+
+\begin{frame}
+	Let us continue...
+\end{frame}
+
+
+\begin{frame}
+	Let $W$ be the local manifold given by
+	$$\prod_{i \leq k < l \leq n} (L_k(v_1, ...v_t) - L_l(v_1, ...,  v_t)) = 0$$
+	\pause
+	Assume $\omega_1(X), ..., \omega_t(X)$ is a curve on $V$.
+	\pause
+	This means that we have
+	$$\sum_{j = 1}^n A_{ij}^* \exp L_j(\omega_1(X), ..., \omega_t(X)) = 0$$
+	for $i = m+1, ..., n$.
+	\pause
+	\textbf{Suppose we have $k \neq l$ so that $$L_k(\omega_1(X), ..., \omega_t(X)) = L_l(\omega_1(X), ..., \omega_t(X))$$}
+	% Say that this means that the curve is also on W. 
+\end{frame}
+
+\begin{frame}
+	In other words, under our assumption, if a curve is on $V$ then it is also on $W$ so $V \subseteq W$. 
+\end{frame}
+\begin{frame}
+	Write
+	\begin{align*}
+		\iota(\alpha^*_s) &= (u_{1s}, ..., u_{ts}) \\
+		u_{is} &= u_i^* + v_{is}
+	\end{align*}
+	Set $V_s = (v_{1s}, ..., v_{ts})$. Then $V_s \in V$ converges to the origin so there is $N \in \mbb N$ so that $V_s \in W$ for all $s \geq N$. Thus there are $k \neq l$ so that $L_k(V_s) - L_l(V_s) = 0$ for all $s \geq N$. Consider
+	$$\{\alpha^*_s \mid L_k(V_s) - L_l(V_s) = 0 \text{ for } s \geq N \}$$
+	\textbf{If this is a finite set} then $F(x_1, ..., x_m) = c$ has finitely many solutions.
+	% This proves Thue's theorem.
+\end{frame}
+
+\begin{frame}
+	\frametitle{A case where we can overcome the two obstructions}
+	If $m = 2$ and one of the $\sigma_j$ is a complex embedding, then we can overcome these obstructions. Let us see why. %Apparenylt the last obstruction is not that big of a deal
+\end{frame}
+
+\begin{frame}
+	In this case, consider again
+	$$\{\alpha^*_s \mid L_k(V_s) - L_l(V_s) = 0 \text{ for } s \geq N \}$$
+	Why is this set finite?
+\end{frame}
+
+\begin{frame}
+	We also need to show that there exists $k \neq l$ so that $$L_k(\omega_1(X), ..., \omega_t(X)) = L_l(\omega_1(X), ..., \omega_t(X))$$
+\end{frame}
+
+\begin{frame}
+	\frametitle{A consequence of what we have just shown}
+	% Let $\bm N$ be the algebraic closure of $N_{\mfrak p}$ and
+	Let $\omega_1(X), ..., \omega_t(X)$ be a curve on $V$. Define $P_j(X) = L_j(\omega_1(X), ..., \omega_t(X))$ for $j \in \{1, ..., n\}$. There exists a matrix $B_{ij}$ with linearly independent rows so that
+	\begin{equation*}
+    	\begin{aligned}
+        	\sum_{j=1}^n A^*_{ij}\exp P_j & = 0 \text{, for all } i \in \{ m+1, ..., n \} \\
+        	\sum_{j=1}^n B_{ij}P_j    	& = 0 \text{, for all } i \in \{1,  ..., n-t\},
+    	\end{aligned}
+	\end{equation*}
+	The matrix $(A^*_{ij})$ has linearly independent rows.
+\end{frame}
+
+\begin{frame}
+	\frametitle{A useful lemma}
+	Let $L$ be a field of characteristic 0 and let $n,n_1,n_2 \in \mbb N$ so that $n_1 = n - 2$ and $n_2 \geq 2$ and suppose we have formal power series, $P_1, ..., P_n \in L[[X]]$ with zero constant term so that
+	\begin{align*}
+    	\sum_{j = 1}^n a_{ij} \exp P_j & = 0, \text{ for all } i \in \{1, ..., n_1\}  \\
+    	\sum_{j = 1}^n b_{ij} P_j  	& = 0, \text{ for all } i \in \{1, ..., n_2\},
+	\end{align*}
+	where both matrices $(a_{ij})$ and $(b_{ij})$ have linearly independent rows. Then there are two indices $k \neq l$ so that $P_k = P_l$.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Let us compare the last two slides}
+	We have $t = r + s - 1$ and $n = 2s + r$. Set $n_1 = n-m$ and $n_2 = n-t$. To apply the lemma we need $m = 2$. Also, $n_1 \in \mbb N$ if and only if $n_1 = n-2 \geq 1$ if and only if $n \geq 3$. We also have $n_2 = 2s + r - (r + s - 1) = s + 1$. So $n_2 \geq 2$ if and only if \textcolor{red}{$s \geq 1$.}
+
+	\vspace{\baselineskip}
+	\textbf{Conclusion:} The lemma can be applied with $n_1 = n-2$ and $n_2 = n - t$ if and only if there is at least one pair of complex conjugate embeddings and $n \geq 3$.
+
+\end{frame}
+
+\begin{frame}
+	\frametitle{Thue's Theorem}	
+	\begin{theorem}[Thue]
+		Suppose $f(x,y)$ is an irreducible form of degree $n \geq 3$ and $f(x,1)$ has an imaginary root. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for any non-zero $c \in \mbb{Q}$.
+	\end{theorem}
+\end{frame}
+\subsection{Proof of Thue's theorem}
+\begin{frame}
+	\frametitle{Proof of Thue's theorem}
+	Let $\theta$ be a root of $f(x,1)$. First show that $f(x, y) = N_{K / \mbb Q}(x + y \theta)$ with $K = \mbb Q(\theta)$. We the special case from before. % ith $m = 2$ and since $f(x,1)$ has an imaginary root, one of the embeddings must be complex. % Therefore we can apply the above lemma
+	% Maybe mention the mistake in the assignment.
+\end{frame}
+
+\section{An attempt to generalize Thue's theorem}
+\subsection{First attempt}
+\begin{frame}
+	\frametitle{The general case again}
+	Suppose $K$ is a number field with basis $\mu_1, ..., \mu_n$ and suppose $F$ is an irreducible form so that 
+	$F(x_1, ..., x_m) = N_{K/\mbb Q}(x_1 \mu_1 + \cdots + x_m \mu_m)$ with $m < n$. Consider the equation 
+	$$F(x_1, ..., x_m) = c$$ 
+
+	Does this equation have finitely many solutions?
+	% Maybe but we need to refine our assumptions.
+
+\end{frame}
+
+\begin{frame}
+	% \frametitle{More variables}
+	Consider the equation 
+	$$N_{\mbb Q(\sqrt 2, \sqrt 3)/\mbb Q}(x + y\sqrt 2 + z \sqrt 3) = 1$$ % This is irreducible and non full
+	Setting $z = 0$ we have
+	\begin{align*}
+		N_{\mbb Q(\sqrt 2, \sqrt 3) / \mbb Q}(x + y \sqrt 2) &= N_{\mbb Q(\sqrt 2)/\mbb Q}(N_{\mbb Q(\sqrt 2, \sqrt 3) / \mbb Q(\sqrt 2)}(x + y\sqrt 2)) \\
+		&= N_{\mbb Q(\sqrt 2)/\mbb Q}((x + y\sqrt 2)^2) \\
+		&= N_{\mbb Q(\sqrt 2)/\mbb Q}(x + y\sqrt 2)^2
+		= 1
+	\end{align*}
+	% This module is degenerate. This sort of thing happens for all degenerate modules.
+\end{frame}
+
+\begin{frame}
+	\begin{definition}\label{def: Degenerate module}
+		Let $K$ be a number field and $M$ a module with generators $\mu_1, ..., \mu_m$ and consider the vector space $L = \Span_{\mbb Q}\{\mu_1, ..., \mu_m \}$. If $L$ contains a subspace $L'$ so that $\gamma K' = L'$ for some subfield $K'$ of $K$ and $\gamma \in K$ and $K'$ is neither $\mbb Q$ or a quadratic imaginary field then we say that $M$ is degenerate. Otherwise the module is called non degenerate.
+	\end{definition}
+\end{frame}
+
+\begin{frame}
+	\begin{proposition}
+		Suppose $M \subseteq K$ is degenerate. Then there is $c \in \mbb Q$ so that 
+		$$N_{K/\mbb Q}(\beta) = c$$ 
+		for infinitely many $\beta \in M$. 
+	\end{proposition}
+\end{frame}
+
+\begin{frame}
+\begin{proof}
+	Suppose $M \subseteq K$ is degenerate and let $K'$ be a subfield of $K$ and $L'$ be a subspace of $L$ so that $\gamma K' = L'$, with $K'$ neither $\mbb Q$ or a quadratic imaginary field. Define $M' = M \cap L'$. We have $K' = \gamma^{-1} L'$ so $\gamma^{-1}M'$ is a full module inside $K'$. Suppose 
+	$$N_{K' / \mbb Q}(\alpha) = c$$
+	for $\alpha \in \gamma^{-1} M'$. We have $\alpha \gamma \in M' \subseteq M$. Note that $\alpha \in \gamma^{-1} L' = K'$ so $N_{K / K'}(\alpha) = \alpha^m$ ($m = [K : K']$). Thus 
+
+	$$N_{K / \mbb Q}(\alpha) = N_{K' / \mbb Q}(N_{K / K'}(\alpha)) = N_{K' / \mbb Q}(\alpha^m) = c^m$$
+	So 
+	$$N_{K / \mbb Q}(\gamma \alpha) = N_{K / \mbb Q}(\gamma) N_{K / \mbb Q}(\alpha) = N_{K / \mbb Q}(\gamma)c^m$$
+\end{proof}
+\end{frame}
+
+
+
+
+\subsection{Second attempt}
+\begin{frame}
+	\textbf{Conjecture:} Let $F(x_1, ..., x_m) = N_{K / \mbb Q}(x_1 \mu_1 + ... + x_m \mu_m)$. Perhaps $F(x_1, ..., x_m) = c$ has finitely many solutions if $\langle \mu_1, ..., \mu_m \rangle$ is non-degenerate and $F$ irreducible?
+	\pause
+	\begin{itemize}
+		\item This is true when $K$ is a quadratic imaginary field or $\mbb Q$.
+		\item We already know this is true when $m = 2$ and $n \geq 3$. \pause
+		\item Using different techniques this is valid for $m = 3$.
+	\end{itemize}
+	\pause
+	\textbf{How to proceed?}: A place to start could be to try to prove/disprove this for when $n$, the degree of $K$, is a prime.
+	An alternative is to strengthen the lemma we used in the proof of Thue's theorem.
+\end{frame}
+\subsection{Improvements of lemma}
+\begin{frame}
+	\frametitle{Improvements of lemma}
+	Recall that we want $H_i(v_1, ..., v_t) = 0$, $i \in \{1 + m,..., n\}$. So we have $n - m$ equations in $t$ variables. What happens when $n - m \geq t$? % So we might expect V to contain finitely many points if n - m >= t 
+
+\end{frame}
+
+\begin{frame}
+	Note that $n - m \geq t$ if and only if
+	$$(2s + r) - m \geq r + s - 1$$
+	if and only if
+	$$s \geq m - 1$$
+	If we set $n_1 = n-m$ and $n_2 = n-t$ then $n_1 + n_2 = 2n - m - t$. Thus $n_1 + n_2 \geq n$ if and only if $n-m \geq t$.
+\end{frame}
+
+\begin{frame}
+	\frametitle{Upgrade of lemma}
+	Let $L$ be a field of characteristic 0 and let $n,n_1,n_2 \in \mbb N$ so that \sout{$n_1 = n - 2$ and $n_2 \geq 2$} \textcolor{red}{$n_1 + n_2 \geq n$} and suppose we have formal power series, $P_1, ..., P_n \in L[[X]]$ with zero constant term so that
+	\begin{align*}
+    	\sum_{j = 1}^n a_{ij} \exp P_j & = 0, \text{ for all } i \in \{1, ..., n_1\}  \\
+    	\sum_{j = 1}^n b_{ij} P_j  	& = 0, \text{ for all } i \in \{1, ..., n_2\},
+	\end{align*}
+	with the $a_{ij}$ and $b_{ij}$ in $L$ and where both matrices $(a_{ij})$ and $(b_{ij})$ have $L$-linearly independent rows. Then there are two indices $k \neq l$ so that $P_k = P_l$.
+\end{frame}
+
+\begin{frame}
+	Thus, if the upgraded lemma was true and if $s \geq m - 1$, we would be able to get past the first obstruction. It has been shown that the lemma holds in the special case where $n = 5,n_1 =2, n_2=3$.
+\end{frame}
+
+
+% \begin{frame}
+% 	Set $n=5, n_1 = 2, n_2 = 3$ and let $m = 3, s=2$. In this case $5 = 2s + r$ so $r = 1$ so $t = 1 + 2 - 1 = 2$. We see that $n_1 = n-m$ and $n_2 = n-t$. Let $$F(x_1, ..., x_m) = N_{K/\mbb Q}(x_1 \mu_1 + ... + x_m \mu_m).$$
+% 	In this case $\langle \mu_1, ..., \mu_m \rangle$ is degenerate and it can be shown that $F(x_1, ..., x_m) = c$ has only finitely many solutions. 
+	
+	
+% 	% Thus, when $n = 5$ and $s \geq m - 1$ we get finitely many solutions.
+	
+% 	% Thoralf Skolem proved the lemma from before in this case. 
+% \end{frame}
+
+\section{Alan Baker's improvements}
+\begin{frame}
+	\frametitle{Improvements by Alan Baker}
+	\begin{theorem}
+		Assume $K$ is a number field of degree $d$, let $\alpha_1, ..., \alpha_n$ be distinct elements in $O_K$ with $n \geq 3$ and let $\mu \in O_K$, $\mu \neq 0$. Then
+		$$(x - \alpha_1 y)...(x - \alpha_n y) = \mu$$ 
+		has finitely many solutions with $x, y \in O_K$ and these can be determined.
+	\end{theorem}
+	\begin{itemize}
+		\item Equation need not have coefficients in $\mbb Q$.
+		\item $x,y$ can take values in $O_K$, not just $\mbb Z$.
+		\item The solutions can be determined.
+	\end{itemize}
+\end{frame}
+
+
+
+
+
+\end{document}

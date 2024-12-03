@@ -1,0 +1,1640 @@
+\documentclass{article}
+% \graphicspath{ {./images/} }
+\usepackage{amsmath} 
+\usepackage{graphicx}
+\usepackage{amssymb} 
+\usepackage{amsthm} 
+\usepackage{mathtools} 
+\usepackage{bm}
+\usepackage{enumitem}
+\usepackage{makeidx} 
+\usepackage{quiver}
+\usepackage{tikz-cd}
+\usepackage{listings} 
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+
+
+\usepackage[numbers]{natbib}
+
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\nullity}{nullity}
+\DeclareMathOperator{\coeff}{coeff}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\tr}{Tr}
+
+
+\newcommand{\norm}[1]{\text{N}(#1)}
+
+\newcommand{\Span}{\operatorname{span}}
+\newcommand*{\argordot}[1]{
+	\def\arg{#1}
+	\ifx\arg\empty
+    	\,\cdot\,
+	\else
+    	#1
+	\fi
+}
+\DeclarePairedDelimiterX{\abs}[1]{\mid}{\mid}{\argordot{#1}}
+
+% Define theorem environment
+\newtheorem{theorem}{Theorem}[section]
+
+% Define definition environment
+\newtheorem{definition}{Definition}[section]
+
+% Define corollary environment
+\newtheorem{corollary}{Corollary}[section]
+
+% Define proposition environment
+\newtheorem{proposition}{Proposition}[section]
+
+% Define lemma environment
+\newtheorem{lemma}{Lemma}[section]
+
+% Define example environment
+\newtheorem{example}{Example}[section]
+
+% Define remark environment
+\newtheorem{remark}{Remark}[section]
+
+\newtheorem{fact}{Fact}[section]
+
+
+
+% Define aliases for \mathfrak and \mathcal and mathbb
+\newcommand{\mfrak}[1]{\mathfrak{#1}}
+\newcommand{\mcal}[1]{\mathcal{#1}}
+\newcommand{\mbb}[1]{\mathbb{#1}}
+% commands for the trace, Tr and norm, N
+ 
+\newcommand{\vp}{{v_{\mfrak p}}}
+
+\makeindex
+
+\usepackage{hyperref}
+\usepackage{cleveref}
+\numberwithin{equation}{section}
+
+
+\crefname{fact}{fact}{facts}
+\Crefname{fact}{Fact}{Facts}
+
+\title{$\mfrak p$-adic Numbers and Skolem's Method}
+\author{Daniel Grunkin}
+\date{}
+
+\begin{document}
+\begin{abstract}
+	This thesis deals with Diophantine equations, specifically those arising from taking the field norm of certain elements of a number field. For a certain class of these the mathematician, Thoraf Skolem, showed that an infinite number of solutions to an equation belonging to this class gives rise to a curve on a local manifold. As a special case of this result he showed that Thue's equation, $f(x,y) = c$, cannot have infinitely many solutions because no such curves can exist in this case. We'll be prove these two results and establish the necessary prerequisites to do so. This includes algebraic structures such as forms, modules and completetions of fields, specifically the $\mfrak p$-adic numbers.
+\end{abstract}
+\maketitle
+
+
+% TODO: Write an introduction, saying that there has been developed mathematics that does not require a complex root as we do. There are even results giving an upper bound on the number of solutions to the thue equation. We will not do that here - we will just show that under certain circumstances, there are only finitely many solutions.So the result is not as strong, but the proof is more elegant. It does not require much analysis at all.
+
+\tableofcontents
+\newpage
+
+
+
+\section{Introduction}
+
+Diophantine equations, named after the greek mathematician Diophantus, are polynomial equations in multiple variables where only integer solutions are of interest, that is equations of the type
+\begin{equation}\label{eq: General diophantine equation}
+	F(x_1, ..., x_n) = c,
+\end{equation}
+where $F$ is a multivariate polynomial with integer coefficients and $c$ is a rational number. Some of these equations are known for being notoriously hard to solve and therefore we often ask easier questions like: Does this equation have finitely many solutions or does it have infinitely many? If it has finitely many can we then obtain an upper bound on the number of these? Even these questions become extremely hard to answer so we will restrict our attention to polynomials that occur by applying the field norm to certain elements. Details are given in \cref{sec: Forms and modules}, but for now lets see an example of one such equation. Consider the real quadratic field $\mbb Q(\sqrt 2)$. This field has basis $1,\sqrt 2$ over $\mbb Q$ and we have
+$$N_{\mbb Q(\sqrt 2)/\mbb Q}(x + y\sqrt 2) = (x + y\sqrt 2)(x - y\sqrt 2) = x^2 - 2y^2$$
+As such we get, for instance, a Diophantine equation
+$$x^2 - 2y^2 = 7$$
+and we observe that $(3,1)$ is a solution. Also, if $(x,y)$ is a solution then so is $(3x + 4y, 2x + 3y)$ so this equation has infinitely many solutions in integers. The Norwegian mathematician, Axel Thue, showed in 1909 the following theorem, known as Thues theorem.
+\begin{theorem}[Thue]\label{thm: Thues theorem introduction}
+	Suppose $f(x,y)$ is an irreducible homogeneous polynomial with integer coefficients of degree $n \geq 3$. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for any non-zero $c \in \mbb{Q}$.
+\end{theorem}
+The way Thue went about proving this was by proving that for any algebraic number $\alpha$ of degree $\geq 3$ and any $\epsilon > 0$ there are only finitely many coprime integers $p,q$, where $q > 0$ so that
+$$|\alpha - \frac{p}{q}| < q^{-(d+1+\epsilon)/2},$$
+see \citep{thuewikipedia}. Thoralf Skolem also proved the theorem but in a different way. He proved a general result that says that an equation like \cref{eq: General diophantine equation} which has infinitely many solutions in integers and where $F$ is, among other things, homogenous, then there exists a curve on a so-called local manifold. He could then show that the equation $f(x,y) = c$ in \cref{thm: Thues theorem introduction} is a special case of this more general situation if he imposed the extra condition that $f(x,1)$ has at least one imaginary root. He then proved that no curves could exists in this case, implying only finitely many solutions. This proof strategy is suitably referred to as Skolem's method. The more general result that Skolem showed takes as its starting point in realizing that the assumptions on $F$ makes it possible to write $F(x_1, ..., x_n) = N_{K/\mbb Q}{(x_1\mu_1 + ... + x_n \mu_n)}$, where $K$ is some number field and $\mu_1, ..., \mu_n \in K$. This is a situation very analogous to the one involving the polynomial $x^2 - 2y^2$ from above. Working in this setting allows us to make use of results from algebraic number theory. For example we shall see that a slightly more general version of Dirichlet's unit theorem stated in \citep[Theorem 38]{marcus} allows for a very concrete description of the elements $x_1\mu_1 + ... + x_n \mu_n$  having norm $c$. Now the proofs by Thue and Skolem both suffer from not being effective, meaning that they don't provide a procedure for figuring out what the solutions actually are. This was the case for all known proofs until Alan Baker in 1969 overcame this issue by giving a proof based on his theory on linear forms in logarithms, see \citep[Theorem 4.1]{baker}. Our focus in this thesis however will be in understanding Skolem's method and how to apply it to prove Thue's theorem. We seek to establish the necessary theory for this proof modulo some minor roundabouts here and there.
+\section{Dual basis}
+\begin{proposition}\label{prop: Existence of dual basis}
+	Suppose that $K/k$ is a field extension of degree $n$. Given any basis $\mu_1, ..., \mu_n$ for $K$ over $k$ there exists a basis, $\mu_1^*, ..., \mu_n^*$ called the dual basis of $\mu_1, ..., \mu_n$ so that
+	$$\tr_{K/k}(\mu_i^* \mu_j) = \begin{cases*}
+        	1 \text{ if } i = j \\
+        	0 \text{ otherwise }
+    	\end{cases*}$$
+\end{proposition}
+
+\begin{proof}
+	For ease of notation we will write $\tr$ instead of $\tr_{K/k}$. Choose $n$ elements, $c_1, ..., c_n$, in $k$. We know that the $n \times n$ matrix, $(\tr (\mu_i \mu_j))$, is non-singular since $$0 \neq \text{disc}(\mu_1, ..., \mu_n) = |\tr(\mu_i \mu_j)|^2$$
+	This means that there is a unique solution, $x_1, ..., x_n \in k$, to the $n$ equations
+	$$\sum_{j=1}^n \tr(\mu_i \mu_j) x_j = \frac{c_i}{n} \quad (i = 1, ..., n)$$
+	Let $\alpha = \sum_{j=1}^n x_j \mu_j$. Using rules of the trace, we get for any $i$ that
+	$$c_i = \sum_{j=1}^n \tr(x_j \mu_i \mu_j) = \tr(\sum_{j=1}^n x_j \mu_i \mu_j) = \tr(\alpha \mu_i)$$
+	Thus, we have demonstrated that for any choice of $c_1, ..., c_n \in k$, there is a unique $\alpha \in K$ such that $\tr(\alpha \mu_i)= c_i$. For $(i,j) \in \{1, ..., n\}^2$ we now define
+	$$c_{ij} = \begin{cases*}
+        	1 \text{ if } i = j \\
+        	0 \text{ otherwise }
+    	\end{cases*}$$
+	For every $i \in \{1, ..., n \}$ we get, by what we have just shown, a unique $\mu_i^* \in K$ such that $\tr(\mu_i^* \mu_j) = c_{ij}$ for $j \in \{ 1, ..., n \}$. To show that $\mu_1^*, ..., \mu_n^*$ is a basis, it suffices to show that they are linearly independent over $k$. So suppose that
+	$$\sum_{i=1}^n x_i \mu_i^* = 0.$$
+	Multiplying by $\mu_j$ and taking the trace, we get
+	$$0 = \tr(\sum_{i=1}^n x_i \mu_i^* \mu_j) = \sum_{i=1}^n x_i \tr(\mu_i^* \mu_j) = x_j,$$
+	which shows that $x_j = 0$ is zero. Doing this for all $j \in \{1, ..., n \}$ we get $x_1 = ... = x_n = 0$.
+\end{proof}
+
+
+
+\section{Formal power series}\label{sec: Formal power series}
+
+Let $K$ be a field. Recall the ring of formal power series, $K[[X]]$. Addition of two elements $f(x) = \sum_{i = 0}^\infty a_ix^i$ and $g(X) = \sum_{i = 0}^\infty b_ix^i$ is defined in the obvious way and multiplication is defined as
+$$f(X)g(X) = \sum_{i = 0}^{\infty}c_i x^i$$
+where $c_i = \sum_{j = 0}^i a_j b_{i-j}$. Thus, multiplication is really just the process of expanding out brackets and collecting like terms. In some cases it is also possible to compose power series. Let $\omega : K[[X]] \to \mbb Z \cup \{\infty \}$ be defined by sending $0$ to $\infty$ and a non-zero power series $\sum_{i = m}^\infty a_i x^i$, $a_m \neq 0$, to $m$. Note that if $f(X) = \sum_{i = 1}^\infty a_iX^i$ then the sequence $\omega(f^0), \omega(f^1), ...$ is strictly increasing. Hence for any $n \in \mbb N_0$ it is only the first $n+1$ power series in the sequence $f^0, f^1, f^2, ...$ that can contain a term of degree $n$.  
+Hence we can in this case define, for any $g(X) = \sum_{i = 0}^\infty b_i X^i$ the composite
+$$g(f(X)) = \sum_{i = 0}^\infty b_i f(X)^i$$
+% The coefficients, $c_i$, of this power series are given by
+% $$c_i = \sum_{k \in \mbb N} \sum_{\substack{j \in \mbb N^k, \\ j_1 + ... j_k = k}} b_k a_{j_1}...a_{j_k} $$
+Formal differentiation can be defined on $K[[X]]$, simply by formal differentiation of each term, that is,
+$$f'(X) = \sum_{i = 1}^\infty i a_{i} X^{i-1}$$
+This operation is linear (by definition) and the well known product and chain rules actually hold in $K[[X]]$. Using the product rule and an induction argument it follows that $(f(X)^n)' = n f(X)^{n-1}f'(X)$. Hence if $f(X) = \sum_{i = 1}^\infty a_i X^i$ and $g(X) = \sum_{i = 0}^\infty b_i X^i$ then
+\begin{align*}
+	(g(f(X)))' &= \sum_{i = 1}^\infty ib_i f(X)^{i-1}f'(X)\\
+	&= (\sum_{i = 1}^\infty i b_i f(X)^{i-1})f'(X) \\
+	&= g'(f(X))f'(X)
+\end{align*}
+We can also consider the field of fractions of $K[[X]]$ and we will denote this field as $K((X))$. This is called the field of Laurant series and each non-zero element in it can be written as $\sum_{i = m}^\infty a_i X^i$, for some $m \in \mbb Z$, where $a_m \neq 0$. As such we can extend $\omega$ defined above in an obvious way to $K((X))$.
+
+\begin{lemma}\label{lem: Unit power series is transcendental}
+	Suppose $K$ is a field and $f \in K((X))$. If $f \notin K$ then $f$ is transcendental over $K$. That is, there exists no non-zero polynomial with coefficients in $K$ having $f$ as a root.
+\end{lemma}
+\begin{proof}
+	Suppose that $f \in K((X)) \setminus K$. Then $f \neq 0$ so $\omega(f) \in \mbb Z$. First, let us assume that $\omega(f) > 0$. Then the numbers $\omega(f^0), \omega(f^1),\omega(f^2) ...$ constitute a strictly increasing sequence in $\mbb Z$. In particular, these are all different numbers. So if we have a $K$-linear combination
+	$$a_0 + a_1 f_1 + ... + a_nf^n = 0,$$
+	then we must have $0 = a_0 = ... = a_n$. A similar argument can be made when $\omega(f) < 0$ and thus $f$ cannot be algebraic when $\omega(f) \neq 0$. Lastly, suppose that $\omega(f) = 0$ and let $a_0 \in K$ be the constant term of $f$. If $f$ were algebraic over $K$ then also $f - a_0$ would be algebraic, which is a contradiction since $\omega(f - a_0) > 0$. Hence $f$ is not algebraic.
+\end{proof}
+
+% (MOVE THIS)
+
+% Suppose that $K$ is a field of characteristic 0 and that it is complete with respect to a valuation, $v$. Say that we have a power series $f \in K[[X]]$,
+% $$f(X) = \sum_{n = 0} a_n X^n.$$
+% The set $C$ containing all points $x \in K$ so that $f(x)$ converges is called the region of convergence for $f$.
+% %In fact $C = \{x \in K \mid v(x) \geq \mu \}$ where $\mu = \min_{x \in C} v(x)$.
+% We get an induced function $f : C \to K$ given by $x \mapsto f(x)$ and this function is continuous. Differentiating the power series, $f$, induces another function, which also has $C$ as its region of convergence (REFER TO SOMETHING HERE). (REMARK THAT WE CANNOT EXPECT IT TO BE THE CASE THAT h(X) = f(g(X)) WHEN REGARDING THEM AS FUNCTIONS). Example where this goes wrong in $\mbb Q_2$: $f(x) = \exp(x)$ and $g(x) = 2x^2 - 2x$ and $h(x) = f(g(x))$
+
+\section{Forms, modules and orders}\label{sec: Forms and modules}
+% forms
+\subsection{Forms}
+A form $F(x_1, ..., x_m)$ in $m$ variables of degree $k$ is a homogenous polynomial in the variables $x_1, ..., x_m$ of degree $k$ with coefficients in $\mbb{Q}$. A form $F$ is called reducible if it can be written as a product of two forms of degree strictly larger than 0. Otherwise it is called irreducible. Two forms of the same degree are called integrally equivalent if one can be obtained from the other and vice versa by a linear change of variables with coefficients in $\mbb{Z}$. Two forms being integrally equivalent defines an equivalence relation on the set of forms having some fixed degree. If $F(x_1, ..., x_m)$ and $G(y_1, ..., y_l)$ are integrally equivalent forms, then knowing all the solutions to $F(x_1, ..., x_m) = a$ is exactly the same as knowing all the solutions to $G(y_1, ..., y_l) = a$. If a form $F$ splits into linear factors in some extension, $K$, of $\mbb{Q}$, then it is called decomposable.
+%and in this case $K$ can in fact be chosen to be a number field \citep{borevich}[See Thm 1 p 79 Borevich].
+The following proposition provides some examples of forms that are always decomposable.
+
+\begin{proposition}\label{prop: Forms of two variables are decomposable}
+	Let $F(x,y) = \sum_{i=0}^m a_i x^{m-i}y^{i}$ be a form of degree $m$ where $a_0 \neq 0$. Then over the splitting field for $F(x,1)$ we have the factorization
+	$$F(x, y) = a_0(x - \alpha_1)...(x - \alpha_m)$$
+\end{proposition}
+\begin{proof}
+	Since $a_0 \neq 0$ we must have $y \nmid F(x, y)$. Let $G(t) = F(t, 1)$. This is a polynomial in $\mbb Q[t]$ with degree $m$. We can now write
+	$F(x, y) = y^mF(\frac{x}{y}, 1) = y^m G(\frac{x}{y})$. As $G$ is just a polynomial we can factor it into linear terms over its splitting field, $K$.
+	$$G(t) = a_0 (t - \alpha_i) ... (t - \alpha_m)$$
+	This means that
+	$$F(x,y) = y^mG(\frac{x}{y}) =  a_0 (x - \alpha_iy) ... (x - \alpha_m y)$$
+	Thus, $F(x,y)$ is decomposable as it splits into linear factors over $K$.
+\end{proof}
+\begin{remark}\label{remark: Forms of two variables are decomposable}
+	Consider the special case where $F(x,y)$ is irreducible and $a_0 = 1$. It then follows that $F(x,1)$ is also irreducible of degree $m$ so adjoining any of its roots $\alpha$ to $\mbb Q$ gives an extension, $K$, of degree $m$. The $\alpha_i$ in the factorization of $G$ above are then the conjugates of $\alpha$ so setting $\theta = -\alpha$ we obtain
+	$$F(x,y) = N_{K / \mbb Q}(x + y \theta)$$
+\end{remark}
+
+We shall use this fact once we start looking at Thue's theorem.
+
+
+
+% Example does not work
+% As an example,
+% \begin{equation*}
+% 	u^2 + 3v^2 \text{ and } 7x^2 - 2xy + 4y^2
+% \end{equation*}
+% are integrally equivalent since the second form can be obtained from the first by setting $u = 2x+y$ and $v = x-y$. .
+
+% Observe that if $(x_0, y_0)$ is a solution to the second form above then $(u_0, v_0)$, with $u_0 = 2x_0 + y_0$ and $v_0 = x_0 - y_0$, is a solution to the first form above. In general, if we have a solution to an equation like (\ref{}), then we immediately have a solution to all forms integrally equivalent to $F$.
+\subsection{Modules and forms connected to them}
+Let us assume that $K$ is a number field of degree $n$ over $\mbb Q$ and let $\mu_1, ..., \mu_k$ be elements in $K$. The set, $M$, consisting of all $\mbb{Z}$-linear combinations of these elements is called a module in $K$ and we will write $M = \langle \mu_1, ..., \mu_k \rangle$ for this set. The $\mu_i$'s are called generators for the module and we can use them to construct a form, as the following proposition shows.
+
+\begin{proposition}
+	For $x_1, ..., x_k \in \mbb Z$ we get a decomposable form $F(x_1, ..., x_k) = N_{K / \mbb Q}(x_1 \mu_1 + ... + x_n \mu_k)$ of degree $n$. % Furthermore, there is a subfield $L$ of $\mbb C$ which is an extension of $K$ and is Galois over $\mbb Q$, so that $F$ dec there exists a Galois extension $L$ containing $K$ over which $F$ is decomposable.  
+\end{proposition}
+\begin{proof}
+    
+As $K$ is in particular a finite separable extension of $\mbb Q$, the primitive element theorem states that there is $\theta \in K$ so that $K = \mbb Q(\theta)$. Let now $\sigma_1, ..., \sigma_n$ be the $n$ embeddings from $K$ into $\mbb C$. We obtain a field extension $L$ of $K$ by adjoining all conjugates, $\sigma_1(\theta), ..., \sigma_n(\theta)$ to $\mbb Q$. As the embeddings map into $\mbb C$ we see that $L$ is a subfield of $\mbb C$ and it is a Galois extension of $\mbb Q$ as it is splitting field for the minimal polynomial for $\theta$ over $\mbb Q$. Let $G = \Gal(L/\mbb Q)$. Let $H$ be the subgroup of $G$ corresponding to $K$. We have $[G : H] = [L : \mbb Q]$ and we see that we can interpret the embeddings $\sigma_i$ as a system of coset representatives of $H$ in $G$, that is we have a disjoint union, $G = \cup_{i = 1}^n \sigma_i H$. We observe that
+\begin{align*}
+	F(x_1, ..., x_k) &= N_{K /\mbb Q}(x_1 \mu_1 + ... + x_n \mu_n)
+	\\ &= \prod_{i = 1}^n \sigma_i(x_1 \mu_1 + ... + x_k \mu_k)                     	\\
+                 	& = \prod_{i = 1}^n \left(x_1 \sigma_i(\mu_1) + ... + x_k \sigma_i(\mu_k) \right)
+\end{align*}
+When expanding out the parentheses we see that $F$ is a homogenous polynomial of degree $n$ in the variables $x_1, ..., x_k$. Let us see that the coefficients belong to $\mbb Q$. Consider the set $\Gamma$ of all functions from $\{1, ..., n\}$ and consider two functions in $\Gamma$ to be equivalent if they have the same image. Take any $\tau \in \Gamma$ and let $[\tau]$ be its corresponding equivalence class. We see that the coefficient of $x_{\tau(1)} \ldots x_{\tau(n)}$ is
+\begin{equation}
+	\sum_{\alpha \in [\tau]} \sum_{i=1}^n \sigma_i(\mu_{\alpha(i)})
+\end{equation}
+Let $\sigma \in G$. Then $\sigma \sigma_i \in G$ so there is a unique $j$ such that $\sigma \sigma_i \in \sigma_j H$. Thus, there is a permutation $\pi$ of $\{1, ..., n\}$ so that $\sigma \sigma_{i}= \sigma_{\pi(i)}h_i$, for $h_i \in H$. Thus $\sigma \sigma_{i}(\alpha) = \sigma_{\pi(i)}(\alpha)$ for all $\alpha \in K$ and $i \in \{1,...,n\}$, since $h_i$ fixes $K$. Noting that $[\tau]= [\tau \circ \pi^{-1}]$ and remembering that the $\mu_i$ all belong to $K$ we observe that
+%Thus, acting with $\sigma$ on \cref{eq: coefficient} we get
+\begin{align*}
+	\sigma(\sum_{\alpha \in [\tau]} \sum_{i=1}^n \sigma_i(\mu_{\alpha(i)})) &= \sum_{\alpha \in [\tau]} \sum_{i=1}^n \sigma \sigma_i(\mu_{\alpha(i)})  \\
+	&= \sum_{\alpha \in [\tau]} \sum_{i=1}^n \sigma_{\pi(i)}(\mu_{\alpha(i)}) \\
+	&= \sum_{\alpha \in [\tau]} \sum_{i=1}^n \sigma_{i}(\mu_{\alpha \circ \pi^{-1}(i)}) \\
+	&= \sum_{\alpha \in [\tau \circ \pi^{-1}]} \sum_{i=1}^n \sigma_{i}(\mu_{\alpha (i)}) \\
+	&= \sum_{\alpha \in [\tau]} \sum_{i=1}^n \sigma_i(\mu_{\alpha(i)})
+\end{align*}
+
+Thus, every coefficient is fixed under every single $\sigma \in G$ meaning that these all belong to $\mbb Q$ and therefore $F$ is a form of degree $n$. $F$ is decomposable as it splits into linear factors over $L$.
+\end{proof}
+
+
+%from $\{1, ..., n\}$ to itself. The consider the set of all $\tau'$ 	and the coefficient of $x_\tau(1) ... x_\tau(n)$  will be sums $\sum_{i=1}^n \sigma_i(\mu_\tau(i))$, with $\tau$ being any function from $\{1, ..., n\}$ to itself. Since the norm, $N_{K/\mbb Q}$, sends elements in $K$ to $\mbb Q$ we know that $F(x_1, ..., x_n)$ is in $\mbb Q$. Thus it is fixed by every single $\sigma \in G$. This implies that all the coefficients of $F$ are fixed by every $\sigma \in G$, so they all belong to $\mbb Q$. Therefore $F$ is a form of degree $n$.
+\begin{definition}
+	Suppose that $M$ is a module and $K$ and that $M = \langle \mu_1, ..., \mu_m\rangle$. The form $F(x_1, ..., x_m) = N_{K / \mbb Q}(x_1 \mu_1 + ... + x_m \mu_m)$ is called a norm form and is said to be connected to the module $M$.
+\end{definition}
+There are many different forms connected to a single module but it turns out that they are all the same modulo being integrally equivalent.
+
+\begin{proposition}\label{fact: Forms connected to module are equivalent}
+	All forms connected to a module $M$ are integrally equivalent.
+\end{proposition}
+\begin{proof}
+	Suppose that $M$ is generated by $\mu_1, ..., \mu_m$ and also by $\rho_1, ...,\rho_l$. We get the following two forms which are connected to $M$;
+	\begin{align*}
+    	F(x_1, ..., x_m) &= N_{K/\mbb Q}(x_1 \mu_1 + ... + x_m \mu_m) \\ G(y_1, ..., y_s) &= N_{K/\mbb Q}(y_1 \rho_1 + ... + y_l \rho_l)
+	\end{align*}
+	For every $j = 1, ..., l$ we can find integers $c_{j1}, ..., c_{jm}$ so that
+	$\rho_j = \sum_{k=1}^m c_{jk} \mu_k$ since $\rho_j \in M$ and the $\mu_i$ generate $M$. We then have
+	$$\sum_{j=1}^l y_j \rho_j = \sum_{j=1}^l y_j \sum_{k=1}^m c_{jk} \mu_k = \sum_{k=1}^m (\sum_{j=1}^l c_{jk} y_j) \mu_k = \sum_{k=1}^m x_k \mu_k,$$
+	where we put
+	\begin{equation*}
+    	x_k = \sum_{j=1}^l c_{jk} y_j \text{ for } k \in \{1, ..., m\}
+	\end{equation*}
+	Taking norms we see that $F(x_1, ..., x_m) = G(y_1, ..., y_l)$ under the linear change of variables right above. A completely symmetrical argument now shows that $F$ and $G$ are integrally equivalent.
+\end{proof}
+If $M$ is a module and it contains a basis for the vector space $K / \mbb{Q}$, then it is called a \textbf{full module}. Otherwise it is called a \textbf{nonfull module}. A form which is connected to a module is correspondingly called full and nonfull. By definition $M$ is a finitely generated abelian group and by the structure theorem, $M$ determines uniquely integers $r,s \geq 0$ and $d_1 \mid ... \mid d_s$, $d_i \geq 2$ such that
+$$M \cong \mbb{Z}^r \oplus \mbb{Z}/d_1\mbb{Z} \oplus ... \oplus \mbb{Z}/d_s\mbb{Z} $$
+But $M$ lives inside a field of characteristic 0 so $M$ must be torsion-free and so $s = 0$. Thus, $M \cong \mbb{Z}^r$, which means that $M$ is a free abelian group of rank $r$. The modules in $K$ can therefore be thought of as finitely generated free abelian groups, which means that concepts such as rank and basis now make sense for modules. The full modules inside $K$ are exactly the modules having rank $n$ and the nonfull ones have rank strictly smaller than that.
+
+\begin{proposition}\label{lem: Basis for module is linearly independent over Q}
+	If $\mu_1, ..., \mu_m$ is a basis for a module $M$ then these elements are linearly independent over $\mbb Q$.
+\end{proposition}
+\begin{proof}
+	Suppose that we have a $\mbb Q$-linear combination
+	$$a_1 \mu_1 + ... + a_m \mu_m = 0$$
+	Set $c$ to be the product of all the denominators of the $a_i$. Then $c \neq 0$ and $ca_i \in \mbb Z$ so we must have $a_i = 0$ as the $\mu_i$ are linearly independent over $\mbb Z$.
+\end{proof}
+
+% If $N$ is a subgroup of $M$, then $N$ is a free abelian group of rank $r' \leq r$, meaning that $N$ is also a module of $K$ of rank $r'$.
+\subsection{Coefficient rings and orders}
+In the following we assume that $K$ is an algebraic number field of degree $n$ over $\mbb Q$. An \textbf{order} in $K$ is a full module in $K$ which is also a ring with unity. As the ring of integers of $K$ has an integral basis it is in fact a full module, so it is an example of an order. We now show how we can construct other orders. Given a full module $M$ in $K$, we can consider an element $\alpha$ in $K$ so that $\alpha M \subseteq M$. Such an element is called a \textbf{coefficient} of $M$, and the set of all of these is called the \textbf{coefficient ring} of $M$, which we will denote by $\mfrak D_M$, or simply $\mfrak D$, when it is clear from the context what is meant. It would be strange to call this object a ring, if it wasn't a ring, so let us check that it is. It is clear that $1 \in \mfrak{D}$ since $1 M \subseteq M$ and so $\mfrak{D}$ is non-empty. Let now $\alpha, \beta$ in $\mfrak D$ and take any element $x$ in $M$. We have $\alpha x, \beta x \in M$ so $$(\alpha - \beta)x = \alpha x - \beta x \in M$$
+Thus, $\alpha - \beta \in \mfrak{D}$. Checking that we have closure under multiplication is similar and so by the subring criterion $\mfrak{D}$ is a subring of $K$. In fact, $\mfrak{D}$ is also a full module. To justify this, we must show that $\mfrak{D}$ is a module and that it contains a basis for $K$ as a vector space over $\mbb Q$. If $\gamma$ is any non-zero element of $M$, then $\gamma \mfrak{D}$ is a group under addition and we have that $\gamma \mfrak{D} \subseteq M$. Thus, $\gamma \mfrak D$ is a free abelian group, since it is contained in the free abelian group $M$ which means that it is a module in $K$. But then also $\mfrak{D} = \gamma^{-1} \gamma \mfrak{D}$ is a module. Let us show that $\mfrak D$ is also full. Pick a basis $\mu_1, ..., \mu_n$ for $M$ and let us prove the following lemma.
+\begin{lemma}\label{lem:SufficientConditionForCoefficient}
+	For any $\alpha \in K$ we have that $\alpha \mu_i$ is in $M$ for all the $\mu_i$ if and only if $\alpha$ is in $\mfrak D$.
+\end{lemma}
+\begin{proof}
+	Take any $x \in M$ and write $x = \sum_{i=1}^n a_i \mu_i$ where the $a_i$ are integers. Multiplying by $\alpha$ we get
+	$$\alpha x = \sum_{i=1}^n a_i (\alpha \mu_i)$$
+	So if the $\alpha \mu_i$ are all in $M$, this is just a finite sum of elements in $M$, meaning that the entire sum is in $M$. Hence, $\alpha M \subseteq M$. The other direction is clear.
+\end{proof}
+
+
+%for $K$ as a vector space over $\mbb Q$ which is also a basis for $M$. (MAYBE JUSTIFY THIS)
+%Using this result we can now move on to show that $\mfrak D$ is a full module.
+Let us now show that if $\alpha \in K$ then there exists an integer $b \neq 0$ so that $b \alpha \in \mfrak D$. For each $\mu_i$ we can find a $\mbb Q$-linear combination
+$$\alpha \mu_i = \sum_{j=1}^n a_{ij} \mu_j,$$
+since the $\mu_i$ constitute a basis for $K$ over $\mbb Q$ by \cref{lem: Basis for module is linearly independent over Q}. Choose now an integer, $c \neq 0$ so that $c a_{ij}$ is an integer for all $i,j$. This implies that $c \alpha \mu_i$ is in $M$ for all the $\mu_i$ which by \cref{lem:SufficientConditionForCoefficient} means that $c \alpha$ is in $\mfrak D$. From this it is clear that we can pick an integer $b \neq 0$ so that we for all $\mu_i$ have that $b \mu_i$ is in $\mfrak D$. The elements $b \mu_1, ..., b\mu_n$ is of course still is a basis for $K$ over $\mbb Q$ so $\mfrak D$ is full so $\mfrak D$ is an order in $K$. Note that we have in fact also shown the following
+\begin{proposition}\label{bM contained in D}
+	If $M$ is a full module and $\mfrak D$ is its coefficient ring then there is $b \neq 0$ so that $bM \subseteq \mfrak D$.
+\end{proposition}
+In fact $\mfrak D$ is contained in $O_K$, the ring of integers of $K$. Because if $\alpha \in \mfrak D$ then we have $\mbb Z[\alpha] \subseteq \mfrak D$ so $\mbb Z[\alpha]$ has rank smaller than or equal to $n$. Hence $\mbb Z[\alpha]$ is in particular finitely generated and that is the same as saying that $\alpha \in O_K$. Let us summarize what we have found in the following proposition
+\begin{proposition}\label{prop: Coefficient ring properties}
+	The coefficient ring $\mfrak D$ of a full module is an order of $K$ and is a subring of the ring of integers of $K$.
+\end{proposition}
+
+\subsection{More about full forms}
+We now present a slight generalization of Dirichlet's unit theorem found in \citep[Theorem 38]{marcus}. Interestingly we can use this theorem to prove this generalized version.
+% When we have a full form, $F$, we know that it is connected to some full module $M$ which has attached to it its coefficient ring, $\mcal D$.
+
+\begin{theorem}[Dirichlet's unit theorem]\label{thm: Generalized Dirichlet}
+	Let $\mfrak D$ be an order in some number field $K$ of degree $n$ and let $r$ and $2s$ be the number of real and complex embeddings, respectively. Then $$\mfrak D^* = W \oplus V$$
+	where $W$ is a finite cyclic group consisting of all roots of unity of $\mfrak D$ and $V$ is a free abelian group of rank $t = r + s - 1$.
+\end{theorem}
+\begin{proof}
+	Let $O$ be the ring of algebraic integers in $K$. For the order $O$ we know that the above theorem holds, so we get
+	$$O^* = W \oplus V$$
+	with $W$ being all roots of unity of $O$ and $V$ a free abelian group of rank $t = r + s -1$. Since $\mfrak D$ is a subring of $O$ we also have $\mfrak D^* \subseteq O^*$. Hence, $$\mfrak D^* = W' \oplus V'$$
+	where $W' \trianglelefteq W$ is finite cyclic and $V' \trianglelefteq V$ is free abelian of rank $t' \leq t$. We wish to show two things; That $W'$ does indeed consist of all roots of unity of $\mfrak D$ and that $t' = t$. For the first claim, if we have any root of unity $\xi \in \mfrak{D}$, then $\xi$ has finite order so it cannot possibly belong to $V'$. Thus the only possibility is that $\xi$ is in $W'$. For the second claim, consider the quotient of groups $O / \mfrak D$. Both of these have rank $n$, so this quotient is finite, and so we know that $f := [O : \mfrak D] < \infty$ . Thus, if $x \in O$ then $\overline {fx} = 0$ in $O / \mfrak D$ so $fx \in \mfrak D$, so $f O \subseteq \mfrak D$. Of course $f O$ is also a free abelian group of rank $n$ so $R := O / f O$ is finite. But $fO$ is also an ideal of the ring $O$, so in fact $R$ is a finite ring. Consider now any unit $\epsilon \in V$. Then $\epsilon$ is in $O^*$, so $\overline \epsilon \in R$ is also a unit, since ring maps preserve units. Set now $k = \# R^*$. In $R$ we get the equalities $\overline {\epsilon^k} = \overline 1$ and $\overline {\epsilon^{-k}} = \overline {(\epsilon^{-1})^k} = \overline 1$. Together these give us
+	\begin{align*}
+    	\epsilon^k = 1 + f \alpha \\
+    	\epsilon^{-k} = 1 + f \beta
+	\end{align*}
+	where $\alpha, \beta \in O$. But as we argued above, $f \alpha$ and $f \beta$ both belong to $\mfrak D$ and so both $\epsilon^k$ and $\epsilon^{-k}$ belong to $\mfrak D$ which means that  $\epsilon^k \in \mfrak D^*$. Thus, $\epsilon^k$ is either in $W'$ or $V'$ and the first option is impossible as that would imply that $\epsilon^k$ would be in $W$. Thus, $\epsilon^k$ is in $V'$ so $V / V'$ is finite meaning that $t' = t$.
+\end{proof}
+Any basis, $\epsilon_1, ..., \epsilon_t$, for $V$ in the above proposition is called a fundamental system of units for $\mfrak D$. We say that two elements, $\alpha,\beta$ in a full module $M$ are \textbf{associated} if there is a unit $\epsilon \in \mfrak D$ so that $\alpha = \epsilon \beta$. Note that when $M$ is equal to its own coefficient ring, this concept is exactly the same as that of being associated in rings. Being associated elements in $M$ defines an equivalence relation on $M$, and from now on we will denote this relation as $\sim$. Define now for $c \in \mbb Z$ and a module full module $M$ of $K$ the subsets
+\begin{align*}
+	M_c       	& = \{ \alpha \in M \mid N_{K/\mbb Q}(\alpha) = c\} 	\\
+	\overline M_c & = \{ \alpha \in M \mid | N_{K /\mbb Q}(\alpha) | = c\}
+\end{align*}
+Note that if $c = 0$ then $M_c = \{ 0\}$, so let us assume $c \neq 0$.We wish to show that up to associates, the set $M_c$ is finite. This is quite a special feature for the full full modules. Before we can prove this we need the following.
+
+\begin{lemma}\label{lem: norm of algebraic number is pm 0th coefficient}
+	Consider the field extension $K / F$ and suppose that $\alpha \in K$ is algebraic over $F$. Write
+	$$f(x) = x^n + a_{n-1} x^{n-1} + ... + a+a_0$$
+	for the minimal polynomial of $\alpha$ over $F$. Then $N_{F(\alpha)/F} (\alpha) = \pm a_0$. If $K / F$ is finite then $N_{K / F}(\alpha) = \pm a_0^m$
+	where $m = [K : F(\alpha)]$
+\end{lemma}
+\begin{proof}
+	Denote by $\alpha_1, ..., \alpha_n$ the $n$ conjugates of $\alpha$. Then we can write
+	$$f(x) = (x-\alpha_1)...(x-\alpha_n),$$
+	and we see that
+	$$a_0 = \pm \alpha_1 ... \alpha_n = N_{F(\alpha) / F}(\alpha)$$
+	Now if $K/F$ is finite and $m = [K : F(\alpha)]$ then
+	$$N_{K / F}(\alpha) = N_{F(\alpha) / F}(N_{K / F(\alpha)}(\alpha)) = N_{F / K}(\alpha^m) = N_{F / K}(\alpha)^m = \pm a_0^m$$
+\end{proof}
+
+
+Let us prove the following theorem.
+\begin{theorem}\label{thm: Finitely many solutions up to assoc}
+	Let $M$ be a full module of $K$. Then the quotient set $\overline M_c / \sim$ is finite for any $c \in \mbb N$. In particular $M_c / \sim$ is finite.
+\end{theorem}
+\begin{proof}
+	We first consider the special case where $M = \mfrak D$. As $\mfrak D$ is an order it is a full module so it is a free abelian group of rank $n$, hence isomorphic to $\mbb Z^n$ so we get the isomorphisms
+	$$\mfrak D/c \mfrak D \cong \mbb Z^n/c \mbb Z^n \cong (\mbb Z/c \mbb Z)^n$$
+	Now, $\mbb Z / c \mbb Z$ contains $c$ elements, which means that
+	$$c^n = \# (\mbb Z/c \mbb Z)^n = \# \mfrak D/c \mfrak D$$
+	Denote by $\bar \alpha$ as the image of the canonical projection of $\alpha$ in $\mfrak D/c \mfrak D$ and denote by $[\alpha]$ an equivalence class in $\overline {\mfrak D}_c / \sim$, represented by $\alpha \in \overline {\mfrak D}_c$. We show that there is a well-defined surjective function of sets
+	$$\phi : \overline {\mfrak D}_c /c \mfrak D \twoheadrightarrow  \overline {\mfrak D}_c / \sim,$$
+	given by $\phi(\bar \alpha) = [\alpha]$. Suppose $\bar \alpha, \bar \beta$ are in $\overline {\mfrak D}_c /c \mfrak D$ so that $\bar \alpha = \bar \beta$, where $\alpha, \beta$ are in $\overline {\mfrak D}_c$, meaning that $|N_{K/\mbb Q}(\alpha)| = |N_{K/\mbb Q}(\beta)| = c$ and $\alpha, \beta \in \mfrak D$. Let us show that $[\alpha] = [\beta]$. Now, $\overline \alpha = \overline \beta$ implies that
+	$$\alpha = \beta + c \gamma = \beta + |N_{K/\mbb Q}(\beta)| \gamma,$$
+	for some $\gamma$ in $\mfrak D$. We claim that $\beta$ divides $N_{K/\mbb Q}(\beta)$ in $\mathfrak D$ - the reason for this is as follows. We know, by \cref{prop: Coefficient ring properties}, that $\beta$ is an algebraic integer since it belongs to $\mfrak D$, so its minimal polynomial over $\mbb Q$, $f(x) = x^m + a_{m-1}x^{m-1} + ... + a_0$, has integer coefficients. Now $a_0 = -(\beta^m + a_{m-1}\beta^{m-1} + ... + a_1\beta)$ so $\beta \mid a_0$ in $\mfrak D$ and therefore $\beta$ also divides $a_0^m$, where $m = [K : \mbb Q(\alpha)]$. By \cref{lem: norm of algebraic number is pm 0th coefficient} we have $N_{K/\mbb Q}(\beta) = \pm a_0^m$ and the claim follows. We therefore also know that $\beta$ divides $|N_{K/\mbb Q}(\beta)|$ in $\mfrak D$. Hence, $\beta$ divides $\alpha$ in $\mfrak D$ and similarly $\alpha$ divides $\beta$ in $\mfrak D$. Thus, $\alpha$ and $\beta$ are associates, showing that $\phi$ is well-defined. It is surjective simply because if $[\alpha] \in \overline {\mfrak D}_c / \sim$, then $\alpha$ is in $\overline {\mfrak D}_c$ so $\phi(\bar \alpha) = [\alpha]$. That $\phi$ is a surjection implies that $\# (\overline {\mfrak D}_c / \sim) \leq \# \overline {\mfrak D}_c / c \mfrak D$, since each element in $\overline {\mfrak D}_c /\sim$ has at least one preimage. Now the inclusion $\overline {\mfrak D}_c / c \mfrak D \subseteq \mfrak D / c \mfrak D$ implies that $\# (\overline {\mfrak D}_c / \sim) \leq \# \overline {\mfrak D}_c / c \mfrak D \leq \# \mfrak D / c \mfrak D = c^n$. We will now prove the general statement. Suppose that $M$ is a full module and that $\mfrak D$ is the coefficient ring of $M$. Then $\overline {\mfrak{D}}_c / \sim$ has finitely many elements by what we have just shown. By \cref{bM contained in D} a non-zero integer $b$ so that $bM \subseteq \mfrak D$ so we obtain injective maps
+	$$M \hookrightarrow bM \hookrightarrow \mfrak D,$$
+	where the first map is multiplication by $b$ and the second one is inclusion. It is clear that if $\alpha$ and $\beta$ are associated then also $b\alpha$ and $b\beta$ are associated. Hence we get the induced injective maps
+	$$(\overline M_c / \sim) \hookrightarrow (b\overline M_c / \sim) \hookrightarrow (\overline {\mfrak D_c} / \sim) $$
+	which means that $$\# (\overline M_c / \sim) \leq \# (b\overline M_c / \sim) \leq \# (\overline {\mfrak D_c} / \sim) \leq c^n$$
+	The last claim now follows since $M_c \subseteq \overline M_c$.
+\end{proof}
+We now present a result that allows to find all the elements of $M_c$ if we know the elements of $M_c / \sim$ and all the units with norm 1 in $\mfrak D$.
+\begin{lemma} \label{lem: writing of elements of Mc}
+	Assume that the elements of $M_c / \sim$ are $[\gamma_1], ..., [\gamma_k]$ and that $\alpha \in M$. We then have that $\alpha \in M_c$ if and only if there is a uniquely determined $i$ such that $\alpha = \epsilon \gamma_i$ where $\epsilon$ is a unit in $\mfrak D$ with norm 1.
+\end{lemma}
+
+\begin{proof}
+	If $\alpha \in M_c$ then, there is a unique $\gamma_i$ such that $\alpha \in [\gamma_i]$. This means that $\alpha = \epsilon \gamma_i$ for some unit $\epsilon$ in $\mfrak D$. But then $$c = N(\alpha) = N(\epsilon \gamma_i) = N(\epsilon)N(\gamma_i) = N(\epsilon)c$$
+	So we must have that $N(\epsilon) = 1$.
+\end{proof}
+Note that an element $\epsilon \in \mfrak D$ is a unit if and only if $N_{K/\mbb Q}(\epsilon) = \pm 1$ simply because $\epsilon$ is an algebraic integer. In light of the above proposition we are now interested in figuring out when $\epsilon$ has norm 1.
+
+\subsection{Units of norm 1}
+
+\begin{lemma}\label{lem: norm of primitive roots}
+	Let $K$ be a number field of degree $n$ over $\mbb Q$. Suppose $n$ is odd. Then the only roots of unity in $O_K$ are $\pm 1$ and we have $N(1) = 1$ and $N(-1) = -1$. On the other hand, if $n$ is even, then all the roots of unity in $O_K$ have norm 1.
+\end{lemma}
+\begin{proof}
+	Let $\zeta$ be a primitive $k$th root of unity in $O_K$. To start with, let us suppose that $n$ is odd. Then
+	$$\mbb Q \subseteq \mbb Q(\zeta) \subseteq K$$
+	Denote by $\varphi$ Euler's totient function. We have $\varphi(k) = [\mbb Q(\zeta) : \mbb Q]$ so $\varphi(k) \mid n$. Thus, $\varphi(k)$ has to be odd. But this happens only when $k$ is 1 or 2 so $\zeta = \pm 1$. We see that $N_{K/\mbb Q}(-1) = (-1)^n = -1$ and the fact that $N_{K / \mbb Q}(1) = 1$ is always true. Next, assume that $n$ is even. It is then clear that both 1 and -1 have norm 1. We have that any embedding $\sigma : K \hookrightarrow \mbb C$ must send $\zeta$ to a primitive $k$th root of unity in $\mbb C$. Suppose that $k \geq 3$. In this case $\sigma(\zeta)$ is an imaginary number and therefore $\sigma$ must be a complex embedding and so all the embeddings must be complex so $n = 2s$, where $s$ is the number of pairs of complex conjugate embeddings. Thus,
+	$$N_{K /\mbb Q}(\zeta)  = \prod_{i=1}^s \sigma_i(\zeta) \overline{\sigma_i}(\zeta) = \prod_{i=1}^s |\sigma_i(\zeta)|^2 = 1$$
+\end{proof}
+
+
+\begin{theorem}\label{thm: Shape of solutions to N(x) = c for x in full module}
+	Let $K$ be a number field of degree $n = 2s + r$ over the rationals and let $c$ be a non-zero integer. Assume further that $M$ is a full module with ring of coefficients $\mfrak D$ and set $t = r+s-1$. Then there exist independent units $\epsilon_1, ..., \epsilon_t$ in $\mfrak D$, and a finite number of elements $\gamma_1, ..., \gamma_k$ in $M_c$ such that every $\alpha \in M_c$ can be written uniquely as
+	$$\alpha = \gamma_i \epsilon_1^{u_1} ... \epsilon_t^{u_t}$$
+	%for some $\gamma_i$ and where $u_1, ..., u_t \in \mbb Z$.
+\end{theorem}
+
+\begin{proof}
+	By \cref{thm: Generalized Dirichlet}, we know that we can find a fundamental system of units, $\epsilon_1, ..., \epsilon_t$, where $t = r+s-1$ such that every element $\epsilon \in \mfrak D^*$ can be written uniquely as
+	$$\epsilon = \zeta \epsilon_1^{u_1} ... \epsilon_t^{u_t}$$
+	where the $u_i$ are integers and $\zeta \in \mfrak D$ is a root of unity. Let us find the subgroup of $\mfrak D^*$ containing only elements of norm 1. Suppose first that $n$ is odd. Then we know from \cref{lem: norm of primitive roots} that there are only two roots of unity, namely 1 and -1 and that $N(-1) = -1$. If need be, let us swap out all $\epsilon_i$ that have norm -1 with $-\epsilon_i$. This leaves us with a new system of fundamental units and they generate the subgroup of $\mfrak D$ having norm 1. Suppose now $n$ is even. Then by \cref{lem: norm of primitive roots} all the roots of unity have norm 1, so if it happens that all the $\epsilon_i$ have norm 1, then all units of $\mfrak D$ will have norm 1. So suppose that not all the $\epsilon_i$ have norm 1. We can without loss of generality assume that $1 = N(\epsilon_1) = ... = N(\epsilon_q)$ and $-1 = N(\epsilon_{q+1}) = ... = N(\epsilon_t)$, where $q < t$. Define
+	$\mu_i = \epsilon_i$ for $i \in \{1, ..., q\}$ and $\mu_i = \epsilon_i \epsilon_t$ for $i \in \{q+1, ..., t-1\}$. We now have a new fundamental system of units, namely $\mu_1, ..., \mu_{t-1},\epsilon_t$ and only the last unit, $\epsilon_t$, has norm -1. By setting $\mu_t = \epsilon_t^2$, all units of norm 1 in $\mfrak D$ can now be written as $\zeta \mu_1^{u_1}...\mu_t^{u_t}$, where $\zeta$ is a root of unity in $\mfrak D$. We have now, for any $n$, found generators for the subgroup of $\mfrak D$ consisting of elements of norm 1. Let now $[\gamma'_1], ..., [\gamma'_l]$ be all the elements of $M_c / \sim$ and let $\alpha \in M_c$. By \cref{lem: writing of elements of Mc}, there is a unique $\gamma'_i$ and a unit $\epsilon \in \mfrak D$ of norm 1 so that $\alpha = \gamma'_i \epsilon$. For odd $n$ the statement in the proposition now follows. When $n$ is even, we can consider all products $\zeta \gamma'_i$, where $\zeta \in \mfrak D$ is a root of unity. There are only finitely many of these products since there are only finitely many roots of unity by \cref{thm: Generalized Dirichlet}. We can denote these products by $\gamma_1, ..., \gamma_k$. All of these belong to $M_c$ since the roots of unity have norm 1 and the statement now follows for when $n$ is even.
+\end{proof}
+\begin{remark}\label{rem: When does a full module have finitely many solutions}
+	Observe that if $t = 0$, that is if $K$ is $\mbb Q$ or an imaginary quadratic field, then the above theorem says that there can only be finitely many elements in $M_c$. In this case, $M$ is what is called a degenerate module, see \cref{def: Degenerate module}.
+\end{remark}
+
+
+\section{Fields with an absolute value}
+
+\begin{definition}[Absolute value]
+	Let $K$ be a field. A function $\abs{} : K \to \mbb R$, is called an absolute value if it happens to satisfy the properties
+	\begin{itemize}
+    	\item $\abs{x} \geq 0$ for every $x \in K$. (Non-negativity)
+    	\item $\abs{x} = 0$ if and only if $x = 0$. (Positive definiteness)
+    	\item $\abs{xy} = \abs{x} \abs{y}$ for every $x,y \in K$. (Multiplicativity)
+    	\item $\abs{x + y} \leq \abs{x} + \abs{y}$ for every $x,y \in K$. (Triangle inequality)
+	\end{itemize}
+	When the triangle inequality can be upgraded to the stronger condition, referred to as the ultrametric property,  $$\abs{x + y} \leq \max \{\abs{x}, \abs{y}\} \quad \text{for every } x,y \in K,$$
+	the absolute value is said to be \textbf{non-archimedian}. Otherwise it is called \textbf{archimedian}. If $\abs{}$ is indeed an absolute value then the field $K$ is called a valued field. A field with a non-archimedian absolute value is called a non-archimedian valued field and similarly a field with an archimedian absolute value is called an archimedian valued field.
+\end{definition}
+We could easily have made this definition more general by allowing $K$ to be any ring. In that case, absolute values would only exists on domains. For if we had $x,y$ both non-zero so that $xy = 0$ then $|x|, |y|$ would also be non-zero but $0 = |0| = |xy|$. But $|x||y| \neq 0$, so $\abs{}$ cannot be an absolute value. The usual absolute value on $\mbb R$, which we will denote by $\abs{}_\infty$,  is an example of an archimedian absolute value, so $(\mbb R, \abs{})$ is an example of a valued field. The function sending everything to 1 except for 0 which is sent to 0 is also an example of an absolute value, and it is called the trivial absolute value. Note that for an arbitrary absolute value we have for all $x \in K$ that
+\begin{itemize}
+	\item If $x^n = 1$ then $\abs{x} = 1$.
+	\item $\abs{x} = \abs{-x}$
+\end{itemize}
+In particular, $1 = \abs{1} = \abs{-1}$ and if $K$ is a finite field then $\abs{}$ is the trivial absolute value, since every non-zero element in such a field has finite order.
+
+
+
+% Sometimes we will be working with two valued fields, $K$ and $F$. To distinguish the absolute values on these fields we will write $\abs{}_K$ and $\abs{}_F$.
+
+
+% There is nothing interesting about it, so we will ignore it.
+\subsection{Topology induced by $\abs{}$}
+Let $K$ be a field. Once we have an absolute value on $K$, we can use it to define a metric, $d : K^2 \to \mbb R$, by setting $d(x,y) = \abs{x - y}$. As such, $K$ can now be thought of as a metric space, and we therefore now have a topology on $K$, generated by $d$. We will also refer to this topology as the topology induced by $\abs{}$. It might very well happen that two absolute values, $\abs{}_1$ and $\abs{}_2$, induce the same topology on $K$. In fact we have the following proposition, see also \citep[Proposition 3.3]{neukirch}
+\begin{proposition}\label{Equivalent absolute values}
+	Let $\abs{}_1$ and $\abs{}_2$ be two absolute values on $K$. The following are equivalent
+	\begin{enumerate}
+    	\item $\abs{}_1$ and $\abs{}_2$ are equivalent
+    	\item $\abs{x}_1 = \abs{x}_2^s \text{ for all } x\in K$ for some $s > 0$, $s \in \mbb R$.
+    	\item $\abs{x}_1 < 1 \implies \abs{x}_2 < 1$
+	\end{enumerate}
+\end{proposition}
+% \begin{proof}
+% 	First of all it is clear that (2.) implies (1.). To see that (1.) implies (3.) suppose that $\abs{x}_1 < 1$. Then $x^n$ converges to $0$ with respect to $\abs{}_1$ and as $\abs{}_1$ induce the same topologies on $K$ we must have that $x^n$ converges to $0$ with respect to $\abs{}_2$ so $\abs{x}_2 < 1$. It remains to show that (3.) implies (2.). Assume that $y \in K$ so that $\abs{y}_1 > 1$ and that $x \in K^*$. Then there is $\alpha \in \mbb R$ so that $\abs{x}_1 = \abs{y}_1^\alpha$.
+% \end{proof}
+
+
+
+Absolute values being equivalent defines an equivalence relation on the set of absolute values on $K$, and the equivalence classes are called places of $K$. The non-archimedian absolute values induce a topology that is quite different compared to what one perhaps might expect. For example, triangles are isosceles - that is to say, any triangle will always have two sides of the same length. So suppose now that $\abs{}$ is non-archimedian. 
+
+\begin{proposition}\label{prop: Triangles are isosceles}
+	Suppose $x,y \in K$ and that $\abs{x} \neq \abs{y}$. Then $\abs{x + y} = \max \{\abs{x}, \abs{y}\}$. In particular, all triangles are isosceles.
+\end{proposition}
+\begin{proof}
+	Assume without loss of generality that $\abs{x} > \abs{y}$. Then we have
+	$$\abs{x + y} \leq \max \{\abs{x}, \abs{y}\} =\abs{x}$$
+	Also, $\abs{x} = \abs{(x + y) - y} \leq \max\{\abs{x + y}, \abs{y}\} = \abs{x + y}$, since $\abs{x} > \abs{y}$. Thus, $\abs{x} = \abs{x + y}$. For the last claim suppose that also $z \in K$ and consider three sides of a triangle $A = x - y$, $B = y - z$ and $C = x-z$. Suppose that two of these sides, say $A$ and $B$ have different length, that is, $\abs{A} \neq \abs{B}$. We clearly have that $A + B = C$ and so by what we have just shown we have that
+	$$\abs{C} = \abs{A + B} = \max\{\abs{A}, \abs{B}\}$$
+	But that means that $C$ has the same length as $A$ or $B$ and we conclude that two sides in the triangle must have the same length.
+\end{proof}
+
+We also have the following lemma which does not hold for archimedian absolute values
+
+\begin{lemma} \label{lem:SufficientConditionForConvergence}
+	Let $\abs{}$ be a non-achimedian absolute value on a field $K$. Suppose $(x_n)$ is a sequence in $K$. Define the sequence $y_n = x_{n+1} - x_{n}$. The following are equivalent
+	\begin{enumerate}
+    	\item $x_n$ is Cauchy.
+    	\item $y_n \to 0$ for $n \to \infty$.
+	\end{enumerate}
+\end{lemma}
+\begin{proof}
+	A sequence being Cauchy clearly implies that $y_n$ converges to 0. On the other hand let $N \in \mbb N$ be so large that $|y_n| < \epsilon$ for all $n \geq N$. Suppose now $n > m > N$. We obtain
+	\begin{align*}
+    	|x_n - x_m| & = |x_n - x_{n-1} + x_{n-1} - ... + x_{m+1} - x_{m}|                      	\\
+                	& = |y_{n-1} + ... + y_{m}| \leq \max \{|y_{n-1}|, ..., |y_m|  \} < \epsilon
+	\end{align*}
+\end{proof}
+This lemma can be really helpful in situations where the sequence $(x_n)$ has the form $x_n = \sum_{i = 1}^n z_n$, since in this case we can determine if $(x_n)$ is Cauchy simply by checking if $z_n$ converges to 0. This is certainly not something we can do in the archimedian setting. For example if $z_n = \frac{1}{n}$ then $x_n$ is the harmonic series and we know that it diverges with respect to $\abs{}_\infty$.
+
+\begin{proposition}
+	Any absolute value $\abs{}$ on a field $K$ is uniformly continuous.
+\end{proposition}
+\begin{proof}
+	Let $\epsilon > 0$ and pick $\delta = \epsilon$. For any $x,y \in K$ so that $|x - y| < \delta$ we have
+	$$||x| - |y||_\infty \leq |x - y| < \delta = \epsilon$$
+	where we have used the reverse triangle inequality.
+\end{proof}
+
+% Uniformly continuous functions have the nice property that they preserve Cauchy sequences. This implies that if we have some Cauchy sequence, $(x_n)$ in $K$, then $(|x_n|)$ is a Cauchy sequence in $\mbb R$. We will use this fact later on.
+
+\begin{definition}
+	Let $K, L$ be valued fields and suppose that $\phi : K \to L$ is a function. We say that $\phi$ preserves the absolute value if $\abs{\phi(x)}_L = \abs{x}_K$.
+\end{definition}
+
+It is worth pointing out that if $\phi$ is as above and is also a homomorphism, then $\phi$ is actually uniformly continuous. This is simply because we have for all $x,y \in K$ that
+$$|\phi(x) - \phi(y)|_F = |\phi(x-y)|_F = |x-y|_K$$
+
+
+% \begin{proposition}
+% 	Let $K,L$ be valued fields and suppose $\phi : K \to L$ is a homomorphism, preserving absolute values. Then $\phi$ is uniformly continuous.
+% \end{proposition}
+
+% \begin{proof}
+% 	This follows from the fact that $\abs{}_K$ is uniformly continuous and that
+% 	$$|\phi(x) - \phi(y)|_F = |\phi(x-y)|_F = |x-y|_K$$
+% \end{proof}
+
+\subsection{Valuations}
+We now turn to a notion that is closely related to non-archimedian absolute values - namely valuations.
+
+\begin{definition}[Valuation]\label{def: Valuation}
+	A valuation on a field $K$ is a function $v : K \to \mbb R \cup \{\infty\}$ with the following properties
+	\begin{enumerate}
+    	\item $v(x) = \infty$ if and only if $x = 0$.
+    	\item $v(xy) = v(x) + v(y)$ for every $x,y \in K$.
+    	\item $v(x + y) \geq \min \{v(x), v(y)\}$ for every $x,y \in K$.
+	\end{enumerate}
+	The symbol $\infty$ is just an element so that for all $x \in \mbb R$ we have $\infty > x$,  $\infty + x = x + \infty = \infty$ and $\infty + \infty = \infty$.
+\end{definition}
+
+We stipulated above that valuations and non-archimedian absolute values have something to do with each other. Let us see how. Suppose we have access to a valuation, $v$ on a field $K$. Then for any $q > 1$ we get what we will call a corresponding absolute value on $K$ by setting
+$$\abs{x} = q^{-v(x)}$$
+This is indeed an absolute value on $K$ and is in fact non-archimedian because of the third property in \cref{def: Valuation}. In fact all absolute values corresponding to $v$ are equivalent. Since we can solve for $v(x)$ in the above equation we see that we can also obtain a valuation if we are given a non-archimedian absolute value and we will similarly call this a corresponding non-archimedian absolute value. We will say that two valuations $v_1$ and $v_2$ on $K$ are equivalent if $v_1 = sv_2$ for some $s > 0$. All valuations corresponding to a non-archimedian absolute value will be equivalent in this sense. When working with valuations it is useful to have the following in mind. Assume that $K$ is a field with non-archimedian absolute value $\abs{}$ and suppose that $v$ is a corresponding valuation. If $a \in K$ and $(x_n)$ is a sequence in $K$, then $x_n \to a$ with respect to $\abs{}$ if and only if $v(x_n - a) \to \infty$. We will therefore say that $(x_n)$ converges to $a$ with respect to $v$ if $v(x_n - a) \to \infty$. In general when discussing topological properties it makes no difference whether we work with $v$ or $\abs{}$, as long as they correspond to each other. 
+
+\begin{definition}
+	Let $v$ be a valuation on a field $K$. The group $\Gamma_v = v(K^*)$ is called the value group of $v$ and if there is $s > 0$ so that $\Gamma_v = s\mbb Z$ we say that $v$ is discrete. If $s = 1$ then $v$ is called normalized and in this case an element $\pi \in K$ so that $v(\pi) = 1$ is called a prime element.
+   
+\end{definition}
+
+We have in fact already seen an example of a field with valuation.
+\begin{example}\label{ex: K((x)) is valued field}
+	Recall from \cref{sec: Formal power series} the field $K((X))$ and the function $$\omega : K((X)) \to \mbb Z \cup \{ \infty \},$$ that we defined on it. This function is in fact a valuation on $K((X))$ and as $\omega(X) = 1$,
+	it is discrete and normalized. Notice that
+	$$\{f \in K((X)) \mid \omega(f) \geq 0 \},$$
+	is a local ring since it equals $K[[X]]$ and this ring has unique maximal ideal $x K[[X]]$ which can be given as
+	$\{ f \in K((X)) \mid \omega(f) > 0\}$
+\end{example}
+
+In the example above we saw that we could produce a local ring using the valuation on $K((x))$. This was no coincidence as we will see in the next proposition. Let $K$ be a field with valuation $v$ and let $\abs{}$ be a corresponding non-archimedian absolute value.
+
+\begin{proposition}\label{prop: Valuation ring of a field}
+	The ring
+	$$O := \{x \in K \mid  v(x) \geq 0 \} = \{x \in K \mid  \abs{x} \leq 1 \}$$
+	is called the valuation ring with respect to $v$ (or we might say with respect to $\abs{}$), is integrally closed and is a local ring with unique maximal ideal
+	$$\mfrak p = \{x \in K \mid v(x) > 0 \} = \{x \in K \mid |x| < 1 \}$$
+	and we have
+	$$O^* = \{x \in K \mid v(x) = 0 \} = \{x \in K \mid |x| = 1 \}$$
+	The quotient $O / \mfrak p$ is called the residue field of $K$. If $v$ is discrete and normalized and $\pi \in O$ is a prime element then we have
+	\begin{itemize}
+    	\item $K^* = \{\pi^k \mid k \in \mbb Z \} \times O^*$
+    	\item $O$ is a PID and its non-zero ideals are given by
+          	$\mfrak p^n = \{x \in K : v(x) \geq n \}$
+          	for $n \geq 0$, and $\mfrak p = \pi O$.
+    	\item $O / \mfrak p \cong \mfrak p^n / \mfrak p^{n+1}$ for $n \geq 0$
+	\end{itemize}
+\end{proposition}
+\begin{proof}
+	It is clear that $O$ is a ring and that $\mfrak p$ is a proper ideal of $O$. The elements $x \in O$ for which $v(x) = 0$ are certainly units, which is another way of saying that
+	$O \setminus \mfrak p \subseteq  O^*$. This implies that $O$ is a local ring with unique maximal ideal $\mfrak p$ and it follows that $O^* = O \setminus \mfrak p$. $O$ is integrally closed since if $x \in K^*$ is integral over $O$ then we have an equation
+	$$x^n + a_{n-1}x^{n-1} + ... + a_0 = 0,$$
+	where the $a_i$ all belong to $O$ and if $x \notin O$ then $v(x) < 0$ so $v(\frac{1}{x}) = -v(x) > 0$ so $x^{-1} \in O$ which means that we can solve for $x$ in the equation above, meaning that $x \in O$, which is a contradiction.
+	Assume now that $v$ is discrete and normalized and that $x \in K^*$. Let $m = v(x)$. We have $m \in \mbb Z$, since $v(K^*) = \mbb Z$ by assumption, and so $v(x \pi^{-m}) = v(x) - mv(\pi) = 0$ meaning that $x \pi^{-m} \in O^*$. Thus $x \pi^{-m} = u$ for some $u \in O^*$ which means that $K^* = (\pi) \times O^*$. Take now an ideal $I \neq 0$ of $O$. Since $v$ is discrete we can choose $x \in I$, where $x \neq 0$ so that $v(x) = \min_{z \in I}v(z)$. Let $n := v(x)$. By what we have already shown there is $u \in O^*$ so that $x = u\pi^n$. If now $z \in \pi^n O$ we have that $z = xy$ for some $y \in O$ and since $x \in I$ and $I$ is an ideal also $z \in I$. Hence $\pi^n O \subseteq I$. For the other inclusion, take $z \in I$ and write $z = u \pi^m$ for some $u \in O^*$. We have $v(z) = m \geq n$ so we can write $z = (u \pi^{m-n}) \pi^n$ which is an element of $\pi^n O$. Thus, $I = \pi^n O$ and so $\mfrak p = \pi O$. All the non-zero ideals of $O$ are therefore powers of $\mfrak p$ and so $O$ is a PID. Consider the homomorphism
+	\begin{align*}
+    	\phi : \mfrak p^n & \to O / \mfrak p                          	\\
+    	a \pi^n       	& \mapsto \overline a, \text{ where } a \in O
+	\end{align*}
+	This map is well-defined since $a \pi^n = a' \pi^n$ implies $a = a'$ meaning that $\overline a = \overline a'$. Now $\phi(a \pi^n) = 0$ if and only if $a \in \mfrak p$ if and only if $a \pi^n \in \mfrak p^{n+1}$ so $\ker \phi = \mfrak p^{n+1}$. This map is also clearly surjective and so we get the desired isomorphism.
+\end{proof}
+
+It would be nice with some more examples of fields with valuation. The unique factorization of prime ideals in Dedekind domains allows for a way of constructing a valuation on the field of fractions of these rings.
+
+\begin{proposition} \label{prop: Valuations on Dedekind domains}
+	Let $O$ be a Dedekind domain and $K$ its field of fractions. For any prime $\mfrak p$ of $O$ there is a function, $\vp : O \to \mbb R \cup \{\infty \}$ on $O$ so that $\vp(0) = \infty$ and that
+	\begin{equation}\label{eq: valuation}
+    	\forall x \in O\setminus \{0 \}: \vp(x) = m \iff (x) = \mfrak p^m A \text{, $A$ an ideal of $O$ and $\mfrak p \nmid A$}.
+	\end{equation}
+	The function $v$ extends to a discrete valuation on $K$, which we will also call $\vp$, which for $\frac{\alpha}{\beta} \in K$, $\alpha,\beta \in O$ and $\beta \neq 0$ is given by %where $\alpha,\beta \in O$, $\beta \neq 0$
+	$$v_\mfrak{p}(\frac{\alpha}{\beta}) = v_\mfrak{p}(\alpha) - v_\mfrak{p}(\beta)$$
+\end{proposition}
+
+\begin{proof}
+	The function $\vp$ on $O$ with the mentioned property is well defined since we have unique factorization of prime ideals in Dedekind domains. Let us now see that the function $\vp$ we have defined on $K$ is actually well defined. If $\frac{\alpha}{\beta} = \frac{\alpha'}{\beta'}$ then $\alpha\beta' = \alpha'\beta \in O$ and applying $\vp$ on both sides and using that it takes multiplication to addition we obtain
+	$$\vp(\alpha) - \vp(\beta) = \vp(\alpha') - \vp(\beta')$$
+	which shows that it is well defined. If we can show that all the properties in \cref{def: Valuation} are satisfied for the restriction of $\vp$ to $O$, we are done. It is immediate that $\vp(x) = \infty$ if and only if $x = 0$. Let now $x,y \in O$ and suppose both $x$ and $y$ are non-zero. We then have $\vp (x) = m$ and $\vp (y) = n$ and we can write
+	$$(x) = \mfrak{p}^m A, (y) = \mfrak{p}^n B$$
+	Thus, $(xy) = (x)(y) = \mfrak{p}^{m+n} AB$ and $\mfrak p \nmid AB$, so $\vp(xy) = m + n$. For the last property, let $d = \min\{m, n\}$. Then
+	$$(x + y) \subseteq (x) + (y) = \mfrak p^d (\mfrak p^{m-d} A + \mfrak p^{n-d} B)$$
+	From this we see that $\mfrak p^d \mid (x + y)$ and so $d \leq \vp (x+y)$.
+	Note that if either $x$ or $y$ are 0, then these two properties follow immediately. We conclude that $\vp$ is a valuation on $K$. It is discrete and normalized since it maps $O \setminus \{0 \}$ into $\mbb N_0$ so it maps $K^*$ into $\mbb Z$.
+\end{proof}
+
+Let's see a very concrete and also important instance of the above.
+
+\begin{example}\label{ex: Almost the p-adic numbers}
+	Choose a prime $p \in \mbb Z$. By \cref{prop: Valuations on Dedekind domains} we get a valuation $v_{(p)}$ on $\mbb Q$, and we shall denote this valuation simply as $v_p$. Given $x \in \mbb Q$, $v_p(x)$ tells us "how divisible" $x$ is by $p$. For example $v_p(p^2) = 2$ and $v_p(\frac{1}{p^3}) = -3$. The valuation ring with respect to $v_p$ is turns out to be the localization of $\mbb Q$ at $p$. This follows from more general considerations, see \cref{prop: Valuations on Dedekind domains properties}.
+\end{example}
+
+\section{Completions of fields}\label{sec: Completions of fields}
+
+
+Let $(K, \abs{})$ be a valued field. A Cauchy sequence in $K$ is a sequence $(x_n)$ in $K$ so that for every $\epsilon > 0$ there exists an $N \in \mbb N$ so that if $m,n \geq N$ then
+$$|x_n - x_m| < \epsilon$$
+A null sequence is a sequence in $K$ converging to 0.
+
+% It is possible that every imaginable Cauchy sequence converges to some element in $K$. Such a field is called a complete field. An example of such a field is $(\mbb R, \abs{}_\infty)$. An example of a field which is not complete is $\mbb Q$ equipped with the standard absolute value. For instance one can use Newton's method to construct a sequence in $\mbb Q$ that approximates $\sqrt 2$ arbitrarily well. However, $\sqrt 2 \notin \mbb Q$, so $\mbb Q$ is not complete and so $\sqrt 2$ can be thought of as a hole in $\mbb Q$. The completion of $\mbb Q$ is essentially the process of patching up all these holes without adding anything unnecessary. Let's try to be more precise. We start with the following definition
+%To make this more concrete, let us look at an example. In $\mbb Q$ equipped with the usual absolute value, one can find a Cauchy sequence converging to $\sqrt 2$ which of course does not belong to $\mbb Q$ and filling out all of these holes is a way of constructing the field $\mbb R$.
+
+\begin{definition}
+	We say that a metric space $X$ with metric $d$ is complete if every Cauchy sequence in $X$ converges to an element in $X$ with respect to $d$ and a subset $A \subseteq X$ is said to be complete if it is complete as a metric space. A valued field $(K, \abs{})$ is called a complete field if it is complete as a metric space with respect to the metric $d(x,y) = \abs{x - y}$.
+\end{definition}
+
+Let $K$ be a field with an absolute value, $\abs{}$. If this field is not complete could we then find a smallest field extension $L$ of $K$, extending the absolute value on $K$, which is complete with respect to this new absolute value? The answer is yes and in this case $L$ is called the completion of $K$. We'll properly define what the completion is but first, let us recall the following characterization of closed sets in a metric space.
+
+\begin{definition}
+	Let $X$ be a metric space and $A \subseteq X$. The set $A$ is closed if it contains all of its limit points. That is, whenever there is a sequence in $A$ converging to some point $a \in X$ with respect to the metric on $X$ then $a \in A$.
+\end{definition}
+
+\begin{proposition}
+	Suppose $X$ is a complete metric space. Then a subset $A \subseteq X$ is closed if and only if $A$ is complete.
+\end{proposition}
+\begin{proof}
+	Suppose first that $A$ is closed and let $(x_n)$ be any Cauchy sequence in $A$. Then this sequence converges to some point $a \in X$ since $X$ is complete. But as $A$ is closed in $X$ that means by definition that $a \in A$, meaning that $A$ is complete. On the other hand, assume that $A$ is complete and let $(x_n)$ be a sequence in $A$ converging to some element $a \in X$. Thus $(x_n)$ is in fact a Cauchy sequence in $A$ and as $A$ is complete it follows that $a \in A$.
+\end{proof}
+
+
+
+\begin{definition}[Completion]\label{def: Completion}
+	Suppose $(K, \abs{})$ is a valued field. A completion of $K$ is a complete valued field $\hat K$ together with a homomorphism $\hat \iota : K \to \hat K$ preserving the absolute value, satisfying the following universal property; If $L$ is any other complete valued field and $\iota : K \to L$ is a homomorphism preserving the absolute value, then there is a unique homomorphism $\phi : \hat K \to L$, which preserves the absolute value, making the following diagram commute
+	\[\begin{tikzcd}
+        	& K \\
+        	\\
+        	\hat K && L
+        	\arrow["{\exists! \phi}"', dashed, from=3-1, to=3-3]
+        	\arrow["{\hat \iota}"', from=1-2, to=3-1]
+        	\arrow["{\iota}", from=1-2, to=3-3]
+    	\end{tikzcd}\]
+	% Also, the field $\hat K$ is unique up to unique isomorphism and it actually exists.
+\end{definition}
+Note that the above definition doesn't say that the completion exists. Luckily it does, but it certainly requires some justifying which we will provide soon. Also, the map $\phi$ in the diagram above is actually uniformly continuous since it preserves absolute values and is a homomorphism. Note also that we talk about 'a' completion, making it sound like there are multiple different ones. This is true, but it turns out that they are all unique up to unique isomorphism. This is a quite strong statement - much stronger than just being unique up to isomorphism. 
+%There are for example many different isomorphisms between isomorphic vector spaces.
+
+%Proving it turns out to be quite simple and in fact it can be done in category-theoretic language; $\hat K$ is an initial object in the coslice category with respect to $K$ and initial objects are always unique up to unique isomorphism. However, we will do this using a more hands on approach.
+
+% Consider for example two isomorphic vector spaces. There are tons and tons of different isomorphisms between those, each being achieved by different choices of basis.
+
+
+\begin{proposition}
+	Suppose $K$ is a valued field and that $(\hat K_1, \iota_1)$ and $(\hat K_2, \iota_2)$ are completions of $K$. Then there is a unique absolute value preserving isomorphism, $\phi : \hat K_1 \to \hat K_2$ so that $\phi \circ \iota_1 = \iota_2$. In other words, the completion of $K$ is unique up to unique isomorphism.
+\end{proposition}
+
+\begin{proof}
+	Let us invoke the universal property on both $\hat K_1$ and $\hat K_2$ to obtain the diagram
+	% https://q.uiver.app/#q=WzAsMyxbMCwyLCJcXGhhdCBLIl0sWzIsMiwiTCJdLFsxLDAsIksiXSxbMCwxLCJcXGV4aXN0cyFcXHBoaSIsMSx7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dLFsyLDAsIlxcaW90YV8xIiwyXSxbMiwxLCJcXGlvdGFfMiJdLFsxLDAsIlxcZXhpc3RzIVxccHNpIiwxLHsiY3VydmUiOi0yLCJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0=
+	\[\begin{tikzcd}
+        	& K \\
+        	\\
+        	{\hat K_1} && \hat K_2
+        	\arrow["{\exists!\phi}"{description}, dashed, from=3-1, to=3-3]
+        	\arrow["{\iota_1}"', from=1-2, to=3-1]
+        	\arrow["{\iota_2}", from=1-2, to=3-3]
+        	\arrow["{\exists!\psi}"{description}, curve={height=-12pt}, dashed, from=3-3, to=3-1]
+    	\end{tikzcd}\]
+	By definition both $\phi$ and $\psi$ preserve the absolute value. Writing out the two commutativity conditions we get
+	\begin{align*}
+    	\iota_1 & = \psi \circ \iota_2 \\
+    	\iota_2 & = \phi \circ \iota_1 \\
+	\end{align*}
+	Combining these we obtain
+	$$\iota_1 = \psi \circ (\phi \circ \iota_1) = (\psi \circ \phi) \circ \iota_1$$
+	So $\psi \circ \phi$ has to be the identity on $\hat K_1$ and similarly $\phi \circ \psi$ is the identity on $\hat K_2$, hence $\phi$ is an isomorphism and it is the only one satisfying the equation $\iota_2 = \phi \circ \iota_1$.
+\end{proof}
+Because of this proposition we will more often than not say "the completion" rather than "a completion". Let us now show the existence of the completion. This process follows a similar pattern as when showing existence of, for example, the tensor product of two modules - construct a huge object that has some of the properties we want, then sculpt it into the desired object by modding out by a suitable relation. One could show that the completion exists for any absolute value on $K$, but instead we will show it only for non-archimedian absolute values, as this will suffice for our purposes. At the end of this section we will mention how to deal with the general case. So assume from now on that $K$ is a field with non-archimedian absolute value $\abs{}$.
+
+\begin{proposition}\label{prop: Non-archimedian absolute value has constant tail}
+	If $(x_n)$ is a Cauchy sequence with respect to $\abs{}$ and is not a null sequence, then there exists an $N$ so that $\abs{x_n} = \abs{x_m}$ for all $m,n \geq N$. In other words, the sequence must eventually become constant.
+\end{proposition}
+\begin{proof}
+	Since $(x_n)$ does not converge to 0, there exists an $N_1 \in \mbb N$ and $c > 0$ so that $\abs{x_n} \geq c > 0$ for all $n \geq N_1$. As the sequence is Cauchy, we can find $N_2 \in \mbb N$ so that $\abs{x_n - x_m} < c$ for all $n,m \geq N_2$. Set now $N := \max \{N_1, N_2\}$ and suppose $n,m \geq N$. Then
+	$$\abs{x_n - x_m} <  c \leq \min\{|x_n|, |x_m|\}$$
+	This means that both $|x_n|$ and $|x_m|$ are different from $\abs{x_n - x_m}$ and hence $|x_n| = |x_m|$ since triangles are isosceles by \cref{prop: Triangles are isosceles}.
+\end{proof}
+
+\begin{theorem}\label{thm: Null sequences is maximal ideal}
+	Let $R$ be the set of all Cauchy sequences of $K$ wit respect to $\abs{}$. Then $R$ is a ring and the set $\mfrak m$ of all null sequences of $R$ is a maximal ideal.
+\end{theorem}
+\begin{proof}
+	The addition and multiplication operations on $R$ are defined element wise and it is easily seen that the Cauchy property is preserved under these operations. Rules such as the distributive law are inherited directly from the ring structure on $K$, and so $R$ is a ring. The set $\mfrak m$ is non-empty, as it most certainly contains the constant sequence $(0,0,0,...)$. It is also contained in $R$ since every convergent sequence is a Cauchy sequence so in particular the null sequences are Cauchy. Furthermore the difference of two null sequences is again a null sequence and the product of any sequence by a null sequence is also a null sequence. Thus, $\mfrak m$ is an ideal of $R$. Let us now show that it is a maximal ideal. Take a sequence $(x_n) \in R$ which is not also in $\mfrak m$. Such an element exists since $R$ contains, for example, the constant sequence $1 = (1,1,1, ...)$ which is clearly not a null sequence. We wish to show that the ideal $J = (x_n) + \mfrak m$ contains 1, i.e, that this ideal is in fact the entire ring $R$. By \cref{prop: Non-archimedian absolute value has constant tail} the sequence $(|x_n|)$ is eventually constant as it is not a null sequence. Hence there is an $N$ so that if $n \geq N$ then $|x_n| \geq c > 0$. Thus we can define
+	$$y_n = \begin{cases} \frac{1}{x_n} & \text{if } n \geq N \\ 0 & \text{if } n < N \end{cases}$$
+	Let now $\epsilon > 0$ be given and choose $M$ so that $|x_n - x_m| < c^2 \epsilon$ whenever $n,m \geq M$. For $n,m \geq \max\{N,M\}$ we now have
+	\begin{align*}
+    	|y_n - y_m| = |\frac{1}{x_n} - \frac{1}{x_m}| = |\frac{x_m - x_n}{x_n x_m}| \leq \frac{1}{c^2} |x_m - x_n| \leq \frac{c^2 \epsilon}{c^2} = \epsilon
+	\end{align*}
+	But that means that $(y_n)$ is a Cauchy sequence, meaning that it belongs to $R$ and so $(x_n)(y_n)$ is in $J$. Denote by $1$ the identity in $R$, i.e, the constant sequence $(1,1,1, ...)$. Observe that
+	$$x_ny_n = \begin{cases}
+    	1 \text{ if } n \geq N \\
+    	0 \text{ if } n < N
+	\end{cases}$$
+	Therefore $1 - (x_n) (y_n)$ is a null sequence, meaning that is belongs to $J$. But then $1 \in J$ and so $\mfrak m$ is a maximal ideal.
+\end{proof}
+
+From this it follows that $\hat K = R / \mfrak m$ is a field. Define now $$\hat \iota (x) = (x,x,x,...) + \mfrak m \in \hat K$$ for $x \in K$. This map is a homomorphism of fields and it is certainly not the zero map, which implies that it is injective. We can therefore think of $K$ as a subfield of $\hat K$. Recall the following result from topology.
+\begin{proposition}\label{prop: Function on a dense set}
+	Suppose $X$ and $Y$ are topological spaces and that $f : A \to Y$ is map defined on a dense subset $A$ of $X$. Then $f$ extends uniquely to a continuous map $\tilde f : X \to Y$.
+\end{proposition}
+We need the following result
+
+\begin{lemma}\label{lem: Helper result for existence of completion}
+	Assume $(x_n)$ and $(y_n)$ are sequences in $K$. If $(x_n)$ is Cauchy and $\lim_{n \to \infty} |x_n - y_n| = 0$ then $(y_n)$ is also Cauchy. If $\lim_{n \to \infty} x_n = a$ then $\lim_{n \to \infty} y_n = a$.
+\end{lemma}
+
+\begin{proof}
+	Observe that
+	$$
+    	|y_n - y_m| = |x_n - y_n + x_m - y_m + x_n - x_m|
+    	$$
+	A threefold application of the triangle inequality on the right hand side tells us that $(y_n)$ is Cauchy. For the last part, use the triangle inequality on the right hand side of
+	$$|y_n - a| = |x_n - y_n + x_n - a|$$
+	and take the limit.
+\end{proof}
+
+\begin{theorem}[Existence of completion]\label{thm: Existence of completion}
+	Suppose $(K, \abs{})$ is a valued field and let $R$ the set of all Cauchy sequences of $K$ with respect to $\abs{}$ and $\mfrak m \subseteq R$ the maximal ideal consitsting of all null sequences. The function $f : R \to \mbb R$, given by
+	$$(x_n) \mapsto \lim_{n \to \infty} \abs{x_n}$$
+	descends to the function, $\abs{}' : \hat K \to \mbb R$ given by
+	$$\abs{\overline {(x_n)}}' = f( (x_n) )$$
+
+	We have the following properties
+	\begin{itemize}
+    	\item ($\hat K$, $\abs{}'$ ) is a valued field
+    	\item The homomorphism $\hat \iota$ preserves the absolute value.
+    	\item $K$ is dense in $\hat K$
+    	\item $\hat K$ is complete with respect to $\abs{}'$
+	\end{itemize}
+
+	Furthermore, the pair $(\hat K, \hat \iota)$ is the completion of $K$.
+
+\end{theorem}
+
+\begin{proof}
+	Let us first show that $f$ is well defined. Assume $(x_n) \in R$. If $(x_n)$ is a null sequence there is nothing to prove, so suppose it is not. Then by \cref{prop: Non-archimedian absolute value has constant tail} the sequence $(|x_n|)$ is eventually constant hence converges making $f$ well defined. Assume now $x$ and $y$ are in $\hat K$ with $x = y$ and suppose they are represented by the Cauchy sequences $(x_n)$ and $(y_n)$ in $K$, respectively. By the reverse triangle inequality we have
+	$$||x_n| - |y_n| |_\infty \leq |x_n - y_n|$$
+	But $(x_n) - (y_n)$ is a null sequence so the right hand side converges to 0. This means that $\lim_{n \to \infty} (|x_n| - |y_n|) = 0$ and therefore $$\lim_{n \to \infty} |x_n| = \lim_{n \to \infty}|y_n|$$
+	This shows that the map $f$ descends to the quotient as desired.
+	Let us move on to justifying that $\abs{}'$ is actually an absolute value on $\hat K$. This is essentially inherited from the absolute value on $K$. So let us just show that $\abs{}'$ positive definite. Suppose $x = \overline {(x_n)} \in \hat K$. Assume first that $\abs{x}' = 0$. We then have
+	$$0 = |x|' = \lim_{n \to \infty} \abs{x_n}$$
+	But this just says that $(x_n)$ is a null sequence so $x = 0$. On the other hand, if $x = 0$ then $(x_n) \in \mfrak m$, i.e., $(x_n)$ is a null sequence so $|x|' =\lim_{n \to \infty} \abs{x_n} = 0$. It is also easily seen that $\abs{}'$ extends $\abs{}$. For if $x \in K$ then
+	$$|x| = \lim_{n \to \infty} |x| = f(\hat \iota (x)) = \abs{\overline{ \hat \iota (x)}}'$$
+
+	Let us now show that $K$ is dense in $\hat K$. What we mean by this is that the image of $K$ under the $\hat \iota$ is dense in $\hat K$. Let $\epsilon > 0$, and suppose $\lambda \in \hat K$ and consider the open ball $B(\lambda, \epsilon)$. Let $(x_n)$ be a Cauchy sequence representing $\lambda$ and find $N \in \mbb N$ so that $|x_n - x_m| < \epsilon / 2$ for all $m,n \geq N$. Define now the constant sequence $y = \hat \iota (x_N)$. Using the definition of the absolute value on $\hat K$ we get
+	$$|\lambda - y|' = \lim_{n \to \infty} |x_n - x_N| \leq \epsilon/2 < \epsilon$$
+	This shows that $y \in B(\lambda, \epsilon)$, meaning that $K$ is dense in $\hat K$ as desired. Now we are ready to show that $\hat K$ is complete with respect to $\abs{}'$. To do this, suppose that we have a Cauchy sequence $(\lambda_n)$ in $\hat K$. As we have just seen, $K$ is dense in $\hat K$. So for every $\lambda_i$, we can find an element $y_i \in K$ so that $|\lambda_i - \hat \iota (y_i)|' < \frac{1}{i}$. This way we get a sequence $(\hat \iota (y_n))$ in $\hat K$ and we observe that
+	$$\lim_{n \to \infty} |\lambda_n - \hat \iota(y_n)|' = 0$$
+	So by \cref{lem: Helper result for existence of completion} $(\hat \iota (y_n))$ is a Cauchy sequence in $\hat K$. But then also the sequence $(y_n)$ in $K$ is Cauchy since $\abs{}'$ extends the absolute value on $K$. But that means that $(y_n)$ represents an element in $\hat K$. Call this element $\lambda$ and let us show that $\lim_{n \to \infty} \lambda_n = \lambda$. To do this it suffices, also by \cref{lem: Helper result for existence of completion}, to show that $\lim_{n \to \infty} \hat \iota (y_n) = \lambda$. As $(y_n)$ is Cauchy, we can find $N$ so that if $n,m \geq N$ then $|y_n - y_m| < \epsilon / 2$. For any $n \geq N$ we now have
+	$$|\hat \iota (y_n) - \lambda|' = \lim_{m \to \infty} |y_n - y_m| \leq \epsilon / 2 < \epsilon$$
+	This shows that $\lim_{n \to \infty} \hat \iota (y_n) = \lambda$ and as we mentioned this means that $\lim_{n \to \infty} \lambda_n = \lambda$
+	which shows that $\hat K$ is complete with respect to $\abs{}'$. Moving on to the last statement, let us see why $(\hat K, \hat \iota)$ is the completion of $K$. So let $L$ be a complete valued field and $\iota : K \to L$ a homomorphism preserving the absolute value. Let us define a function $\phi : \hat K \to L$; Pick an element $\lambda \in \hat K$. Because $\hat \iota (K)$ is dense in $\hat K$, there is a Cauchy sequence, $(y_n)$, in $\hat \iota (K)$ that converges to $\lambda$. Hence there is a sequence $(x_n)$ in $K$ so that $(\hat \iota(x_n)) = (y_n)$ and as $\hat \iota$ preserves the absolute value the sequence $(x_n)$ is also Cauchy. As $\iota$ preserves the absolute value by assumption, we now have a Cauchy sequence $(\iota(x_n))$ in $L$ and the fact that $L$ is complete ensures that it converges to an element, $\lambda' := \lim_{n \to \infty} \iota(x_n)$. By uniqueness of limits we therefore obtain a well defined map $\phi : \hat K \to L$ mapping the element $\lambda$ to $\lambda'$. It preserves absolute values since we have for $x \in \hat K$ that
+	\begin{align*}
+    	|\phi(x)|_{L} & = |\lim_{n \to \infty} \iota(x_n)|_{L}                      	\\
+                  	& = \lim_{n \to \infty} |\iota(x_n)|_{L}                      	\\
+                  	& = \lim_{n \to \infty} |x_n|_{K}                             	\\
+                  	& = \lim_{n \to \infty} |\hat \iota(x_n)|_{\hat K}            	\\
+                  	& = |\lim_{n \to \infty} \hat \iota(x_n)|_{\hat K} = |x|_{\hat K}
+	\end{align*}
+	We see that $\phi$ is also a homomorphism because the limit of the sum of two convergent sequences is the sum of the limits of the sequences and similarly for the product. Combining this with the fact that $\phi$ preserves absolute values, we see that it is uniformly continuous so in particular continuous and it satisfies $\phi \circ \hat \iota = \iota$. This means that it is defined on the dense subset $\hat \iota(K)$ which makes it uniquely determined by \cref{prop: Function on a dense set}. Thus the pair $(\hat K, \hat \iota)$ is the completion of $K$.
+	% proof missing
+\end{proof}
+% \begin{remark}
+% 	Because $\abs{}'$ extends $\abs{}$, we will, for ease of notation, often denote $\abs{}'$ by $\abs{}$.
+% \end{remark}
+As it was mentioned we have only proven the existence of the completion when $\abs{}$ is non-archimedian. In the case where $\abs{}$ is an arbitrary absolute value on $K$, one can still prove the existence of the completion. One approach to do that is to first show that $\mbb R$ is the completion of $\mbb Q$ with respect to $\abs{}_\infty$. Once that has been established then for any Cauchy sequence $(x_n)$ in $K$ with respect to $\abs{}$ we get a Cauchy sequence $(|x_n|_\infty)$ in $\mbb R$ because $\abs{}_\infty$ is uniformly continuous. Since $\mbb R$ is complete this sequence converges to an element in $\mbb R$. We could then apply this kind of reasoning in \cref{thm: Null sequences is maximal ideal,thm: Existence of completion} instead of appealing to \cref{prop: Non-archimedian absolute value has constant tail}.
+
+
+\section{Complete fields with valuation}
+Let $K$ be a field with valuation $v$. We will say that $K$ is complete with respect to $v$ if $K$ is complete with respect to an absolute value corresponding to $v$. Since valuations and non-archimedian absolute values have so much in common, it would make sense to be able to talk about the completion of $K$ with respect to $v$. This is something we can definitely do: Let $\abs{}$ be an absolute value corresponding to $v$. We can consider the completion, $\hat K$, with respect to $\abs{}$ and as we showed in \cref{thm: Existence of completion}, $\abs{}$ extends to an absolute value on $\hat K$, also denoted $\abs{}$, and is given by sending a representative $(x_n)$ of an element $x \in \hat K$ to $\lim_{n \to \infty} |x_n|$. Let us very similarly define the function $\hat v : \hat K \to \mbb R$ by sending the representative $(x_n)$ to $\lim_{x \to \infty} v(x_n)$. We see that $\hat v$ is a valuation, that it extends $v$ and that $\hat v$ corresponds to the extended absolute value on $\hat K$ meaning that $\hat K$ is complete with respect to $\hat v$. Furthermore we see that if $a \in \hat K$, then a sequence $(x_n)$ in $\hat K$ converges to $a$ with respect to the extended absolute value on $\hat K$ if and only if $(x_n)$ converges to $a$ with respect to $\hat v$.
+\begin{definition}
+	The completion of $K$ with respect to $v$ is the field $\hat K$ together with the valuation $\hat v$.
+\end{definition}
+We remark the following consequence of \cref{lem:SufficientConditionForConvergence}. Assume $(x_n)$ is a sequence in $\hat K$. Saying that $\hat v (x_{n+1} - x_n) \to \infty$ amounts to saying that $(x_n)$ is Cauchy and because $\hat K$ is complete every Cauchy sequence converges to an element in $\hat K$. In particular, a sum $\sum_{n = 0}^\infty z^n$ converges in $\hat K$ if and only if $\hat v(z_n) \to \infty$. From the definition of $\hat v$ we now have the following.
+\begin{proposition}\label{K and completion of K have same value group}
+	$\Gamma_v = \Gamma_{\hat v}$ and $\hat v$ is discrete and normalized if $v$ is.
+\end{proposition}
+
+We also have
+\begin{proposition}\label{prop: Isomorphism of residue fields valued field and its completion}
+	Let $O_v$ and $O_{\hat v}$ be the valuation rings with respect to $v$ and $\hat v$ respectively and let $\mfrak p_v$ and $\mfrak p_{\hat v}$ be their corresponding maximal ideals.
+	%We have
+	%$$O_{\hat v} / \mfrak p_{\hat v} \cong O_v / \mfrak %p_v$$
+	If $v$ is discrete then for all $n \geq 1$ we have
+	$$O_{\hat v} / \mfrak p_{\hat v}^n \cong O_v / \mfrak p_v^n$$
+\end{proposition}
+\begin{proof}
+	Consider the map $$O_v \to O_{\hat v} / \mfrak p_{\hat v}^n,$$ defined by $a \mapsto a \pmod {\mfrak p_{\hat v}^n}$. Note that we can write $\mfrak p_v = \pi O_v$ and $\mfrak p_{\hat v} = \pi O_{\hat v}$ for some $\pi \in O_v$ with $v(\pi) = 1$. This implies that the map above has kernel $\pi^n O_v = \mfrak p_v^n$. Let us show that the map is surjective. So assume $\overline x \in O_{\hat v} / \mfrak p_{\hat v}^n$, with $x \in O_{\hat v}$. As $O_v$ is dense in $O_{\hat v}$ we can find $a \in O_v$ so that $\hat v(x - a) \geq n$ which means that $x - a \in \mfrak p_{\hat v}^n$, i.e. $x \equiv a \pmod {\mfrak p_{\hat v}^n}$. Hence the map is surjective and so we get the desired isomorphism.
+\end{proof}
+
+\subsection{The $\mfrak p$-adic numbers}
+In \cref{ex: Almost the p-adic numbers} we saw how we got a valuation, $v_p$, on $\mbb Q$ and now that we have the tools we can consider completion with respect to it. This field is known as the so-called $p$-adic numbers. More generally we saw in \cref{prop: Valuations on Dedekind domains} how we can obtain a valuation on the field of fractions of a Dedekind domain. In fact \cref{prop: Valuations on Dedekind domains} can be applied to obtain a valuation on any number field and so we can think about the completion with respect to it as well. First we have the following lemma.
+
+\begin{lemma} \label{lem: Field of fractions of ring of integers is number field}
+	Let $K$ be a number field. The field of fractions of the ring of integers of $K$, $O_K$, is equal to $K$. In other words, every element of $K$ can be written as $\frac{\alpha}{\beta}$ for some $\alpha, \beta \in O_K$, where $\beta \neq 0$.
+\end{lemma}
+\begin{proof}
+	Let $F$ be the field of fractions of $O_K$. Then $F \subseteq K$ as $F$ is the smallest field containing $O_K$. For the other inclusion, suppose for contradiction that $[K : F] > 1$. Take then an element, $x$, which is in $K$ but not in $F$ and find a non-zero integer $d$ so that $d \alpha \in O_K$. But then $d \alpha \in F$ so $\alpha \in F$, contrary to our initial assumption. Hence $[K : F] = 1$ and so $F = K$.
+\end{proof}
+
+Let $K$ be any number field and let $O$ be its ring of integers and take any prime ideal $\mfrak p$ of $O$. From
+\cref{lem: Field of fractions of ring of integers is number field} we know that $O$ has field of fractions $K$ and since $O$ is a Dedekind domain we can apply \cref{prop: Valuations on Dedekind domains} to obtain a valuation $\vp$ on $K$. We obtain $K_\mfrak p$, the completion of $K$ with respect to $\vp$, and $\vp$ extends to a discrete valuation, also denoted $\vp$ on $K_\mfrak p$.
+
+\begin{definition}\label{def: P-adic numbers}
+The elements of $K_\mfrak p$ are called $\mfrak p$-adic numbers. Its valuation ring, $O_\mfrak p$, is called the ring of $\mfrak p$-adic integers and the valuation $\vp$ is called the $\mfrak p$-adic valuation. In the special case where $O = \mbb Z$, $\mfrak p = (p)$ and $K = \mbb Q$ we will define $\mbb Q_p := K_\mfrak p$, $\mbb Z_p := O_\mfrak p$ and $v_p := \vp$ and these are called the $p$-adic numbers, the $p$-adic integers and the $p$-adic valuation respectively.
+\end{definition}  
+
+\subsection{Valuation ring, revisited}\label{sec: Revisit the valuation ring}
+In the following, let $K$ be a field which is complete with respect to a valuation, $v$, and let $O$ be the valuation ring with respect to $v$. Inside $O$ we have the unique maximal ideal, $\mfrak p$. We shall see that we in this case get an alternative description of $O$. For each $n$ we have the natural projection
+$$O \xrightarrow{\pi_n} O / \mfrak p^n.$$
+We have the inclusions $\mfrak p \supset \mfrak p^2 \supset ...$, which implies that every element in $\mfrak p^{n+1}$ is sent to zero under $\pi_n$, giving us a commutative diagram
+$$\begin{tikzcd}
+    	& O \arrow[ld, "\pi_{n}"'] \arrow[rd, "\pi_{n+1}"] & \\
+    	O / \mfrak p^{n} & & O / \mfrak p^{n+1} \arrow[ll, "\lambda_{n}"']
+	\end{tikzcd}$$
+
+% Putting all of these triangles next to each other we obtain
+Thus, we get a sequence of maps
+$$O / \mfrak p \xleftarrow {\lambda_1} O / \mfrak p^2 \xleftarrow {\lambda_2} O / \mfrak p^3 \xleftarrow {\lambda_3} ...$$
+We now define
+$$\lim_{\leftarrow} O / \mfrak p^n = \{ (x_n) \in \prod_{n=1}^\infty O / \mfrak p^n : \lambda_n(x_{n+1}) = x_n \}$$
+which is seen to be a subring of $\prod_{n=1}^\infty O / \mfrak p^n$ and it is called the projective limit of the system of rings, $O / \mfrak p^n$. Because of the commutative diagram above we obtain a ring map
+$$O \to \lim_{\leftarrow} O / \mfrak p^n$$
+which just sends an element in $O$ to its respective equivalence class. For what follows we refer to \citep[p. 128]{neukirch} for details. We equip each of the $O / \mfrak p^n$ with the discrete topology. This way $\lim_{\leftarrow} O / \mfrak p^n$ becomes a closed subset of the product topology on $\prod_{n=1}^\infty O / \mfrak p^n$. We have the following theorem.
+
+\begin{theorem}\label{thm: Isomorphism of projective limit and ring of integers}
+	The map $O \to \lim_{\leftarrow} O / \mfrak p^n$ is an isomorphism of rings and a homeomorphism.
+\end{theorem}
+
+\subsection{Hensel's Lemma}
+We keep the same setup as in \cref{sec: Revisit the valuation ring} and let $\abs{}$ be a non-archimedian absolute value corresponding to $v$. Denote by $x \mapsto \overline{x}$ the canonical map $O[x] \twoheadrightarrow O / \mfrak p[x]$. We will say that a polynomial $f \in O[x]$ is primitive if $\overline f \neq 0$.
+
+\begin{lemma}[Hensel's Lemma]\label{lem: Hensel lemma}
+	Suppose that $f \in O[x]$ is primitive and that there are relatively prime polynomials $g_0,h_0 \in O/\mfrak p[x]$ so that $\overline f = g_0 h_0$. Then there are polynomials $g,h \in O[x]$ so that $f = gh$ with $\deg(g) = \deg(g_0)$ and $\overline g = g_0$ and $\overline h = h_0$
+\end{lemma}
+For a proof, see \citep[4.6]{neukirch}. Let us now consider the following special case of \cref{lem: Hensel lemma}.
+\begin{lemma} \label{lem: Root lifting}
+	Suppose $f \in O[x]$ and that $\beta \in O/\mfrak p$ is a root of multiplicity one for $\overline f$. Then $\beta$ lifts uniquely to an element in $O$ which is a root of $f$.
+\end{lemma}
+\begin{proof}
+	Since $\beta$ is a root of multiplicity one for $\overline f$ we know that $f$ is primitive. We can write
+	$$\overline f(x) = (x - \beta)h_0(x)$$
+	where $h_0 \in O/\mfrak p$ and where $(x-\beta) \nmid h_0$. Hence $(x-\beta)$ and $h_0$ are coprime so by \cref{lem: Hensel lemma} we can find $g,h \in O$ so that $f = g h$ and where $\overline g = (x-\beta)$ and $\overline h = h_0$ and $\deg g = \deg (x - \beta) = 1$. Thus we can write $g(x) = x - \zeta$ for some $\zeta \in O$ and we have $\overline \zeta = \beta$. If there was another element $\zeta'$ in $O$ so that $f(\zeta') = 0$ and $\overline {\zeta'} = \beta$ then $(x-\zeta)(x-\zeta') \mid f(x)$ so $(x-\beta)^2 \mid  \overline f$ which is impossible since $\beta$ has multiplicity 1.
+\end{proof}
+ 
+We can now prove the following rather surprising statement.
+\begin{proposition} \label{O contains q-1 roots of unity}
+	Suppose that $O$ has finite residue field and set $q = \#(O/\mfrak p)$. Then the ring $O$ contains the $q-1$'st roots of unity, $\mu_{q-1}$.
+\end{proposition}
+\begin{proof}
+	Let $x \in (O/\mfrak p)^*$. Since $(O/\mfrak p)^*$ has order $q-1$ we have $x^{q-1} = 1$, showing that $x$ is a $q-1$'st root of unity. Thus $x^{q-1} - 1$ has $q-1$ distinct roots which in $O/\mfrak p$ and so by \cref{lem: Root lifting} these all lift to distinct roots in $O$ of $x^{q-1} - 1$ meaning that $O$ contains $\mu_{q-1}$.
+\end{proof}
+From this proposition we get an injective map $(O / \mfrak p)^* \to O^*$ defined by sending an element $x$ in $O / \mfrak p$ to the $q-1$'st root of unity in $O$ that reduces to $x$. This map is called the Teichmüller lift. Using \cref{lem: Hensel lemma} we can derive the following lemma.
+\begin{lemma}\label{lem: Sufficient condition for polynomial to have coefficients in valuation ring}
+	Suppose $f(x) = a_n x^n + ... + a_0 \in K[x]$ is irreducible and has degree $n$. Then $$\max \{\abs{a_n}, \abs{a_{n-1}}, ..., \abs{a_0} \} = \max\{\abs{a_n}, \abs{a_0} \},$$
+	and if $f$ is monic and $a_0 \in O$ then $f \in O[x]$.
+\end{lemma}
+\begin{proof}
+	Among the coefficients of $f$, one of them must have absolute value larger than or equal to all the other ones. Let $a_{k_0}$ be one such coefficient but with $k_0$ as small as possible. As $a_n \neq 0$ we must have $|a_{k_0}| \geq |a_n| > 0$ so $a_{k_0} \neq 0$. Let $g(x) = \frac{1}{a_k}f(x)$ and denote the coefficients of $g$ by $b_i = \frac{a_i}{a_{k_0}}$. We have $\max \{|b_1|, ..., |b_n| \} = 1$ meaning that $g \in O[x]$ and we also have $|b_{k_0}| = 1$. As such $g$ is primitive, i.e, $\overline g \neq 0$. By the choice of $k_0$ we have that $b_i \in \mfrak p$ for all $i \in \{1, ..., k_0-1 \}$ and therefore
+	$$g(x) \equiv x^{k_0}(b_{k_0} + b_{k_0+1} x+ ... + b_n x^{n - k_0}) \pmod {\mfrak p}$$
+	If $\max\{|b_0|, |b_n| \} < 1$ then $0 < k_0 < n$, which would mean that the above would be a factorization of coprime polynomials in $O / \mfrak p$. But then \cref{lem: Hensel lemma} would imply that $g$ is not irreducible. Hence we must have $\max\{|b_0|, |b_n| \} = 1$. We conclude that
+	$$\max \{\abs{a_n}, \abs{a_{n-1}}, ..., \abs{a_0} \} = \max\{\abs{a_n}, \abs{a_0} \},$$
+	as desired. If now $a_n = 1$ and $a_0 \in O$ then the above implies that $|a_i| \leq \max\{|a_0|, |a_n|\} = 1$ for all $i \in \{1, ..., n \}$ hence in this case we have $f \in O[x]$.
+    
+    
+
+\end{proof}
+
+
+\subsection{Dedekind domains and valuations}
+Recall that for a commutative ring $R$ with unity we can localize at any given prime ideal $\mfrak p \subseteq R$ and obtain the local ring $R_\mfrak p = \{\frac{\alpha}{\beta} \mid \alpha \in R, \beta \in R \setminus \mfrak p \}$ with two elements $\frac{\alpha}{\beta}$ and  $\frac{\alpha'}{\beta'}$ in $R_\mfrak p$ being equal if and only if there exists an element $s \in R \setminus \mfrak p$ so that $s\alpha \beta' = s\alpha' \beta$. The ring $R_\mfrak p$ has unique maximal ideal $\mfrak M =  \{\frac{\alpha}{\beta} \mid \alpha \in \mfrak p, \beta \in R\setminus \mfrak p \}$, the localization map is the homomorphism sending an element $r \in R$ to $\frac{r}{1} \in R_\mfrak p$ and the extension of $\mfrak p$ along this map is $\mfrak M$.
+
+\begin{lemma} \label{lem: Canonical localization isomorphism}
+	$\Frac(R / \mfrak p)$ is canonically isomorphic to $R_\mfrak p / \mfrak M$. In particular, if $\mfrak p$ is a maximal ideal then $R / \mfrak p \cong R_\mfrak p / \mfrak M$.
+\end{lemma}
+\begin{proof}
+	Firstly, $R / \mfrak p$ is an integral domain as $\mfrak p$ is a prime, so it makes sense to take the field of fractions of this ring. Consider the composition of maps $R \hookrightarrow R_\mfrak p \twoheadrightarrow R_\mfrak p / \mfrak M$, with the first one being the localization map and the second one the natural projection. Then $r \in R$ is sent to zero if and only if $\frac{r}{1} \in \mfrak M$ which is equivalent to $r \in \mfrak p$. Hence we get an induced injective homomorphism, $\phi$
+	$$R / \mfrak p \hookrightarrow R_\mfrak p / \mfrak M$$
+	which is given by $\phi(r + \mfrak p) = \frac{r}{1} + \mfrak M$. We know that $R_\mfrak p / \mfrak M$ is a field since $\mfrak M$ is a maximal ideal, so it follows from the universal property for the field of fractions that there is a unique injective homomorphism $\sigma : \Frac(R / \mfrak p) \to R_\mfrak p / \mfrak M$, extending $\phi$, which is given by $\sigma(\frac{\alpha}{\beta}) = \phi(\alpha)\phi(\beta)^{-1}$. Let us show that this map is surjective. Suppose that $\frac{a}{b} + \mfrak M  \in R_\mfrak p / \mfrak M$ with $a \in R$ and $b \notin \mfrak p$. Thus, $b + \mfrak p$ is non-zero in $R / \mfrak p$. We can now evaluate
+	$$\sigma(\frac{a + \mfrak p}{b + \mfrak p}) = \phi(a + \mfrak p)\phi(b + \mfrak p)^{-1} = (\frac{a}{1} + \mfrak M) (\frac{b}{1} + \mfrak M)^{-1} = \frac{a}{b} + \mfrak M$$
+	For the last statement, suppose that $\mfrak p$ is maximal. Then $R / \mfrak p$ is a field, so it is isomorphic to its field of fractions.
+\end{proof}
+
+Let $O$ be a Dedekind domain and $K$ its field of fractions. For a prime ideal $\mfrak p$ of $O$ we get by \cref{prop: Valuations on Dedekind domains} a discrete an normalized valuation $\vp$ on $K$ and it extends to the completion $K_\mfrak{p}$ of $K$ with respect to $v_\mfrak{p}$, is also denoted by $v_\mfrak{p}$ and is a discrete valuation by \cref{K and completion of K have same value group}. Let $O_{v_p}$ be the valuation ring of $K$ and let $\mfrak{P}_{v_\mfrak{p}}$ be its unique maximal ideal. Similarly, let $O_\mfrak{p}$ be the valuation ring of $K_\mfrak{p}$ and $\hat{\mfrak{p}}$ its unique maximal ideal.
+
+\begin{proposition} \label{prop: Valuations on Dedekind domains properties}
+	We have the following
+	\begin{enumerate}
+    	\item The localization of $O$ at $\mfrak p$, that is, the ring
+          	$$O_{(\mfrak p)} = \{\frac{\alpha}{\beta} \in K \mid \alpha \in O, \beta \notin \mfrak p\} =  \{\frac{\alpha}{\beta} \in K \mid \alpha \in O, \vp(\beta) = 0 \}$$
+          	is the same ring as $O_{\vp}$.
+    	\item We have equalities $\mfrak P_\vp = \mfrak p O_{(\mfrak p)}$ and $\hat {\mfrak p } = \mfrak p O_{\mfrak p}$ and isomorphisms
+          	$$
+              	O / \mfrak{p} \cong O_{(\mfrak{p})} / \mfrak{P}_{v_{\mfrak{p}}} \cong O_{\mfrak{p}} / \hat{\mfrak{p}}
+          	$$
+
+	\end{enumerate}
+	% In particular, $K_\mfrak p$ is a local field if $O / \mfrak{p}$ is finite.
+
+	%The valuation $\vp$ extends to a valuation on $K_\mfrak p$ and this we also denote by $\vp$. For $x \in K_\mfrak p$, it is given by
+	%$$\vp (x) = \lim_{n \to \infty} \vp(x_n)$$
+	%where $(x_n)$ is a Cauchy sequence in $K$ converging to $x$.
+\end{proposition}
+
+\begin{proof}
+	% USED, BUT NOT ARGUED FOR:
+	% - If v is discrete then the extension of v is also discrete
+	% - The number field K coincides with the field of fractions of O_K
+	%For any $\alpha \in R$ different from 0, we can consider the factorization
+	%$$\alpha R = \mfrak p^k A$$
+	% where $A$ is an ideal so that $\mfrak{p} \nmid A$ and $k \in \mbb N_0$.
+	For (1.) it is clear that we have the inclusion $O_{(\mfrak p)} \subseteq O_\vp$. So let $\frac{x}{y} \in O_\vp$ with $x,y \in O$ both non-zero and let $u = \vp(x)$, $v = \vp(y)$. Since $\vp(\frac{x}{y})  \geq 0$ we have $u \geq v$. We can now write
+	$$x O = \mfrak p^u A, \text{ and } y O = \mfrak p^v B$$
+	where $A,B$ are two ideals of $O$ so that $\mfrak p \nmid A$ and $\mfrak p \nmid B$. This means that $\mfrak p \nsupseteq B$, which implies that we can find $c \in B$ such that $c \notin \mfrak p$. But then $\vp(c) = 0$ and hence we are done if we can show that there is $b \in O$ so that $xc = yb$ as that would imply that $\frac{x}{y} = \frac{b}{c}$. Now, $xc \in x O$ and also $xc \in B$, meaning that $xc \in x O \cdot B$. But,
+	$$x O \cdot B = \mfrak p^u A B = \mfrak p^{u-v} A \mfrak p^v B = \mfrak p^{u-v} A \cdot y O$$
+	So $xc \in \mfrak p^{u-v} A \cdot y O$ which means that we can find $b \in \mfrak p^{u-v} A$ such that $xc = by$. We conclude that $O_\vp = O_{(\mfrak p)}$.
+	As for (2.) it is a general fact that the extension of $\mfrak p$ along the localization map,
+	$O \hookrightarrow O_{(\mfrak p)}$
+	gives the ideal $\mfrak P_{\vp}$, that is, $\mfrak P_{\vp} = \mfrak p O_{(\mfrak p)}$. Since $O$ is a Dedekind domain, $\mfrak p$ is in fact a maximal ideal of $O$ so by \cref{lem: Canonical localization isomorphism} it follows that $O / \mfrak p \cong O_{(\mfrak p)} / \mfrak P_\vp$. Let us show that $\hat {\mfrak p} = \mfrak p O_\mfrak p$. Let $\alpha \in \hat {\mfrak p}$, that is, $\vp(\alpha) > 0$ and suppose that $\alpha \neq 0$. Since $\mfrak p^2 \subsetneq \mfrak p$ we know that there is $\pi \in \mfrak p$ so that $\vp(\pi) = 1$. By \cref{K and completion of K have same value group} we know that $\vp(K_\mfrak p^*) = \vp(K^*) = \mbb Z$ so $n := \vp(\alpha) \in \mbb N$. Now $\vp(\alpha \pi^{-n}) = 0$ so $\alpha \pi^{-n} \in O_\mfrak p$. We now have $\pi \pi^{n-1} \cdot (\alpha \pi^{-n}) \in \mfrak p O_\mfrak p$ and so $\hat {\mfrak p} \subseteq \mfrak p O_\mfrak p$. The other inclusion is clear. The isomorphism $O_{(\mfrak{p})} / \mfrak{P}_{v_{\mfrak{p}}} \cong O_{\mfrak{p}} / \hat{\mfrak{p}}$ is just \cref{prop: Isomorphism of residue fields valued field and its completion}.
+\end{proof}
+
+Here is an interesting consequence for the $\mfrak p$-adic numbers.
+\begin{proposition}\label{fact: The P-adic numbers is a local ring}
+	Let $K$ be a number field, $O$ its ring of integers and take a prime $\mfrak p$ of $O$ and consider the $\mfrak p$-adic numbers, $K_\mfrak p$. We know from algebraic number theory that $O / \mfrak p$ is finite so $K_\mfrak p$ has finite residue field by \cref{prop: Valuations on Dedekind domains properties}
+\end{proposition}
+This actually shows that $K_\mfrak p$ is what is called a local field, see \cref{def: Local field}. We obtain the following special case of \cref{prop: Isomorphism of residue fields valued field and its completion} for the $p$-adic numbers
+\begin{proposition}\label{prop: Isomorphism of residue fields valued field and its completion special case}
+	For any $n \geq 1$ we have
+	$$\mbb Z_p / p^n \mbb Z_p \cong \mbb Z / p^n \mbb Z$$
+\end{proposition}
+
+
+\subsection{Finite extensions of non-archimedian complete fields}
+
+It turns out that the absolute value on a complete non-archimedian field can be extended to any finite field extension in a unique and very concrete way.
+
+\begin{theorem}\label{thm: Extension of absolute value}
+	Suppose $(K, \abs{})$ is a complete valued non-archimedian field and that $L/K$ is a finite field extension of degree $n$. Then $\abs{}$ can be extended in a unique way to a non-archimedian absolute value on $L$ given explicitly as
+	\begin{equation}\label{eq: Extended absolute value}
+    	\abs{\alpha} = \sqrt[n]{\abs{N_{L/K}(\alpha)}}, \text{ for all } \alpha \in L\tag{$\star$}
+	\end{equation}
+	Furthermore $(L, \abs{})$ is complete.
+\end{theorem}
+% TODO: Add a remark below saying that there is a more general version of this but we dont need it.
+\begin{proof}
+	% This theorem holds in general but we will only prove it for the case where $\abs{}$ is non-archimedian. So suppose that $\abs{}$ is archimedian and that $n$ above is finite.
+	Let us first make sure that the proclaimed function defined in \cref{eq: Extended absolute value} is actually well defined. For all $\alpha \in L$ we know that $N_{L/K}(\alpha) \in K$. Hence it makes sense to use the absolute value on $K$ on it. After doing so we get a real number greater than or equal to 0, and so it makes sense to take the $n$th root of this number. Let us start with the existence part. Let $o$ be the valuation ring of $K$ and $O$ the integral closure of $o$ in $L$. To help us establish that \cref{eq: Extended absolute value} is an absolute value on $L$ we will first show that
+	\begin{equation}\label{eq: Extension of absolute value helper result}
+    	O = \{\alpha \in L \mid N_{L/K}(\alpha) \in o \}.\tag{$\triangle$}
+	\end{equation}
+	First, suppose that $\alpha \in O$. Then $\alpha$ is integral over $o$ and hence so are all the conjugates of $\alpha$. But then the product of all of the conjugates of $\alpha$ is also integral over $o$ and this product is equal to $N_{L/K}(\alpha)$, which we know is an element of $K$. Since $o$ is integrally closed in $K$ it now follows that $N_{L/K}(\alpha)$ is in $o$. Let us now show the other inclusion. So assume that $\alpha \in L^*$ and that $N_{L/K}(\alpha) \in o$. Since $L / K$ is a finite extension, $L$ is algebraic over $K$ and therefore $\alpha$ is in particular algebraic over $K$. Hence we can consider its minimal polynomial, $f$, over $K$. Then by \cref{lem: norm of algebraic number is pm 0th coefficient} we have that
+	$$N_{L / K}(\alpha) =  \pm a_0^m$$
+	where $m = [L : F]$ and $a_0$ is the constant term of $f$. But that means that $a_0^m \in o$ so $|a_0|^m = |a_0^m| \leq 1$, so $|a_0| \leq 1$ so $a_0 \in o$. As $f$ is monic it now follows from \cref{lem: Sufficient condition for polynomial to have coefficients in valuation ring}  that $f \in o[x]$ and as $f(\alpha) = 0$ it follows that $\alpha$ is integral over $o$ meaning that $\alpha \in O$. We have now established \cref{eq: Extension of absolute value helper result}. Suppose now that $\alpha \in L$. We have that $|\alpha| \leq 1$ is the same as saying that $|N_{L/K}(\alpha)| \leq 1$ which is the same as saying that $N_{L/K}(\alpha)$ belongs to the valuation ring $o$ which, by what we have just shown is the same as $\alpha \in O$. This means that
+	\begin{equation}\label{eq: Valuation ring extension of abs}
+    	O = \{\alpha \in L \mid |\alpha| \leq 1  \}
+	\end{equation}
+	Note that this means that once we have shown that \cref{eq: Extended absolute value} is a non-archimedian absolute value on $L$, we can conclude that its valuation ring is $O$. So let us show this now. First we show that \cref{eq: Extended absolute value} satisfies the ultrametric property. Since $O$ is a ring we know that if $\alpha \in O$ then also $\alpha + 1 \in O$. From \cref{eq: Valuation ring extension of abs} this immediately implies that if $|\alpha|\leq 1$ then $|\alpha + 1| \leq 1$. Assume that $\alpha, \beta \in L$ and that $|\alpha| \leq |\beta|$. We wish to show that $|\alpha + \beta |\leq \max\{|\alpha|, |\beta| \}$. Note that if $\beta = 0$ there is nothing to show so suppose that $\beta \neq 0$. Then $|\beta| \neq 0$ and we have $\frac{\alpha}{\beta} \in L$ and $\abs{\frac{\alpha}{\beta}} \leq 1$. Thus
+	$$\abs{\frac{\alpha}{\beta} + 1} \leq 1$$
+	and after multiplication by $\abs {\beta}$ we are left with the inequality
+	$$\abs{\alpha + \beta} \leq |\beta|$$
+	Because we assumed that $|\alpha| \leq |\beta|$ we have $|\beta| = \max \{|\alpha|,|\beta| \}$ and we are done. We still have some things to check before we can conclude that $\abs{}$ is an absolute value on $L$, but these are easier to do. Firstly if $\alpha \in L$ then we have $|N_{L/K}(\alpha)| = 0$ if and only if $N_{L/K}(\alpha) = 0$ if and only if $\alpha = 0$. The fact that $|\alpha \beta| = |\alpha| |\beta|$ for all $\alpha,\beta \in L$ follows from the fact that all the functions involved in the right hand side of \cref{eq: Extended absolute value} are multiplicative. We conclude that \cref{eq: Extended absolute value} is an absolute value on $L$. It also extends the absolute value on $K$ since if $\alpha \in K$ then $N_{L/K}(\alpha)= \alpha^n$.
+
+	Let us now move on to proving the uniqueness part of the statement. So let $\abs{}'$ be another non-archimedian absolute value on $L$ which also extends the absolute value on $K$. Denote by $O'$ the valuation ring with respect to $\abs{}'$ and let $\mfrak p$ and $\mfrak p'$ be the maximal ideals of $O$ and $O'$ respectively. Let us show that $O \subseteq O'$. Assume for contradiction that $\alpha \in O$ but $\alpha \notin O'$. Then $\alpha \neq 0$ and we have that $\abs{\alpha}' > 1$ and thus $\alpha^{-1} \in O'$. Since $\alpha \notin O'$ then $\alpha^{-1}$ cannot be a unit of $O'$ and hence $\alpha^{-1}$ belongs to $\mfrak p'$. As $\alpha \in O$ and $O$ is the integral closure of $o$ in $L$, we can find an equation
+	$$\alpha^d + a_{d-1}\alpha^{d-1} + ... + a_0 = 0$$
+	where all the $a_i$ belong to $o$. But $o$ is contained in $O'$ since if $x \in o$ then $x \in K$ so $\abs{x}' = \abs{x} \leq 1$. Hence all the $a_i$ belong to $O'$. Multiplying the above equation by $\alpha^{-d}$ and moving things around we get $$1 = -(a_{d-1}\alpha^{-1} + ... + a_0\alpha^{-d})$$
+	But each term $a_{d-i} \alpha^{-i}$ is in $\mfrak p'$ since $a_{d-i} \in O'$ and $\alpha^{-i} \in \mfrak p'$ combined with the fact that $\mfrak p'$ is an ideal. But that means that $1 \in \mfrak p'$ which is impossible. Hence $O \subseteq O'$. What this means is that if $|\alpha| \leq 1$ then $|\alpha|' \leq 1$ and this implies that $\abs{}$ and $\abs{}'$ are equivalent. If they weren't then by \cref{Equivalent absolute values} we could find $\alpha \in K$ so that $|\alpha|' < 1$ and $|\alpha| \geq 1$. The fact that $|\alpha| \geq 1$ implies that $\alpha \neq 0$. Now $|\frac{1}{\alpha}| \leq 1$ so by what we just showed $|\frac{1}{\alpha}|' \leq 1$, i.e, $|\alpha|' \geq 1$ - that's impossible so $\abs{}$ and $\abs{}'$ are equivalent. But then again by \cref{Equivalent absolute values} there exists some fixed $s \geq 1$ so that $\abs{x}' = \abs{x}^s$ for all $x \in L$ and as $\abs{}$ and $\abs{}'$ are equal on $K$ we must have $s = 1$. Hence $\abs{x}' = \abs{x}$, proving uniqueness. We now only need to show that $L$ is complete with respect to $\abs{}$. Let $1, \beta_2, ..., \beta_{n} \in L$ be a basis for $L$ over $K$. Then for any $z \in L$ there exists unique $x_1, ..., x_n \in K$ so that $z = x_1 + x_2 \beta_2 + ... + x_{n}\beta_{n}$, and so we get a map, $\phi : L \to \mbb R$ by sending $z$ to $\max \{|x_1|, ...,|x_n|\}$. This defines a non-archimedian absolute value on $L$ and $L$ is complete with respect to it.
+	Observe that if $z \in K$ then we have $0 = x_2 = ... = x_n$, showing that $\phi$ extends the absolute value on $K$. Hence by the uniqueness property we have just shown we now have that $\phi = \abs{}$ and therefore $L$ is complete with respect to $\abs{}$.
+
+	%For if $(z_m)$ is a Cauchy sequence in $L$ then we can for each $i$ write $z_i = x_{1i} + x_{2i}\beta_2 + ... + x_{ni} \beta_n$ where all the $x_{ji}$ are in $K$. It follows that each sequence $(x_{jm})$ for $j = 1, ..., n$ is Cauchy with respect to the absolute value on $K$ so by assumption $\lim_{m\to \infty} x_{jm} = y_j$ for some $y_j \in K$. Hence $(z_m)$ converges to $y_1 + y_2\beta_2 + ... + \
+
+	%Thus $$z_i - z_j = (x_{1i} - x_{1j}) + (x_{2i} - x_{2j})\beta_2 + ... +  (x_{ni} - x_{nj})\beta_n$$
+\end{proof}
+In \cref{sec: Completions of fields} we tried to avoid making use of the fact that $\mbb Q$ is dense in $\mbb R$ with respect to $\abs{}_\infty$. Considering the implication $(3.) \implies (2.)$ in \cref{Equivalent absolute values} and inspecting its proof in \citep[Proposition 3.3]{neukirch}, we see that this fact is actually used here.
+
+\section{Local fields}
+%In algebraic number theory we study finite extensions of $\mbb Q$, known as number fields. Similarly, it turns out to be fruitful to consider the finite extensions of $\mbb Q_p$. These fields are called local fields and we will take a look at them now. We start out by giving another definition of these fields.
+
+\begin{definition}\label{def: Local field}
+	A field $K$ is called a local field if it is complete with regards to a discrete valuation and has finite residue field.
+\end{definition}
+
+We saw in \cref{fact: The P-adic numbers is a local ring} that the $\mfrak p$-adic number fields are examples of local fields. In particular, $\mbb Q_p$ is a local field. Here is another example.
+\begin{example}[Continuation of \cref{ex: K((x)) is valued field}]\label{K((x)) is local if K finite}
+	It can be shown that $K((x))$ is the completion of $K(x)$ with respect to the discrete valuation $\omega$. Hence $K((x))$ is complete and we have $K((x)) / (x) \cong K$ and so $K((x))$ is a local field if and only if $K$ is a finite field.
+\end{example}
+
+The following proposition charaterizes the local fields of characteristic 0 as finite extensions of $\mbb Q_p$.
+
+\begin{proposition}\label{prop: Characterization of local fields}
+	A local field $K$ of characteristic 0 is the same thing as a finite extension of $\mbb Q_p$.
+\end{proposition}
+\begin{proof}
+	Suppose first that $K /\mbb Q_p$ is a finite extension of degree $n$. Then by \cref{thm: Extension of absolute value} the absolute value on $\mbb Q_p$ extends uniquely to the non-archimedian absolute value $|\alpha| = \sqrt[n]{|N_{K/\mbb Q_p}(\alpha)|}$ on $K$ and $K$ is complete with respect to it. The absolute value on $\mbb Q_p$ is discrete, so this must also be the case for the absolute value on $K$. Let $\kappa$ be the residue field of $K$. From \cref{prop: Isomorphism of residue fields valued field and its completion special case} we know that $\mbb Q_p$ has residue field $\mbb F_p$. Let us show that the field extension $\kappa / \mbb F_p$ has finite degree. Suppose that $\overline {x_1}, ..., \overline{x_m} \in \kappa$ are linearly independent over $\mbb F_p$ with $x_1, ..., x_m$ being corresponding preimages in $K$. These elements must also be linearly indenpendent over $\mbb Q_p$. Assume for contradiction that this is not the case. We would then have an equation
+	$$\lambda_1 x_1 + ... + \lambda_m x_m = 0$$
+	with at least one of the $\lambda_i \in \mbb Q$ being non-zero, meaning it has non-zero absolute value. Choose among such non-zero elements the $\lambda_i$ that has the largest absolute value and divide the above equation by it. We achieve a linear combination where all coefficients have absolute value smaller than or equal to 1 and the $i$th coefficient equals 1. Reducing to $\kappa$ we get a non-trivial linear combination of $\overline{x_1}, ..., \overline{x_m}$. We conclude that $x_1, ..., x_m$ must be linearly independent over $\mbb Q$. Thus $m$ can be at most $n$ and so the degree $[\kappa : \mbb F_p]$ can also be at most $n$ and this implies that $\kappa$ is a finite field, since finite extensions of finite fields are finite. For the remaining implication, see \citep[Proposition 5.2]{neukirch}.
+
+	% On the other hand, suppose that $K$ is a local field with characteristic 0 and discrete valuation $v$. Let $O$ be the valuation ring of $K$ and $\mfrak p$ be its unique maximal ideal. The residue field of $K$ is then $\kappa = O / \mfrak p$ and as $K$ is a local field, we know that $\kappa$ is a finite field so its characteristic is a prime number, say $p$. But that means that $p$ is zero in $\kappa$, which is to say that $p \in \mfrak p$, meaning that $v(p) > 0$.  This implies (TODO: SHOW WHY) that $v$ and $v_p$ are equivalent valuations when restricted to $\mbb Q$. The closure of $\mbb Q$ in $K$ is the smallest closed containing $\mbb Q$ and as $K$ is complete, it is therefore the smallest complete set containing $\mbb Q$
+
+	% therefore $\mbb Q_p$ and is contained in $K$. As $K$ is a metric space it is Hausdorff and by \ref{} $K$ is locally compact. It therefore follows by a theorem which can be found HERE that the $\mbb Q$-vector space $K$ has finite dimension.
+	% % see https://terrytao.wordpress.com/2011/05/24/locally-compact-topological-vector-spaces/
+\end{proof}
+
+Inspired by the fact that the finite extensions of $\mbb Q$ are called number fields and the fact that we have the above proposition we now define the following.
+
+\begin{definition}
+	A local field of characteristic 0 is called a $\mfrak p$-adic number field. % where $\mfrak p$ refers to the unique maximal ideal of the valuation ring of $K$.
+\end{definition}
+
+In the following let $K$ be a local field with valuation $v$, $O$ the valuation ring corresponding to $v$ and $\mfrak p$ the unique maximal ideal of $O$. Let us also set $q = \#(O / \mfrak p)$ and $U^{(1)} = 1 + \mfrak p$.
+\begin{proposition}\label{prop: Factorization of elements in K^*}
+	$K^*$ contains $\mu_{q-1}$, the group of $(q-1)$st roots of unity and we have
+	$$K^* = \{\pi^k \mid k \in \mbb Z \} \times \mu_{q-1} \times U^{(1)}$$
+\end{proposition}
+\begin{proof}
+	Since $K$ is a local field it follows from \cref{O contains q-1 roots of unity} that $O^*$ contains $\mu_{q-1}$. Because of \cref{prop: Valuation ring of a field} we really only need to show that $O^* = \mu_{q-1} \times U^{(1)}$. To do that $U^{(1)} \mu_{q-1} = O^*$ and $U^{(1)} \cap \mu_{q-1} = \{1\}$. Consider the canonical map $\varphi : O^* \to (O / \mfrak p)^*$. Saying that $x \in \ker \varphi$ is the same as saying that $1 \equiv x \pmod{\mfrak p}$ which is equivalent to $x \in 1 + \mfrak p = U^{(1)}$, so $\ker \varphi = U^{(1)}$. Thus, if $x \in U^{(1)} \cap \mu_{q-1}$ then $\varphi(x) = 1$ as $x \in U^{(1)}$ and as $x \in \mu_{q-1}$ we must have $x = 1$ since $\varphi$ maps $\mu_{q-1}$ bijectively onto $(O/\mfrak p)^*$. So $U^{(1)} \cap \mu_{q-1} = \{ 1 \}$. Suppose that $u \in O^*$. Then $\varphi(u)^{-1} \in (O/\mfrak p)^*$ so the Teichmüller lift from underneath the proof of \cref{lem: Canonical localization isomorphism} gives us $\zeta^{-1} \in \mu_{q-1}$ so that $\varphi(\zeta^{-1}) = \varphi(u)^{-1}$. Now we have $1 = \varphi(u)\varphi(\zeta^{-1})$. But then $u\zeta^{-1} \in \ker \varphi = U^{(1)}$, so we can write $u\zeta^{-1} = v$ for some $v \in U^{(1)}$. Hence $u = v \zeta$ showing that $O^* = U^{(1)}\mu_{q-1}$ and we are done.
+\end{proof}
+
+\begin{lemma}\label{lem: Valuation ring mod power of prime is finite in local field}
+	For any $n \in \mbb N$ we have $\# (O / \mfrak p^n) = q^n$.
+\end{lemma}
+
+\begin{proof}
+	We prove the statement using induction on $n$. The base case $n = 1$ is simply by definition of $q$. So suppose that for given $n \in \mbb N$ we have $\# (O / \mfrak p^n) = q^n$. By the third isomorphism theorem we get
+	$$(O / \mfrak p^{n+1}) / (\mfrak p^n / \mfrak p^{n+1}) \cong O / \mfrak p^{n}$$
+	But then by \cref{prop: Valuation ring of a field} we have $\# (\mfrak p^n / \mfrak p^{n+1}) = \# (O /\mfrak p) = q$ and $\#(O / \mfrak p^{n}) = q^n$ so $$\# (O / \mfrak p^{n+1}) = \# (O / \mfrak p^{n}) \cdot \# (\mfrak p^n / \mfrak p^{n+1}) = q^{n+1}$$
+\end{proof}
+
+
+
+
+
+% https://q.uiver.app/#q=WzAsNixbMCwyLCJcXG1hdGhjYWx7T30vXFxtYXRoZnJha3twfSJdLFsxLDIsIlxcbWF0aGNhbHtPfS9cXG1hdGhmcmFre3B9XjIiXSxbMiwyLCJcXG1hdGhjYWx7T30vXFxtYXRoZnJha3twfV4zIl0sWzMsMiwiXFxkb3RzIl0sWzQsMl0sWzEsMCwiXFxtYXRoY2FsIE8iXSxbMiwxLCJcXGxhbWJkYV8yIiwyXSxbMSwwLCJcXGxhbWJkYV8xIiwyXSxbMywyLCJcXGxhbWJkYV80IiwyXSxbNSwzXSxbNSwyXSxbNSwxXSxbNSwwXV0=
+% \[\begin{tikzcd}
+%     & {\mathcal O} \\
+%     \\
+%     {\mathcal{O}/\mathfrak{p}} & {\mathcal{O}/\mathfrak{p}^2} & {\mathcal{O}/\mathfrak{p}^3} & \dots & {}
+%     \arrow["{\lambda_2}"', from=3-3, to=3-2]
+%     \arrow["{\lambda_1}"', from=3-2, to=3-1]
+%     \arrow["{\lambda_4}"', from=3-4, to=3-3]
+%     \arrow[from=1-2, to=3-4]
+%     \arrow[from=1-2, to=3-3]
+%     \arrow[from=1-2, to=3-2]
+%     \arrow[from=1-2, to=3-1]
+% \end{tikzcd}\]
+
+%TODO
+\begin{theorem} \label{thm: Valuation ring in local field is compact}
+	The valuation ring of a local field $K$ is compact.
+\end{theorem}
+\begin{proof}
+	The valuation ring can be thought of as the closed unit ball around 0 with respect to the absolute value on $K$. Hence it is closed and is homeomorphic to $\varprojlim O / \mfrak p^n$ by \cref{thm: Isomorphism of projective limit and ring of integers} which is then of course also closed. Now $\varprojlim O / \mfrak p^n$ is contained in $\prod_{n = 1}^\infty O / \mfrak p^n$, which is compact by Tychonoff's theorem since all the $O / \mfrak p^n$ are finite by \cref{lem: Valuation ring mod power of prime is finite in local field} hence compact. It follows that $O$ is compact.
+\end{proof}
+\begin{remark}\label{rem: Compactness is equivalent to sequential compactness}
+	Since the topology on $K$ is induced by a metric, it means that compactness is equivalent to sequential compactness. Thus every sequence in $O$ has a convergent subsequence.
+\end{remark}
+
+
+\section{Formal series viewed as functions}
+Let $K$ be a complete valued field with valuation $v$ and $\abs{}$ a corresponding non-archimedian absolute value. Given a formal power series, $f(X) \in K[X]$, we can consider the set $C$ of all points $x \in K$ for which $f(x)$ converges with resepect to $\abs{}$. This set is called the region of convergence for $f$, and we get an induced function from $C$ into $K$, which we also denote $f$. Let us write $f(X) = \sum_{n=0}^\infty a_n X^n$. Suppose that $x \in C$ and consider $f(x) - f(0) = \sum_{n=1}^\infty a_n x^n$. By the ultrametric property $|f(x) - f(0)| \leq \max_{n \in \mbb N} \{ |a_n x^n| \}$, so we can make $|f(x) - f(0)|$ as small as we want by choosing $x$ to be close enough to 0 and so $f$ is continuous at 0. If we pick any $c \in C$ we see that
+$$f(Y + c) = \sum_{n=1}^\infty a_n (Y + c)^n = \sum_{n=1}^\infty a_n \sum_{k = 0}^n \binom{n}{k} c^{k}Y^{n-k},$$
+which is just another power series, $f_c(Y)$ and by construction $0$ is in the region of convergence for $f_c$ so $f_c$ is continous in this point. Thus, $f_c(y) \to f_c(0) = f(c)$ as $y \to 0$ so $f(x) \to f(c)$ as $x \to c$, meaning that $f$ is also continous in the point $c$ and so $f$ is continous on all of $C$. We can also consider the ring of formal power series in several variables, $K[[X_1, ..., X_n]]$ and the elements of this ring take the form
+$$f(X_1, ..., X_n) = \sum_{a_1 \geq 0, \ldots, a_n \geq 0} \alpha_{a_1, \ldots a_n} X_1^{a_i} \ldots X_n^{a_n}$$
+A series like this also has a region of convergence, that is the set, $C$, of tuples, $(x_1, ..., x_n)$, so that $f(x_1, ..., x_n)$ converges with respect to $\abs{}$. We equip $K^n$ with the max norm, $\|(x_1, ..., x_n)\| = \max \{\abs{x_1}, ..., \abs{x_n} \}$ and one can show that $f$ is continuous on $C$ with respect to this absolute value by following a similar approach as in the case for series in one variable. Sometimes a function can be given locally as a convergent series, $f \in K[X_1, ..., X_n]$. Such a function is called an analytic function. Here is a more precise definition.
+\begin{definition}
+   Consider an open neighborhood $A \subseteq K^n$ of a point $x_0 \in K^n$ and suppose we have a function $f : A \to K$. If there is a series $g \in K[[X_1, ..., X_n]]$ that converges on $A$ and $g(x_1, ..., x_n) = f(x_1, ..., x_n)$ for every $(x_1, ..., x_n) \in A$ we say that $f$ is given by the series $g$ and in this case $f$ is said to be an analytic function. If $A'$ is another neighborhood of $x_0$ and $f' : A' \to K$ is also an analytic function, then we consider $f$ and $f'$ equal if they are given by the same series and $A' \subseteq A$ or $A \subseteq A'$.
+\end{definition}
+By the discussion above, analytic functions are continuous.
+
+
+\section{Logarithms and Exponentials}
+In this section, let $K$ be a $\mfrak p$-adic field. As such it is by \cref{prop: Characterization of local fields} a finite extension of $\mbb Q_p$ and by \cref{thm: Extension of absolute value} the valuation $v_p$ on $\mbb Q_p$ therefore extends uniquely to $K$. This valuation is discrete so there is $\pi \in K$ so that $v_p(\pi) = \frac{1}{e} > 0$ is the smallest attainable strictly positive value for this function. Hence defining $\vp = e v_p$ we get a normalized valuation on $K$. Let us also denote by $O$ the valuation ring with respect to $\vp$ and $\mfrak p$ its unique maximal ideal and define $U^{(k)} = 1 + \mfrak p^k$ for $k \in \mbb N$. Let us define the following formal power series.
+\begin{align}
+	\log(1+X) & = \sum_{k = 1}^\infty (-1)^{k+1}\frac{X^k}{k} \label{logarithm series} \\
+	\exp(X)   & = \sum_{k = 1}^\infty \frac{X^k}{k!} \label{exponential series}
+\end{align}
+We would like to establish the following result.
+\begin{proposition}\label{prop: Log and exp for local fields}
+	The power series defined in \cref{logarithm series,exponential series}
+	induce, for $m > \frac{e}{p-1}$ continuous isomorphisms
+	% https://q.uiver.app/#q=WzAsMixbMCwwLCJVXnsobSl9Il0sWzIsMCwiXFxtYXRoZnJhayBwXm0iXSxbMSwwLCJcXGV4cCIsMSx7ImN1cnZlIjotMn1dLFswLDEsIlxcbG9nIiwxLHsiY3VydmUiOi0yfV1d
+	\[\begin{tikzcd}
+        	{U^{(m)}} && {\mathfrak p^m}
+        	\arrow["\log"{description}, curve={height=-12pt}, from=1-1, to=1-3]
+        	\arrow["\exp"{description}, curve={height=-12pt}, from=1-3, to=1-1]
+    	\end{tikzcd}\]
+	and these are inverses of one another.
+\end{proposition}
+We'll give the proof of this proposition towards the end of this section. To do this we will need the following equalities in formal series.
+\begin{align}
+	\exp (\log (1 + X)) &= 1+X \label{exp . log = id} \\
+	\log (\exp (X)) &= X \label{log . exp = id}
+\end{align}
+Proofs for these identities can be found here: \citep{integrand,earnest}. We also have the identites, $$\log(XY) = \log(X) +\log(Y), \quad \exp(X + Y) = \exp(X)\exp(Y)$$
+These equalities might lead one to think that the "isomorphism" part of \cref{prop: Log and exp for local fields} follows immediately after establishing the existence of the functions displayed in the diagram in this proposition.  However, this kind of reasoning is not valid in general as the following example illustrates.
+
+\begin{example}\label{ex: h(X) != f(g(X))}
+	Let $K = \mbb Q_2$ and let $g(X) = 2X^2 - 2X$ and $f(X) = \exp(X)$. Let $h(X) = f(g(X))$ and write $h(X) = \sum_{n = 0}a_n X^n$. It is clear that $g(1) = 0$ is in the region of convergence of $f(X)$. It is claimed in \citep[Problem 162]{gouvea} that it is possible to show that $v_2(a_n) \geq 1 + \frac{n}{4}$ for $n \geq 2$. Combining this with the fact that $v_2(1) = 0$ we see that $h(1)$ converges. We claim that $h(1) \neq f(g(1))$. Observe first that $f(g(1))= 1$. We see that $v_2(a_n) \geq 2$ for all $n \geq 4$ which means that $4 \mid a_n$ for all $n \geq 4$. Hence, modulo 4 all the terms beyond and including the fourth term of $h(X)$ vanish. Let us now compute the first 3 terms of $h(X)$
+	$$h(X) = 1 - 2X + 4X^2 + \ldots$$
+	So $h(X) \equiv 1 - 2X \pmod {4}$ so $h(1) \equiv -1 \pmod {4}$ which means that $h(1) \neq f(g(1))$.
+\end{example}
+In light of this example we would like a result which gives sufficient conditions for when an equality in formal series like $h(X) = f(g(X))$ leads to an equality of induced functions. This is exactly what we will build up to now.
+
+\begin{proposition}\label{prop: Convergence of sum and product of power series}
+	Let $x \in K$ and suppose $f(X)$ and $g(X)$ are formal power series. If both $f(x)$ and $g(x)$ converge then the formal series $(f+g)(x)$ and $(fg)(x)$ converge to $f(x) + g(x)$ and $f(x)g(x)$ respectively.
+\end{proposition}
+% \begin{proof}
+% 	We can write
+% 	$f(X) = \sum_{n=0}^\infty a_n X^n$ and $g(X) = \sum_{n=0}^\infty b_n X^n$ so
+% 	$f(X)g(X) = \sum_{n=0} c_n X^n$ with $c_n = \sum_{i = 0}^n a_i b^{n-i}$. Lets prove that $(fg)(x)$ converges to $f(x)g(x)$, that is we will prove that  
+    
+% 	PROBLEM 150
+
+% 	We have    
+
+
+% 	Set $A = \sum_{n = 0}^\infty a_n$ and $B = \sum_{n = 0}^\infty a_n$.
+% \end{proof}
+
+We will say that a sequence $b_{ij} \in K$ converges to 0 uniformly in $j$ if for every $j$ and $\epsilon > 0$ there exists an $N \in \mbb N$, which does not depend on $j$, so that if $i \geq N$ then $\abs{b_{ij}} < \epsilon$. 
+
+\begin{proposition}\label{prop: Swap of summation}
+	Assume that $b_{ij} \in K$ and assume that
+	\begin{enumerate}
+    	\item $\lim_{j \to \infty}b_{ij} = 0$
+    	\item $\lim_{i \to \infty} b_{ij} = 0 \text{ uniformly in } j$
+	\end{enumerate}
+	Then the following two sums converge and are equal
+	\begin{equation}\label{eq: Two sums that are equal}
+    	\begin{aligned}
+        	\sum_{i = 0}^\infty (\sum_{j = 0}^\infty b_{ij}), \quad \sum_{j = 0}^\infty (\sum_{i = 0}^\infty b_{ij})
+    	\end{aligned}
+	\end{equation}
+\end{proposition}
+For a proof, see \citep[Proposition 5.1.4]{gouvea}. The idea is to first show that the inner sums in \cref{eq: Two sums that are equal} converge and then use that to show that the double sums converge. To show that they converge to the same thing, look at the absolute value of their difference.
+\begin{theorem}\label{prop: The composite of formal power series converges}
+	Suppose we have the power series
+	$$f(X) = \sum_{n=0}^\infty a_n X^n, \quad g(X) = \sum_{n=1}^\infty b_n X^n$$
+	Let $h(X) = f(g(X))$ and let $x \in K$. Assume
+	\begin{enumerate}
+    	\item $g(x)$ converges
+    	\item $f(g(x))$ converges, that is, $g(x)$ is in the region of convergence of $f(X)$
+    	\item $\abs{b_n x^n} \leq |g(x)|$ for all $n \in \mbb N$
+	\end{enumerate}
+	Then $h(x)$ converges and we have $h(x) = f(g(x))$
+\end{theorem}
+\begin{proof}
+	We can write $g(X)^m = \sum_{n = m}d_{m,n} X^n$ with
+	$$d_{m,n} = \begin{cases}
+        	\sum_{i_1 + ... + i_m = n}b_{i_1}...b_{i_m} \text{ if } n \geq m \\
+        	0 \text{ otherwise}
+    	\end{cases}$$
+	Thus we get
+	$$h(X) = a_0 + \sum_{n = 1}^\infty\bigl(\sum_{m=1}^n a_m d_{m,n}  \bigr)X^n$$
+	By assumption we know that $g(x)$ converges so by \cref{prop: Convergence of sum and product of power series} we have that
+	$$g(x)^m = \sum_{n = m}^\infty d_{m,n}x^n$$
+	Suppose that $n \geq m$. Using the ultrametric property on $\abs{}$ and the assumption that $\abs{b_nx^n} \leq \abs{g(x)}$ for all $n \in \mbb N$ we obtain
+	\begin{equation}
+    	\begin{aligned}
+        	\abs{d_{m,n} x^n} & = \abs{\sum_{i_1 + \ldots + i_m = n} b_{i_1} x^{i_1} \ldots b_{i_m} x^{i_m}}          	\\
+                          	& \leq \max_{i_1 + \ldots + i_m = n} \{\abs{b_{i_1} x^{i_1}} \ldots  \abs{b_{i_m} x^{i_m}}\} \\
+                          	& \leq \abs{g(x)}^m
+    	\end{aligned}
+    	\label{eq: bounded by |g(x)^m|}
+	\end{equation}
+	If instead $n < m$ we have $d_{m,n} = 0$ so we conclude that $\abs{d_{m,n} x^n} \leq \abs {g(x)}^m$ for all $m,n \in \mbb N$. This means that we now have
+	\begin{align*}
+    	f(g(x)) & = a_0 + \sum_{m = 1}^\infty a_m g(x)^m                        	\\
+            	& = a_0 + \sum_{m = 1}^\infty a_m (\sum_{n = m}^\infty d_{m,n} x^n) \\
+            	& = a_0 + \sum_{m = 1}^\infty \sum_{n = m}^\infty a_m d_{m,n} x^n
+	\end{align*}
+	Let $n$ and $\epsilon > 0$ be given. Since $f(g(x))$ converges by assumption we know that $a_m g(x)^m$ converges to 0. Hence we can pick $N$ so that if $m \geq N$ then $\abs{a_m g(x)^m} < \epsilon$. Using \cref{eq: bounded by |g(x)^m|} we now have
+	$\abs{a_m d_{m,n}x^n} \leq \abs{a_m g(x)^m} < \epsilon$. This shows that $\lim_{m \to \infty} a_m d_{m,n}x^n = 0 \text{ uniformly in } n$. Let now $m$ be given. Since $g(x)^m$ converges we know that $d_{m,n}x^n$ converges to 0 as $n \to \infty$. Thus $a_m d_{m,n}x^n$ converges to 0 as $n \to \infty$. It now follows from \cref{prop: Swap of summation} that the sum
+	$$h(x) = a_0 + \sum_{n = 1}^\infty\bigl(\sum_{m=1}^n a_m d_{m,n}  \bigr)x^n$$
+	converges and that it equals $f(g(x))$.
+\end{proof}
+
+We will use the above theorem soon but first let us show that $\log$ converges on $U^{(1)}$.
+\begin{proposition}
+	The power series, $\log(1+z)$, defined in \cref{logarithm series} converges for all $1+z \in U^{(1)}$.
+\end{proposition}
+\begin{proof}
+	Suppose $(1 + z) \in U^{(1)}$. Then $z \in \mfrak p$ and so $v_p(z) > 0$, which means that $c = p^{v_p(z)} > 0$. Thus we can apply the usual logarithm and get $v_p(z) = \frac{\ln c}{\ln p}$. If $k$ is any natural number, then we always have $$p^{v_p(k)} \leq k,$$ since $p^{v_p(k)}$ divides $k$. Applying $\ln$ to both sides of this inequality is valid, as both sides are strictly positive and from doing so we get
+	$$v_p(k) \ln p \leq \ln k$$
+	and so,
+	$$v_p(k) \leq \frac{\ln k}{\ln p}$$
+	Now for any $k \in \mbb N$ we get
+	\begin{align*}
+    	v_p(\frac{z^k}{k}) & = v_p(z^k) - v_p(k)                          	\\
+                       	& = kv_p(z) - v_p(k)                           	\\
+                       	& \geq k \frac{\ln c}{\ln p} - \frac{\ln k}{\ln p} \\
+                       	& = \frac{\ln (c^k / k)}{\ln p}
+	\end{align*}
+	Clearly, $\ln (c^k / k) \to \infty$ as $k \to \infty$. Hence, $v_p(\frac{z^k}{k}) \to \infty$ as $k \to \infty$ and by \cref{lem:SufficientConditionForConvergence} combined with the fact that $K$ is complete we are now done.
+\end{proof}
+
+\begin{lemma}(Legendre's formula)
+	Suppose we have $k \in \mbb N$. Then
+	$$v_p(k!) = \sum_{i = 1}^{\infty} \left\lfloor \frac{k}{p^i} \right \rfloor$$
+\end{lemma}
+
+\begin{proof}
+	First of all, there are only finitely many terms in the sum since $\left\lfloor \frac{k}{p^i} \right \rfloor$ is eventually zero when $i$ is large enough so it converges. For natural numbers $q$ and $n$ we define the function
+	$$f_q(n) = \begin{cases}
+        	1 & \text{if } q \mid n \\
+        	0 & \text{otherwise}
+    	\end{cases}$$
+	We then have for any $m \in \mbb N$ that
+	$$v_p(m) = \sum_{i = 1}^{\infty} f_{p^i}(m)$$
+	Thus,
+	% write the above but in reverse order
+	\begin{align*}
+    	v_p(k!) & = \sum_{j = 1}^k v_p(j)                       	\\
+            	& = \sum_{j = 1}^k \sum_{i = 1}^{\infty} f_{p^i}(j) \\
+            	& = \sum_{i = 1}^{\infty} \sum_{j = 1}^k f_{p^i}(j)
+	\end{align*}
+	The swaps in summation are allowed here since all sums involved are finite. But clearly, $\sum_{j = 1}^k f_{p^i}(j) = \left\lfloor \frac{k}{p^i} \right \rfloor$, so we get the result.
+\end{proof}
+
+
+\begin{proof}[Proof of \cref{prop: Log and exp for local fields}]
+	We have already established that the power series for the logarithm converges on $U^{(1)}$, hence it also converges on $U^{(m)}$ for all $m \in \mbb N$. Our first goal is to show that $\log$ maps $U^{(m)}$ into $\mfrak p^{m}$ for all $m > \frac{e}{p-1}$.  To do this we need a little help from the following inequality. Let $k \in \mbb N$ where $k > 1$.
+	$$\frac{v_p(k)}{k-1} \leq \frac{1}{p-1},$$
+	Let us show that this actually holds. Write $k = p^ak_0$, where $p \nmid k_0$. Then $v_p(k) = a$ and so the inequality is satisfied when $a = 0$. So suppose $a > 0$. Then we can write
+	$$p^a - 1 = (p-1)(p^{a-1} + ... + p + 1).$$
+	We have
+	$a \leq p^{a-1} + ... + p + 1,$
+	since the right side of the inequality consists of a total of $a$ terms all of which are larger than 1. Now
+	\begin{align*}
+    	\frac{v_p(k)}{k-1} = \frac{a}{p^ak_0-1} \leq \frac{a}{p^a - 1} = \frac{1}{p-1}\cdot \frac{a}{p^{a-1} + ... + p + 1} \leq \frac{1}{p-1}
+	\end{align*}
+	Suppose now that $1+z \in U^{(m)}$ with $m > \frac{1}{p-1}$. Then $z \in \mfrak p^m$ which is the same as saying that $\vp (z) \geq m$, since $\vp$ is normalized and so $\vp(z) > \frac{e}{p-1}$, which means that $v_p(z) > \frac{1}{p-1}$. Let us show that $\log(1+z) \in \mfrak p^m$ by showing that $\vp(z) = \vp(\log(1+ z))$. By what we showed above we have
+	$$v_p(\frac{z^k}{k}) - v_p(z) = (k-1)v_p(z) - v_p(k) > (k-1)(\frac{1}{p-1} - \frac{v_p(k)}{k-1}) \geq 0$$
+	Hence $\vp(\frac{z^k}{k}) > \vp(z)$ for all $k \in \mbb N$ where $k > 1$. Thus, for all $s \in \mbb N$, where $s > 1$, we have $$\vp(A_s) \geq \min \{\vp(\frac{z^2}{2}), ..., \vp(\frac{z^s}{s}) \}$$
+	with $A_s = \sum_{i = 2}^s \frac{z^i}{i} (-1)^{(i-1)}$ meaning that $\vp(A_s) > \vp(z)$. It now follows from \cref{prop: Triangles are isosceles} that
+	$$\vp(z + A_s) = \min\{\vp(z), \vp(A_s)\} = \vp(z)$$
+	From this it follows that $\vp(z + A_s) \to \vp(z)$. We also know that $z + A_s \to \log(1 + z)$ as $s \to \infty$ and $\vp$ is continuous so $\vp(z + A_s) \to \vp(\log(1 + z))$. By uniqueness of limits we now have $\vp(z) = \vp(\log(1+z))$.
+
+	Let us now show that the power series for the exponential function converges on $\mfrak p^m$ for $m > \frac{e}{p-1}$. Using Legendre's formula we get the following inequality
+	$$\vp(k!) = e\sum_{i=1}^\infty \lfloor \frac{k}{p^i} \rfloor < ek \sum_{i=1}^\infty \frac{1}{p^i} = \frac{ek}{p-1}$$
+	Let us again assume that $z \in \mfrak p^m$. We now have for any $k \in \mbb N$
+	$$\vp(\frac{z^k}{k!}) = k\vp(z) - \vp(k!) > k(\vp(z) - \frac{e}{p-1})$$
+	But $\vp(z) - \frac{e}{p-1} \geq 0$, so $\vp(\frac{z^k}{k!}) \to \infty$ for $k \to \infty$. Let us now move on to showing that $\exp$ maps $\mfrak p^m$ to $U^{(m)}$. Maintaining the assumption that $z \in \mfrak p^m$ we will do this by showing that $\vp(\exp(z) - 1) = \vp(z)$ since this implies that $\exp(z) \in U^{(m)}$. Let us show that $\vp(\frac{z^k}{k!}) > \vp(z)$ for all $k > 1$. We have
+	$$\vp(\frac{z^k}{k!}) - \vp(z) = (k-1)\vp(z) - \vp(k!) > (k-1)\vp(z) - \frac{ek}{p-1} \geq 0$$
+	Hence $\vp(\frac{z^k}{k!}) > \vp(z)$ for all $k > 1$ and it now follows by an argument similar to one we gave a moment ago that $\vp(\exp(z) - 1) = \vp(z)$, which is what we wanted to show. To show that $\exp$ and $\log$ are inverses of one another. We first show that $\log(\exp(z)) = z$. Considering how the power series for $\log$ is defined, writing $\log(\exp(z))$ really amounts to plugging $\exp(z) - 1$ into $\log(1 + X)$. We have 
+	\begin{enumerate}
+    	\item $\exp(z)$ converges,
+    	\item $\log(1 - (\exp(z)-1))$ converges since $\exp(z) \in U^{(m)}$,
+    	\item $\vp(\frac{z^k}{k!}) \geq \vp(z) = \vp(\exp(z)-1)$ for all $k \geq 1$.
+	\end{enumerate}
+	Combining this with \cref{log . exp = id,prop: The composite of formal power series converges} we see that we indeed have $\log \exp z = z$. A similar argument shows that we also have $\exp \log (1 + z) = 1 + z$. Let us now show that $\exp$ is indeed a homomorphism. Let $x,y \in \mfrak p^m$. We have
+	\begin{align*}
+    	\exp (x + y) &= \sum_{n = 0}^\infty \frac{(x+y)^n}{n!} \\
+    	&= \sum_{n=0}^\infty \frac{1}{n!} \sum_{k = 0}^n \binom{n}{k} x^{n-k}y^k \\
+    	&= \sum_{n=0}^\infty \sum_{k = 0}^n \frac{1}{n!}\frac{n!}{(n-k)!k!}x^{n-k}y^k \\
+    	&= \sum_{n=0}^\infty \sum_{k = 0}^n \frac{x^{n-k}}{(n-k)!}\frac{y^k}{k!} \\
+    	&= \bigl(\sum_{m = 0}^\infty \frac{x^m}{m!} \bigr)\bigl(\sum_{k = 0}^\infty \frac{y^k}{k!} \bigr)
+	\end{align*}
+	Now we can show that $\log$ is also a homomorphism on $U^{(m)}$. Let $a,b \in U^{(m)}$. We obtain
+	$$\exp(\log(ab)) = ab = \exp(\log a) \exp(\log b) = \exp(\log a + \log b)$$
+	As $\exp$ is in particular injective on $\mfrak p^{m}$ we now have $\log(ab) = \log a + \log b$ as desired. The fact that $\exp$ and $\log$ are continous follows from the fact that these functions are given as power series.
+\end{proof}
+
+At this point we are done with what we really wanted to do in this section. Let's keep exploring a little bit, just for curiosity's sake. Note that we have shown that $\log$ converges on $U^{(1)}$ but we have only shown that it a homomorphism on $U^{(m)}$, where $m > \frac{e}{p-1}$. In fact we have the following result.
+\begin{proposition}\label{prop: Improved log}
+	There is a uniquely determined group homomorphism taking multiplication to addition,
+	$$\log : K^* \to K$$
+	so that $\log p = 0$ and for $(1 + z) \in U^{(1)}$ this function is given by the series in \cref{logarithm series}.
+\end{proposition}
+
+The main obstacle in proving this is showing that $\log$ is actually a homomorphism on $U^{(1)}$. One could try to utilize \cref{prop: The composite of formal power series converges} but here condition (3.) becomes problematic to verify. Another approach is given in \citep[Proposition 5.7.3]{gouvea}. This relies on differentiatiation of power series and the fact that if two series differentiate to the same thing then the original series differ by a constant. We now give the proof of \cref{prop: Improved log} given that we already know that $\log$ is a homomorphism on $U^{(1)}$.
+
+\begin{proof}[Proof of \cref{prop: Improved log}]
+	We only need to show existence and uniqueness. Let $q = \#(O / \mfrak p)$. Suppose that $\alpha \in K^*$ and that $\pi \in K$ is an element so that $v_\mfrak p(\pi) = 1$. By \cref{prop: Factorization of elements in K^*} there exist unique elements $k_\alpha \in \mbb Z$, $\zeta_\alpha \in \mu_{q-1}$ and $u_\alpha \in U^{(1)}$ so that $\alpha = \pi^{k_\alpha} \zeta_\alpha u_\alpha$, and we have $v_\mfrak p(\alpha) = k_\alpha$.
+	$v_\mfrak p = e v_p$. Note that $v_{\mfrak p} (p) = e$. So as $p \in K^*$ we can write $p = \pi^{e}\zeta_p u_p$. Let us now define $\log \pi = -\frac{1}{e}\log u_p$. We an extension of $\log$ to all of $K^*$ by setting
+	$$\log \alpha = v_\mfrak p(\alpha)\log(\pi) + \log(u_\alpha)$$
+	This function is continuous because addition of continuous functions are continuous and it is also a homomorphism by inheritance. Furthermore we have that
+	$$\log p = e\log(\pi) + \log(u_p) = \frac{-e\log u_p}{e} + \log(u_p) = 0 $$
+	Suppose that we have another extension, $\lambda : K^* \to K$, of $\log$ so that $\lambda(p) = 0$ and which is also a homomorphism. Note first that for any $\alpha \in K^*$ we have
+	$$\lambda(\alpha) = \lambda(\pi^{v_\mfrak p(\alpha)}\zeta_\alpha u_\alpha) = {v_\mfrak p(\alpha)}\lambda(\pi) + \lambda(\zeta_\alpha) + \lambda(u_\alpha)$$
+	By assumption we know that $\log(u_\alpha) = \lambda(u_\alpha)$ since $u_\alpha \in U^{(1)}$. Hence
+	\begin{equation}\label{eq: Uniqueness for log}
+    	\lambda(\alpha) - \log(\alpha) = {v_\mfrak p(\alpha)}(\lambda(\pi)-\log(\pi))  + \lambda(\zeta_\alpha)
+	\end{equation}
+	So to show that $\lambda = \log$ it suffices to show that $\lambda$ vanishes on $\mu_{q-1}$ and that $\lambda(\pi) = \log(\pi)$. Take any $\zeta \in \mu_{q-1}$. Since $\zeta^{q-1} = 1$ and $\lambda(1) = 0$ we see that
+	$$\lambda(\zeta) = \frac{1}{q-1}\lambda(\zeta^{q-1}) = 0$$
+	Now setting $\alpha = p$ in \cref{eq: Uniqueness for log} we get on the left hand side $\lambda(p) - \log(p) = 0$. On the right hand side we see that $\lambda(\zeta_p) = 0$ and $v_\mfrak p(p) = e \neq 0$ so we must have $\lambda(\pi) - \log(\pi) = 0$ for the equality to hold.
+\end{proof}
+
+\section{Local manifolds}
+ 
+In this section we define the so-called local manifolds which are very similar to varieties known from algebraic geometry. Let $K$ be a non-archimedian field with absolute value $\abs{}$ and denote by $\bm K$ the algebraic closure of $K$. Let's refer to the elements of $\bm K^n$ as points and denote the set of points having maximum norm strictly smaller than some $\epsilon \in \mbb R$ with $\epsilon > 0$ as an $\epsilon$-neighborhood of the origin. Let $D$ be the set containing all $f \in K[[X_1, ..., X_n]]$ that converge in some $\epsilon$-neighborhood of the origin. This set is in fact a subring of $K[[X_1, ..., X_n]]$.
+
+\begin{definition}[Local manifold]
+	Assume $f_1, ..., f_m \in D$ all of which have zero constant term. The set $V$ of points $(\alpha_1, ..., \alpha_n) \in \bm K^n$ belonging to some $\epsilon$-neighborhood of the origin so that $$f_1(\alpha_1, ... \alpha_n) = ... = f_m(\alpha_1, ..., \alpha_n) = 0$$
+	is called a local manifold. We say that the power series $f_1, ..., f_m$ determine $V$.
+\end{definition}
+If $V$ and $W$ are two local manifolds we will by $V \subseteq W$ mean that there is an $\epsilon$-neighborhood around the origin, $U$, so that $U \cap V \subseteq W$. We write $V = W$ if and only if both $V \subseteq W$ and $W \subseteq V$ in the sense described above. So if $V$ consists of a finite number of points then $V = \{(0,...,0)\}$. Let $O_{\bm K}$ be the ring of integers of $\bm K$ and let $V$ be a local manifold which is determined by $f_1, ..., f_m \in D$.
+
+%Consider the set, $I_V$, of elements $f \in D$ that vanish on $V$ in some $\epsilon$-neighborhood of the origin. This set is an ideal of $D$. If we know that $f_1, ..., f_n \in D$ determine a variety $V$ then $I_V$ is in fact generated by $f_1, ..., f_n$, see the start of \citep{borevich}[Theorem 2, p. 305].
+
+% The quotient is sort of like the coordinate ring known from algebraic geometry.
+
+% and therefore we can consider the quotient ring $\overline D = D / I_V$.
+% Two elements $f, g \in \overline D$ are equal if and only if $f - g \in I_V$, that is, if their difference
+
+\begin{definition}[Curve]
+	A curve in $\bm{K}^n$ is a collection of $n$ power series, $\omega_1(X), ..., \omega_n(X) \in O_{\bm K}[[X]]$ not all identically zero, and with constant term zero. We say the curve lies on $V$ if there is an equality in power series, $$f_i(\omega_1(X), ..., \omega_n(X)) = 0 \text{ for all } i \in \{1, ..., m \}$$
+\end{definition}
+% Note that this is not completely the same definition as the one used in \citep{borevich}. %One could in principle use this definition and then use the first part of the proof of \citep{borevich}[Theorem 2, p. 305].
+% This definition will do fine for our purposes though.
+
+%
+
+%It is merely a collection of formal power series. There is an easier way to test whether a curve is on a local manifold
+%\begin{lemma}\label{lem: Curve is on manifold}
+% 	Suppose that $V$ is a local manifold and $\omega_1(X), ..., \omega_n(X)$ is a curve in $\tilde{K}^n$. If $V$ is determined by the power series $f_1, ..., f_m$ and $f_i(\omega_1(X), ..., \omega_n(X)) = 0$ for every $i \in \{1, ..., m\}$ then the curve $\omega_1(X), ..., \omega_n(X)$ is on $V$.
+% \end{lemma}
+% \begin{proof}
+% 	Take any $f \in I_V$. Since $I_V$ is generated by $f_1, ..., f_m$ we can write $f = h_1 f_1 + ... + h_m f_m$ where the $h_i$ are in $D$. Thus
+% 	$f(\omega_1(X), ..., \omega_m(X)) = 0$ so the curve is on $V$.
+% \end{proof}
+
+For easy reference later on we will here quote two theorems, both of which are from \citep{borevich}. The first one is Theorem 2, p. 305 and the second one is Theorem 3, p. 307.
+
+% THIS MIGHT NOT BE NEEDED
+\begin{theorem}\label{thm: The shape of a manifold}
+	A local manifold $V$ either contains a curve or $V = \{ 0 \}$.
+\end{theorem}
+\begin{theorem}\label{thm: One manifold is contained in another}
+	Suppose $V$ and $V'$ are local manifolds in $\bm K^n$ such that $V \nsubseteq V'$. Then there is a curve on $V$ that does not lie on $V'$.
+\end{theorem}
+\begin{remark}\label{remark: One manifold is contained in another}
+	Note that by contraposition, this is the same as saying: If every curve on $V$ is also on $V'$ then $V \subseteq V'$.
+\end{remark}
+
+\section{Thues Theorem and Skolem's Method}\label{section: skolem and thue}
+In this section we will finally get to prove \cref{thm: Thues theorem introduction}. As we talked about in the introduction we will do this by using Skolem's method.
+
+\begin{lemma} \label{lem: Two power series are equal}
+	Let $K$ be a field of characteristic 0 and let $n,n_1,n_2 \in \mbb N$ so that $n_1 = n - 2$ and $n_2 \geq 2$ and suppose we have formal power series, $P_1, ..., P_n \in K[[X]]$ with zero constant term so that
+	\begin{align*}
+    	\sum_{j = 1}^n a_{ij} \exp P_j & = 0, \text{ for all } i \in \{1, ..., n_1\}  \\
+    	\sum_{j = 1}^n b_{ij} P_j  	& = 0, \text{ for all } i \in \{1, ..., n_2\},
+	\end{align*}
+	with the $a_{ij}$ and $b_{ij}$ in $K$ and where both matrices $(a_{ij})$ and $(b_{ij})$ have $K$-linearly independent rows. Then there are two indices $k \neq l$ so that $P_k = P_l$.
+\end{lemma}
+
+\begin{proof}
+	Let $V = \Span \{ \exp P_1,...,\exp P_n\}$ and consider the linear map $$T : K^n \to V$$ given by
+	$$T(a_1, ..., a_n) = \sum_{i=1}^n a_i \exp P_i$$
+	By assumption we have $n_1 = n - 2$ linearly independent elements in $\ker T$. Hence $\nullity (T) \geq n-2$ so by rank-nullity we get $\rank (T) \leq 2$. Thus, it has to be the case that two elements among $\{\exp P_1,...,\exp P_n \}$ span all of $V$. After potentially renumbering these elements we can safely say that these elements are $\exp{P_{n-1}}$ and $\exp{P_{n}}$. Thus we can, for any $i \in \{1, ..., n\}$, find elements $a_i, b_i \in K$ so that
+	\begin{equation} \label{eq: Expression for exp P_i}
+    	\exp P_i = a_i \exp P_{n-1} + b_i \exp P_n
+	\end{equation}
+	It is easy to see what $a_i$ and $b_i$ should be when $i \in \{n-1, n\}$. So let us restrict ourselves to only look at $i \in \{1, ..., n-2\}$. In this case, let us suppose that $a_i = 0$. Then $\exp P_i = b_i \exp P_n$. But the formal power series, $\exp X$, has constant term 1, so for any power series $F \in K[[X]]$, without constant term, also the composition $\exp F$ has constant term 1. Thus both $\exp P_i$ and $\exp P_n$ have constant term 1 so $b_i = 1$ and so $P_i = P_n$, in which case we are done. We can therefore from now on assume that $a_i \neq 0$ for all $i \in \{1, ..., n_1 \}$. Let us now define, for $i = \{1, ... n-1 \}$,
+	\begin{equation}\label{eq: Expression for Q_i}
+    	Q_i = P_i - P_n,
+	\end{equation}
+	If we had $Q_i = 0$ we would again be done, so let us assume this never happens. Combining \cref{eq: Expression for exp P_i,eq: Expression for Q_i} we have for $i \in  \{1, ..., n-1\}$ that
+	\begin{align*}
+    	\exp Q_i & = \exp P_i \exp (-P_n)                      	\\
+             	& = (a_i \exp P_{n-1} + b_i \exp P_n) \exp (-P_n) \\
+             	& = a_i \exp (P_{n-1} - P_n) + b_i            	\\
+             	& = a_i \exp Q_{n-1} + b_i,
+	\end{align*}
+	where we have used that $\exp(F + G) = \exp(F)\exp(G)$, where $F, G \in K[[X]]$ having non-zero constant term. This identity was essentially shown in the proof of \cref{prop: Log and exp for local fields}. Differentiating both sides of this equation and using the chain rule for formal power series we obtain
+	$$Q_i' \exp Q_i = a_i Q_{n-1}' \exp Q_{n-1}$$
+	As $\exp Q_i$ has non-zero constant term it is a unit in $K[[X]]$, meaning that we can divide by it. Solving for $Q_i'$ we obtain
+	\begin{align}\label{eq: Expression for Q_i prime}
+    	Q_i' & = \frac{(a_i Q_{n-1}' \exp Q_{n-1})}{\exp Q_i} \notag  	\\
+         	& = \frac{a_i Q_{n-1}' \exp Q_{n-1}}{a_i \exp Q_{n-1} + b_i} \\
+         	& = \frac{Q_{n-1}' \exp Q_{n-1}}{\exp Q_{n-1} + c_i} \notag
+	\end{align}
+	where $c_i = a_i^{-1}b_i$. In case where $i = n-1$ we choose $a_{i} = 1$ so that $b_{i} = 0$. That way we have $c_i = 0$. Let us now deal with the next group of equations. Let $U = \Span \{P_1, ..., P_n \}$ and $U' = \Span \{P_1 - P_n, ..., P_{n-1} - P_n \}$ and define the linear maps $T : K^n \to U$ and $T' : K^{n-1} \to U'$ as
+	\begin{align*}
+    	T(a_1, ..., a_n)  	& = \sum_{i=1}^n a_i P_i 	\\
+    	T'(a_1, ..., a_{n-1}) & = \sum_{i=1}^{n-1} a_i Q_i
+	\end{align*}
+	By assumption, we know that $\nullity(T) \geq 2$. Using rank-nullity on $T$ we have
+	$$n = \rank(T) + \nullity(T) \geq \rank(T) + 2.$$
+	So $\rank(T) \leq n-2$. Since $U' \subseteq U$ and both $T$ and $T'$ are surjective, we must have $\rank(T') \leq \rank(T) \leq n-2$ and by rank-nullity used now on $T'$ we get
+	$$n-1 = \rank(T') + \nullity(T') \leq n-2 + \nullity(T')$$
+	Hence $\nullity(T') \geq 1$, meaning that we can find a non-trivial linear combination,
+	\begin{equation}\label{eq: Non trivial Q_i linear combination}
+    	\sum_{i=1}^{n-1} d_i Q_i = 0
+	\end{equation}
+	where the $d_i$ are in $K$. Differentiating this sum and using \cref{eq: Expression for Q_i prime} we obtain
+	\begin{align*}
+    	\sum_{i=1}^{n-1} d_i Q_i' & = Q_{n-1}' \exp Q_{n-1} \sum_{i=1}^{n-1} \frac{d_i}{\exp Q_{n-1} + c_i} = 0
+	\end{align*}
+	It must be the case that $Q_{n-1}' \neq 0$. Otherwise, we would have $Q_{n-1} \in K$, and since the $P_i$ have zero constant term, we would then have $Q_{n-1} = 0$, which is a contradiction. Also, $\exp Q_{n-1} \neq 0$ so we must have
+	\begin{equation}\label{eq: Zero equation}
+    	\sum_{i=1}^{n-1} \frac{d_i}{c_i \exp Q_{n-1}} = 0
+	\end{equation}
+	Next let us show that this implies that the rational function
+	$$f(z) = \sum_{i=1}^{n-1}\frac{d_i}{c_i + z}$$
+	is the zero function on $K$. As this is a rational function we can find polynomials $\phi, \psi \in K[z]$ so that $f(z) = \frac{\phi(z)}{\psi(z)}$, where $\psi(z)$ is not the zero polynomial. Let us for contradiction suppose that $f$ is not identically zero. Then $\phi$ cannot be identically 0. But then because of \cref{eq: Zero equation} we now have
+	$$0 = f(\exp Q_{n-1}) = \frac{\phi(\exp Q_{n-1})}{\psi(\exp Q_{n-1})},$$
+	meaning that $\phi(\exp Q_{n-1}) = 0$. But because of \cref{lem: Unit power series is transcendental} this is only possible if $\phi$ is the zero polynomial which is a contradiction. Hence $f$ is identically 0. Now let us define
+	$$g(z) := f(z) \prod_{j=1}^{n-1}(c_j + z)  = \sum_{i = 1}^{n-1}d_i\prod_{j \neq i}(c_j + z)$$
+	Since \cref{eq: Non trivial Q_i linear combination} is a non-trival linear combination we can find a coefficient, $d_k$ that is non-zero. The polynomial $g$ is also identically 0 so we get $$0 = g(-c_k) = d_k\prod_{j \neq k}^{n-1} (c_j - c_k)$$
+	Since $d_k \neq 0$ we must have $c_j = c_k$ for $j \neq k$, meaning that $a_j b_j^{-1} = a_k b_k^{-1}$, so that $b_k = \frac{b_j a_k}{a_j}$. From \cref{eq: Expression for exp P_i} we get
+	\begin{align*}
+    	\frac{a_k}{a_j}\exp P_j & = \frac{a_k}{a_j}(a_j \exp P_{n-1} + b_j \exp P_n) \\
+                            	& = a_k \exp P_{n-1} + \frac{b_j a_k}{a_j} \exp P_n  \\
+                            	& = \exp P_k
+	\end{align*}
+	But as we previously mentioned, both $\exp P_k$ and $\exp P_j$ have constant term 1 so we must have $\frac{a_k}{a_j} = 1$ and so $\exp P_j = \exp P_k$. Now, by \cref{log . exp = id} we get
+	$$P_j = \log(\exp P_j) = \log(\exp P_k) = P_k$$
+\end{proof}
+
+Suppose that $F$ is an irreducible and nonfull form of degree $m$. This means that there is a number field, $K$, of degree $n > m$ and a module $M$ of rank $m$ inside $K$ so that $F$ is connected to $M$. Let $\mu_1, ..., \mu_m \in K$ be a basis for $M$. In the following it suffices to look at $F$ up to integral equivalence so because of \cref{fact: Forms connected to module are equivalent} we can assume without loss of generality that
+\begin{equation*}
+	F(x_1, ..., x_m) = N_{K / \mbb Q}(x_1 \mu_1 + ... + x_m \mu_m)
+\end{equation*}
+Fix now some $c \in \mbb Q$. We see that finding the solutions in integers to the equation
+\begin{equation}\label{eq: Initial equation of interest}
+	F(x_1, ..., x_m) = c
+\end{equation}
+is exactly the same as finding the elements $\alpha \in M$ so that
+\begin{equation}
+	N_{K / \mbb Q}(\alpha) = c
+\end{equation}
+Note that if $c = 0$ then $\alpha = 0$, so the above equation is not really interesting in this case. Thus we will from now on assume that $c \neq 0$. By \cref{lem: Basis for module is linearly independent over Q}, the elements $\mu_1, ..., \mu_m$ are linearly independent over $\mbb Q$, so we can extend them to a basis $\mu_1, ...,\mu_{m}, \mu_{m+1}, ... \mu_n$ for $K$ over $\mbb Q$. We then get a module $M' = \{ \mu_1, ..., \mu_n\}$ and we clearly have $M \subseteq M'$. Similar to what we have done previously, we define
+\begin{align*}
+	M'_c & = \{\alpha \in M' \mid N_{K / \mbb Q}(\alpha) = c \} \\
+	M_c  & = \{\alpha \in M \mid N_{K / \mbb Q}(\alpha) = c \}
+\end{align*}
+Let now $\sigma_1, ..., \sigma_n$ be the $n$ embeddings of $K$ into $\mbb C$. Let us write $n = 2s + r$ where $s$ is the number of pairs of complex conjugate embeddings and $r$ is the number of real embeddings. By the primitive element theorem we know that $K = \mbb Q(\beta)$ for some $\beta \in K$. Letting $N = \mbb Q(\sigma_1(\beta), ..., \sigma_n(\beta))$ we get a subfield of $\mbb C$ which is splitting field for the minimal polynomial for $\beta$ over $\mbb Q$ meaning that $N$ is Galois over $\mbb Q$, and it also has finite degree over $\mbb Q$, so $N$ is a number field. Let $\mfrak p$ be a prime ideal of $N$. By \cref{def: P-adic numbers} we get the local field $N_{\mfrak p}$ with valuation ring $O_{\mfrak p}$, which has unique maximal ideal $\hat {\mfrak p}$ and so we define $U^{(k)} = 1 + \hat {\mfrak p}^k$.
+
+\begin{lemma}\label{lem: Elements can be mapped to U^(k)}
+	Let $\alpha \in N$ and assume $\hat {\mfrak p} \nmid \alpha$. For any $k \in \mbb N$ we can find $q \in \mbb N$ so that $\alpha^q \in U^{(k)}$.
+\end{lemma}
+
+\begin{proof}
+	Let $q = \# (O_\mfrak p / \hat {\mfrak p}^k)^*$. This is a natural number by \cref{lem: Valuation ring mod power of prime is finite in local field}. The condition $\hat{\mfrak p}\nmid \alpha$ means that $\gcd(\alpha O_N, \hat {\mfrak p}) = O_N$ so also $\gcd(\alpha O_N, \hat {\mfrak p}^k) = O_N$. But that means that $\alpha \beta + l = 1$ for some $l \in {\hat {\mfrak p}}^k$ and $\beta \in O_N$, and so $\alpha$ is a unit in $O_\mfrak p / \hat {\mfrak p}^k$. Thus $\alpha^q \equiv 1 \pmod {\hat{\mfrak p}^k}$ and so $\alpha^q \in U^{(k)}$.
+\end{proof}
+Using \cref{prop: Log and exp for local fields} there is a natural number $k$ so that the pair of homomorphisms, $\log : U^{(k)} \to \hat {\mfrak p}^k$
+and $\exp : \hat {\mfrak p}^k : \to U^{(k)}$ are mutual inverses. Let $\mfrak D$ be the coefficient ring of $M'$. Using \cref{thm: Shape of solutions to N(x) = c for x in full module} we can pick $\phi_1, ..., \phi_t \in \mfrak D$, $t = r + s - 1$, to be independent units in $\mfrak D$, and a finite subset $\Gamma' \subseteq M_c'$ so that any $\alpha \in M_c$ can be written as
+$$\alpha = \gamma' \phi_1^{v_1} ... \phi_t^{v_t},$$
+for some $\gamma' \in \Gamma'$ and $v_i \in \mbb Z$. Since $\mfrak D \subseteq O_K$ by \cref{prop: Coefficient ring properties} we have that the $\phi_i$ are also units in $O_K$. Thus $\sigma_j(\phi_i)$ is a unit in $O_N$ so $\sigma_j(\phi_i) O_N = O_N$ meaning that $\hat {\mfrak p} \nmid \sigma_j(\phi_i)$. Using \cref{lem: Elements can be mapped to U^(k)} there is a number $q$ so that $\sigma_j(\phi_i)^q \in U^{(k)}$, so setting $\epsilon_i = \phi_i^q$ we now have $\sigma_j(\epsilon_i) \in U^{(k)}$. Let now $\Delta = \{\prod_{i = 1}^t \phi_i^{\rho_i} \mid \rho_i \in \{0, ..., q-1 \} \}$ and define $\Gamma = \{\delta \gamma \mid (\delta, \gamma) \in \Delta \times \Gamma' \}$. We see that we can now write the element $\alpha$ from above as
+\begin{equation}\label{eq: Writing of alpha in M'_c}
+	\alpha = \gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t}
+\end{equation}
+For an appropriate choice of $u_i$ and $\gamma \in \Gamma$. Also note that $\# \Gamma < \infty$. Consider now the special case where $\alpha \in M_c \subseteq M_c'$ and suppose that it is written as in \cref{eq: Writing of alpha in M'_c}. Since $\alpha \in M'$ we can also write
+$\alpha = x_1 \mu_1 + ... + x_n \mu_n$ and since $\alpha \in M$, we must have
+
+\begin{equation}\label{eq: Restriction of variables}
+	x_{m+1} = ... = x_n = 0
+\end{equation}
+This restriction can be reformulated to something that is more convenient to work with. Let $\mu_1^*, ..., \mu_n^*$ be the dual basis of $\mu_1, ..., \mu_n$. The following computation shows that we can recover the $x_i$'s.
+$$\tr_{K/\mbb Q}(\mu_i^* \alpha) = \tr_{K/\mbb Q} (\sum_{j=1}^n \mu_i^* x_j \mu_j) = \sum_{j=1}^n x_j \tr_{K/\mbb Q}(\mu_i^* \mu_j) = x_i$$
+Therefore the above restriction is the same as the requirement that
+$$\tr_{K/\mbb Q}(\mu_{m+1}^* \alpha) = ... = \tr_{K/\mbb Q}(\mu_n^* \alpha) = 0$$
+Which, by use of \cref{eq: Writing of alpha in M'_c} and the definition of the trace, amounts to the equations
+\begin{equation}\label{eq: Restriction of variables using trace}
+	\sum_{i = 1}^n \sigma_j(\gamma \mu_i^* ) \sigma_j(\epsilon_1)^{u_1}...\sigma_j(\epsilon_t)^{u_t} = 0 \text{ for all } i \in \{1, ..., n\}
+\end{equation}
+% From this we see that if $\# M_c = \infty$ then there has to exists some $\gamma$ so that there are infinitely many possibilities for the $u_i \in \mbb Z$. To make things easier for us we will allow $u_i$ to take on values from a certain set containing the integers. More concretely, take a prime ideal, $\mfrak p$, from the ring of integers of $N$. By \cref{ex: P-adic numbers} ALSO MENTION THESE OBJECTS IN THE EXAMPLE WE ARE REFERENCING we get the local field $N_{\mfrak p}$ and its corresponding valuation ring and maximal ideal $O_{\mfrak p}$ and $\hat {\mfrak p}$ respectively. We want the $u_i$ to take on values from $O_{\mfrak p}$ but this does lead us to a problem, which is, fortunately for us, amenable. The $u_i$ occur as exponents of the $\sigma_j(\epsilon_i)$ in \cref{eq: Restriction of variables using trace} and the only sensible way to define exponentiation of an element $\alpha$ is by defining
+Define now the function
+\begin{equation*}\label{eq: Exponential function}
+	\begin{split}
+    	\varphi : U^{(k)} \times O_\mfrak p &\to U^{(k)} \\
+    	(\alpha, u) &\mapsto \exp(u \log \alpha)
+	\end{split}
+\end{equation*}
+This function is well defined since if $\alpha \in U^{(k)}$ and $u \in O_\mfrak p$ then $u \log \alpha \in \hat {\mfrak p}^k$ as $\hat {\mfrak p}^k$ is an ideal. Note that if $u \in \mbb Z \subseteq O_\mfrak p$ we get $\varphi(\alpha, u) = \exp(\log \alpha^u) = \alpha^u$. For this reason we will simply write $\alpha^u := \varphi(\alpha, u)$. Assume now that all the $u_i$ are in $O_\mfrak p$. Then \cref{eq: Restriction of variables using trace} still makes sense since we have made sure that $\sigma_j(\epsilon_i) \in U^{(k)}$. We can now define
+\begin{align*}
+	L_j(u_1, ..., u_t) & = \sum_{i = 1}^{t} u_i \log \sigma_j(\epsilon_i), \text{ for } j \in \{1, ..., n \} \\
+	A_{ij}         	& = \sigma_j(\gamma \mu_i^*), \text{ for } (i,j) \in \{1, ..., n\}^2
+\end{align*}
+Note that the $L_j$ can be thought of as power series in $P := N_\mfrak{p}[[u_1, ..., u_t]]$. These have constant term 0 so it makes sense to consider the formal power series $\exp L_j(u_1, ..., u_t) \in P$. This means that we can define
+$$G_i(u_1, ..., u_t) = \sum_{j = 1}^n A_{ij} \exp L_j(u_1, ..., u_t) \text{ for } i \in \{m+1, ..., n \}$$
+Note that the $G_i$ all belong to $P$ and also have constant term 0. The $G_i$ also converge for all $(u_1, ..., u_t) \in O_\mfrak p^t$, so these are analytic functions. Observe that we can now rewrite \cref{eq: Restriction of variables using trace} to
+\begin{equation}\label{eq: Restriction of variables in terms of power series}
+	G_i(u_1, ..., u_t) = 0 \text{, for all } i \in \{m+1, ..., n\}
+\end{equation}
+Assume that there are infinitely many solutions in integers to \cref{eq: Initial equation of interest}. Thus we have infinitely many solutions of the shape \cref{eq: Writing of alpha in M'_c}. But as $\Gamma$ has only finitely many elements, there has to exists some $\gamma \in \Gamma$ giving rise to an infinite subset of solutions,
+$$S_\gamma := \{\gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t} \mid (u_1, ..., u_t) \in \mbb Z^t \} \subseteq M_c$$
+As the $\epsilon_i$ are independent units, we get an injective homomorphism $\iota : S_\gamma \to O_\mfrak p^t$, given by $\gamma \epsilon_1^{u_1} ... \epsilon_t^{u_t} \mapsto (u_1, ..., u_t)$. That $S_\gamma$ is infinite really just means that we have an injection $\mbb N \hookrightarrow S_\gamma$, meaning that we have a sequence of distinct elements, $(\alpha_s)$, in $S_\gamma$. Let us now define the sequence $U_s = \iota(\alpha_s) \in O_\mfrak p^t$. Since $\iota$ is injective, the elements of this sequence are also distinct. As the elements $\alpha_s$ all belong to $M_c$ the tuples $U_s$ satisfy \cref{eq: Restriction of variables in terms of power series}. In other words we have $G_i(U_s) = 0$ for all the $G_i$ and all $s \in \mbb N$. Since $O_\mfrak p$ is compact by \cref{thm: Valuation ring in local field is compact}, it follows from Tychonoff's theorem that $O_\mfrak p^t$, equipped with the product topology, is also compact. But $O_\mfrak p$ is a metric space so $O_\mfrak p^t$ is metrizable and therefore it is sequentially compact. This means that the sequence $U_s$ has a convergent subsequence, $U^*_s$, converging to a point, call it $u^* = (u_1^*, ..., u_t^*) \in O_{\mfrak p}^t$. As the $G_i$ are analytic functions they are continuous, so we know that $G_i(U^*_s)$ converges to $G_i(u^*)$ for $s \to \infty$. But also $G_i(U^*_s)$ converges to 0 since $G_i(U^*_s) = 0$ for all $s \in \mbb N$. By uniqueness of limits in metric spaces we therefore have $G_i(u^*) = 0$. Also any neighborhood of $u^*$ contains infinitely many solutions to \cref{eq: Restriction of variables in terms of power series}; Take any open $\epsilon$-ball, $B$, with center $u^*$. Because $U^*_s$ converges to $u^*$, we know that there is an $N \in \mbb N$ so that $U^*_s \in B$ for all $s \geq N$, all of which are distinct and are solutions to \cref{eq: Restriction of variables in terms of power series}. Let us now write $u_i = u_i^* + v_i$, where $v_i \in O_\mfrak p$. We get
+\begin{align*}
+	G_i(u_1, ..., u_t) & = \sum_{j = 1}^n A_{ij} \exp L_j(u_1^* + v_1, ..., u_t^* + v_t)         	\\
+                   	& = \sum_{j = 1}^n A_{ij} \exp L_j(u_1^*, ..., u_t^*) \exp L_j(v_1, ..., v_t)
+\end{align*}
+Setting $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_t^*)$ and $H_i(v_1, ..., v_t) = \sum_{j = 1}^n A_{ij}^* L_j(v_1, ..., v_t)$, we get
+$G_i(u_1, ..., u_t) = H_i(v_1, ..., v_t)$. We get yet another reformulation of \cref{eq: Restriction of variables}
+\begin{equation}\label{eq: Equations inducing a manifold}
+	H_i(v_1, ..., v_t) = 0 \text{ for all } i \in \{m+1, ..., n\}
+\end{equation}
+As the $G_i$ are formal power series with constant term 0, the $H_i$ are also formal power series with constant term 0. These converge on $O_\mfrak p^t$ hence also on $\hat {\mfrak p}^t$, which is an $\epsilon$-neighborhood of the origin (with $\epsilon$ = 1). Hence we get a local manifold, $V$, determined by the system \cref{eq: Equations inducing a manifold} and by what we showed above there are infinitely many solutions to this system in any neighborhood of the origin. Therefore, by \cref{thm: The shape of a manifold}, $V$ contains an analytic curve. We summarize what we have found in the following theorem.
+\begin{theorem}\label{thm: Skolems method}
+	If \cref{eq: Initial equation of interest} has infinitely many solutions in integers, then there exists $\gamma \in \Gamma$ which determines a local manifold, $V$, given by \cref{eq: Equations inducing a manifold} and $V$ contains an analytic curve.
+\end{theorem}
+
+
+
+\begin{corollary}\label{cor: Any curve on V gives a solution to a system of equations}
+	Let $\bm N$ be the algebraic closure of $N_{\mfrak p}$ and let $\omega_1(X), ..., \omega_t(X) \in O_{\bm {N_{\mfrak p}}}[[X]]$ be any curve on the manifold $V$ determined by \cref{eq: Equations inducing a manifold}. Define $P_j(X) = L_j(\omega_1(X), ..., \omega_t(X))$ for $j \in \{1, ..., n\}$. There exists a matrix $B_{ij}$ with coefficients in $\bm N$ so that the $P_j$ satisfy the system of equations
+	\begin{equation}\label{eq: System that can also be solved}
+    	\begin{aligned}
+        	\sum_{j=1}^n A^*_{ij}\exp P_j(X) & = 0 \text{, for all } i \in \{ m+1, ..., n \} \\
+        	\sum_{j=1}^n B_{ij}P_j(X)    	& = 0 \text{, for all } i \in \{1,  ..., n-t\},
+    	\end{aligned}
+	\end{equation}
+	The matrix $(A^*_{ij})$ has $\bm N$-linearly independent rows and $(B_{ij})$ can be chosen so that it also has $\bm N$-linearly independent rows.
+\end{corollary}
+\begin{proof}
+	Since $\omega_1(X), ..., \omega_t(X) \in O_{\bm {N_{\mfrak p}}}[[X]]$ we have $P_j(X) \in \bm N[[X]]$. Because $\omega_1(X), ..., \omega_t(X)$ is a curve on $V$ we have
+	\begin{equation}\label{eq: Last reformulation of initial equations}
+    	H_i(\omega_1(X), ..., \omega_t(X)) = 0 \text{ for all } i \in \{m+1, ..., n\}
+	\end{equation}
+	Considering how the $H_i$ are defined we see that the above is just a different way of spelling out the first equation in \cref{eq: System that can also be solved}. The matrix $(A_{ij})$ is invertible because the $\gamma \mu_i^*$ constitute a basis for $K$ over $\mbb{Q}$ so the discriminant of this basis is non-zero and it equals $|\sigma_j(\gamma \mu_i^*)|^2 = |A_{ij}|^2$ so $|A_{ij}| \neq 0$. Since $\exp$ sends elements to $U^{(k)}$ and $0 \notin U^{(k)}$ we have $\exp L_j(v_1, ..., v_t) \neq 0$ for all $(v_1, ..., v_t) \in O_\mfrak p^t$. Since $A_{ij}^* = A_{ij} \exp L_j(u_1^*, ..., u_t^*) \in N_\mfrak p \subseteq \bm N$ we now have
+	$$|A_{ij}^*| = |A_{ij}| \prod_{j = 1}^n \exp L_j(u_1^*, ..., u_t^*) \neq 0$$
+	Thus the rows of $(A_{ij}^*)$ are linearly independent over $\bm N$.
+    
+	Let now $U = \Span_{\bm N} \{ \omega_1(X), ..., \omega_t(X) \}$ and notice that each $P_j$ is in $U$. This means we can define the following linear map
+	\begin{align*}
+    	T : \bm N^n  & \to U                	\\
+    	T(a_1, ..., a_n) & = \sum_{i = 1}^n a_i P_i
+	\end{align*}
+	The dimension of $U$ is at most $t$, so the rank of $T$ is also at most $t$ as $T$ is surjective. By rank nullity, the nullity of $T$ is therefore larger than or equal to $n-t$. In other words, there are at least $n-t$ linearly independent elements in the kernel of $T$ and we can therefore construct an $n-t \times n$ matrix, $(B_{ij})$ with $\bm N$-linearly independent rows.
+\end{proof}
+
+% Could combine this with the above
+We have yet another corollary
+\begin{corollary}\label{cor: Result to prove thues theorem}
+	Keep the setup from above \cref{thm: Skolems method} and consider the special case where $m = 2$, $n \geq 3$ and where at least one of the $\sigma_i$ is a complex embedding. Then for any curve $\omega_1(X), ..., \omega_t(X)$ on $V$ there exists indices $k$ and $l$ with $k \neq l$ so that $L_k(\omega_1(X), ..., \omega_t(X)) = L_l(\omega_1(X), ..., \omega_t(X))$.
+\end{corollary}
+\begin{proof}
+	The existence of a complex embedding is the same as saying that $2s \geq 1$ which is the same as saying that $n - t \geq 2$. Setting $n_1 = n-m$ and $n_2 = n-t$ the result follows from combining \cref{lem: Two power series are equal,cor: Any curve on V gives a solution to a system of equations}.
+\end{proof}
+
+
+% In total there are $N = (n - m) + (n - t)$ equations. So if $n - m \geq t$, then $N = (n - m) + (n - t) \geq t + (n - t) = n$.
+
+\subsection{Proof of Thue's Theorem}
+Let us now apply the above to get a proof of Thue's theorem using Skolem's method. We first present the slightly weaker version of \cref{thm: Thues theorem introduction} also mentioned in the introduction.
+
+\begin{theorem}[Thue]\label{thm: Thues theorem}
+	Suppose $f(x,y)$ is an irreducible form of degree $n \geq 3$ and that $f(x,1)$ has an imaginary root. Then there are only finitely many integer solutions to the equation $f(x,y) = c$, for any non-zero $c \in \mbb{Q}$.
+\end{theorem}
+
+\begin{proof}
+	To prove this, we want to use the results obtained in this section and to do that it suffices to show that $f$ is a  nonfull form. Since $f$ is a form of degree $n$ we know that we can write
+	$$f(x,y) = \sum_{i = 0}^n a_i x^{n-i} y^{i}$$
+	% In order to apply (\cref{thm Skolems method}) we need to first of all make sure that $f$ is nonfull and decomposable.
+	where the $a_i$ are in $\mbb Z$. We must have that $a_0 \neq 0$, since otherwise $y$ would divide $f(x,y)$ which is impossible since $f$ is irreducible. Let $h(x) = f(x,1)$. We have that $h$ is a polynomial of degree $n$ with leading coefficient $a_0$. The leading term of $a_0^{n-1} h(x)$ is $a_0^nx^n = (a_0 x)^n$, so $h$ can be regarded as a monic polynomial in the variable $t$ using the substitution $a_0 x \mapsto t$. So assume without loss of generality that $h$ is monic, i.e. that $a_0 = 1$. It now follows from \cref{remark: Forms of two variables are decomposable} that
+	\begin{equation}\label{eq: f(x,y) is a norm form}
+    	f(x, y) = N_{K / \mbb Q}(x + \theta y)
+	\end{equation}
+	where $K = \mbb Q(\theta)$ is a number field of degree $n$ with embeddings $\sigma_1, ..., \sigma_n$ from $K$ into $\mbb C$. Consider the module $M$ generated by $\mu_1 = 1$ and $\mu_2 = \theta$. These are linearly independent over $\mbb Q$ so the rank, $m$, of this module is 2 and since $n \geq 3$ we have $m < n$. This shows that $f$ is a nonfull form. Assume now that $f(x,y) = c$ has infinitely many solutions in integers. It now follows from the proof of \cref{thm: Skolems method} that, using the notation from this proof,  that we obtain $\gamma \in \Gamma$, with $\# \Gamma < \infty$ and independent units $\epsilon_1, ..., \epsilon_t \in \mfrak D$ giving rise to a local manifold $V$ determined by \cref{eq: Last reformulation of initial equations}. We get an injective map $\iota : S_\gamma \to O_\mfrak p^t$ and a sequence $(\alpha_s)$ of distinct elements in $S_\gamma$ so that $U^*_s = \iota(\alpha_s)$ and $U^*_s \to (u_1^*, ..., u_t^*) \in O_\mfrak p^t$. Write $U^*_s = (u_{1s}, ..., u_{ts})$ and $u_{is} = u_i^* + v_{is}$ and define the sequence $V_s = (v_{1s}, ..., v_{ts})$. We have $V_s \in V$ and it converges to the origin. Let $W$ be the local manifold given by
+	$$\prod_{i \leq k < l \leq n} (L_k(v_1, ...v_t) - L_l(v_1, ...,  v_t)) = 0$$
+	Since $f(x,1)$ has at least one imaginary root, one of the embeddings, $\sigma_i$, has to be complex. So if we have any curve, $\tau_1(X), ..., \tau_t(X)$ on $V$ then we can invoke \cref{cor: Result to prove thues theorem} to conclude that there exists distinct $k$ and $l$ so that $L_{k}(\tau_1(X), ..., \tau_t(X))= L_{l}(\tau_1(X), ..., \tau_t(X))$ and so $\tau_1(X), ..., \tau_t(X)$ is also a curve on $W$. Using \cref{remark: One manifold is contained in another} we get that $V \subseteq W$, that is there is an $\epsilon$-neighborhood around the origin, $U$, so that $U \cap V \subseteq W$. Since $(V_s)$ converges to the origin there is an $N \in \mbb N$ so that for all $s \geq N$ we have $V_s \in W$. Thus we can find distinct $k$ and $l$ so that $L_k(V_s) = L_l(V_s)$ for infinitely many $s \geq N$. Therefore there are infinitely many $s_1, s_2 \in \mbb N$, $s_1 \neq s_2$ so that $L_k(V_{s_1}) = L_l(V_{s_2})$. Choose any such $s_1$ and $s_2$ and set $\alpha = \alpha_{s_1}$ and $\alpha' = \alpha_{s_2}$. Let us write $\alpha = x + y \theta$ and $\alpha' = x' + y'\theta$. Furthermore, since $\alpha \in S_\gamma$, we can write $\alpha = \gamma \epsilon_1^{u_1}...\epsilon_t^{u_t}$. Set now
+	\begin{align*}
+    	u_i & = u_i^* + v_i                                                             	\\
+    	c_j & = \sigma_j(\gamma)\sigma_j(\epsilon_1)^{u_1^*}...\sigma_j(\epsilon_t)^{u_t^*}
+	\end{align*}
+	We obtain
+	$$\sigma_j(\alpha) = c_j \exp L_j(v_1, ..., v_t)$$
+	And in a similar fashion we get
+	$$\sigma_k(\alpha) = c_k \exp L_k(v_1, ..., v_t)$$
+	Since $L_j(v_1, ..., v_t) = L_k(v_1, ..., v_t)$ we have $\exp L_j(v_1, ..., v_t) = \exp L_k(v_1, ..., v_t)$. Also both $c_j$ and $c_k$ are different from 0 since otherwise we would have $\gamma = 0$ which would imply $c = 0$. Thus we have
+	$$\frac{\sigma_j(\alpha)}{c_j} = \frac{\sigma_k(\alpha)}{c_k}$$
+	Similarly we obtain
+	$$\frac{\sigma_j(\alpha')}{c_j} = \frac{\sigma_k(\alpha')}{c_k}$$
+	Since $\alpha$ and $\alpha'$ have norm $c \neq 0$ they are both non-zero. Hence we now have
+	$$\frac{x + y \sigma_j(\theta)}{x' + y' \sigma_j(\theta)} = \frac{x + y \sigma_k(\theta)}{x' + y' \sigma_k(\theta)}$$
+	So
+	$(xy' - x'y)(\sigma_k(\theta) - \sigma_j(\theta)) = 0$.
+	But $\sigma_k$ and $\sigma_j$ are distinct embeddings since $k \neq j$ and they are determined by their action on $\theta$. Hence $\sigma_k(\theta) - \sigma_j(\theta) \neq 0$ so we must have
+	$$xy' - x'y = 0$$
+	Thus there is $d \in \mbb Q$ so that
+	$\alpha = d\alpha',$ so $$N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(d) N_{K/\mbb Q}(\alpha')$$
+	But $N_{K/\mbb Q}(\alpha) = N_{K/\mbb Q}(\alpha')$ so $1 = N_{K/\mbb Q}(d) = d^n$. Hence $d = \pm 1$ so $\alpha = \pm \alpha'$. But then it is impossible for all the elements of $(\alpha_s)$ to be distinct contrary to our assumption so $S_\gamma$ cannot be infinite, meaning that there has to be only finitely many solutions to $f(x, y) = c$.
+\end{proof}
+
+\section{Discussion of Thue's theorem}
+A natural question to ask when looking at any theorem is to ask which assumptions can be dropped or altered without changing the conclusion of the theorem too much. This is what we will explore in the case of \cref{thm: Thues theorem}.
+\subsection{The number of variables}
+The following example shows that the theorem no longer holds if we swap out the form $f(x, y)$ with a form with more variables.
+
+\begin{example}
+	Consider the field $K = \mbb Q(\sqrt 2, \sqrt 3)$. This field has degree 4 over $\mbb Q$ and $$1, \sqrt 2, \sqrt 3, \sqrt 6$$ is a basis for it by \citep[p. 526]{dummit}. Note that $K$ is the splitting field for the separable polynomial $(x^2 - 2)(x^2 - 3)$ so $K$ is Galois over $\mbb Q$. The automorphisms on $K$ are determined by their action on $\sqrt 2$ and $\sqrt 3$ and these must be sent to $\pm \sqrt 2$ and $\pm \sqrt 3$ respectively. There are four ways of doing this, and as $K$ is Galois all of these possibilities yield an automorphism. Using this information we find that $F(x,y,z) := N_{K /\mbb Q}(x + y\sqrt 2 + z \sqrt 3)$ is equal to
+	\begin{equation}\label{eq: Linear factorization}
+    	(x + y\sqrt 2 + z \sqrt 3)(x - y\sqrt 2 + z \sqrt 3)(x + y\sqrt 2 - z \sqrt 3)(x - y\sqrt 2 - z \sqrt 3)
+	\end{equation}
+	which after a (cumbersome) computation turns to be equal to
+	$$x^4 + 4y^4 + 9z^4 - 4x^2y^2 - 6x^2z^2 - 12y^2z^2$$
+	The module $\{1, \sqrt 2, \sqrt 3\}$ has rank 3 as the generators are linearly independent over $\mbb Q$, so this module is nonfull and hence $F$ is a nonfull form. It is also clearly decomposable as $F$ splits into linear factors over $K$. Furthermore $F$ is irreducible; Clearly, none of the linear factors in \cref{eq: Linear factorization} are forms. Hence if $F$ were reducible, then there has to be a pair of these linear factors that multiply to a form. Consider for example
+	$$(x + y\sqrt 2 + z \sqrt 3)(x - y\sqrt 2 + z \sqrt 3) = x^2 - 2 y^2 + 2 \sqrt 3 x z + 3 z^2$$
+	This is certainly not a form as the coefficients are not in $\mbb Q$. As the isomorphisms in $\Gal(K / \mbb Q)$ permute the linear factors in \cref{eq: Linear factorization} this shows that no pair of linear factors multiply to a form and therefore $F$ must be irreducible. Observe that
+	\begin{align}\label{eq: F is square of a norm}
+    	F(x,y,0) & = x^4 + 4y^4 - 4x^2y^2 = (x^2 - 2y^2)^2            	\\
+             	& = N_{\mbb Q(\sqrt 2) / \mbb Q}(x + y \sqrt 2)^2 \notag
+    	% F(x, 0,z) &=  x^4 + 9z^4 - 6x^2z^2 = (x - 3y)^2 \\
+    	% &= N_{\mbb Q(\sqrt 3) / \mbb Q}(x + z \sqrt 3)^2
+	\end{align}
+	Consider the full module $\{1, \sqrt 2\}$ inside $\mbb Q(\sqrt 2)$. Let's look at the equation
+	$$N_{\mbb Q(\sqrt 2) / \mbb Q}(x + y \sqrt 2) = 1$$
+	Applying \cref{lem: writing of elements of Mc} we have $t = r+s -1 =  2 + 0 - 1 = 1$ so there has to be infinitely many solutions in integers to this equation and therefore, because of \cref{eq: F is square of a norm} there are infinitely many solutions to the equation $F(x, y, z) = 1$.
+\end{example}
+In the above example we got an infinite number of solutions because the module $\{1, \sqrt 2, \sqrt 3 \}$ inside $\mbb Q(\sqrt 2, \sqrt 3)$ contains the submodule $\{1, \sqrt 2\}$, which is a full module when regarded as a module inside $\mbb Q(\sqrt 2)$. The fact that we get infinitely many solutions can, more abstractly, be attributed to the fact that $\{1, \sqrt 2, \sqrt 3 \}$ is what is called a degenerate module. Let's define what we mean by this
+\begin{definition}\label{def: Degenerate module}
+	Let $K$ be a number field and $M$ a module with generators $\mu_1, ..., \mu_m$ and consider the vector space $L = \Span_{\mbb Q}\{\mu_1, ..., \mu_m \}$. If $L$ contains a subspace $L'$ so that $\gamma K' = L'$ for some subfield $K'$ of $K$ and $\gamma \in K$ and $K'$ is neither $\mbb Q$ or a quadratic imaginary field then we say that $M$ is degenerate. Otherwise the module is called non degenerate.
+\end{definition}
+We see that the module $\{1, \sqrt 2, \sqrt 3 \}$ inside $\mbb Q(\sqrt 2, \sqrt 3)$ is certainly degenerate since for example $\mbb Q(\sqrt 2) = \Span_{\mbb Q} \{1, \sqrt 2 \}$. Also all full modules in a field different from $\mbb Q$ or an imaginary quadratic field are degenerate - just consider the span over $\mbb Q$ of any basis of such a module. For an example of a non-degenerate module look at the module $M = \langle 1, \beta \rangle$ from the proof of \cref{thm: Thues theorem}. This follows from the following fact combined with the statement of \cref{thm: Thues theorem}.
+\begin{proposition}
+	Assume $K$ is a number field and $M$ is a degenerate module. There exists $c \in \mbb Z$ so that there are infinitely many solutions, $\alpha \in M$, to the equation
+	$$N_{K / \mbb Q}(\alpha) = c$$
+\end{proposition}
+\begin{proof}
+	By assumption we have that $K' = \gamma L'$, where $K'$, $L'$ and $\gamma \in K$ are as in \cref{def: Degenerate module}. Set $M' = L' \cap M$. Then $\gamma^{-1}M'$ is a full module inside $K'$ and since $K'$ is neither $\mbb Q$ or a quadratic imaginary field, we know from \cref{thm: Shape of solutions to N(x) = c for x in full module,rem: When does a full module have finitely many solutions} that there exists $c' \in \mbb Z$ so that
+	$$N_{K' / \mbb Q}(\xi) = c'$$
+	has infinitely many solutions $\xi \in \gamma^{-1}M'$ (take for example $c' = 1$). Take any such solution, $\xi$, and also set $c_\bullet = N_{K / \mbb Q}(\gamma)c_\bullet^m$, where $m = [K : K']$. We get
+	$$N_{K / \mbb Q}(\xi \gamma) = N_{K / \mbb Q}(\xi) N_{K / \mbb Q}(\gamma) = (N_{K' / \mbb Q}(\xi))^m N_{K / \mbb Q}(\gamma) = c$$
+	Since $\xi\gamma \in M' \subseteq M$ the result now follows.
+\end{proof}
+This raises the question: If $K$ is a number field of degree $n$, $F(x_1, ..., x_m)$ is an irreducible form and $M = \langle\mu_1, ..., \mu_m \rangle$ is a non-degenerate module so that $F(x_1, ..., x_m) = N_{K/\mbb Q}(x_1\mu_1, ..., x_m\mu_m)$ is it then always the case that there are only finitely many solutions to $F(x_1, ..., x_m) = c$? Note that since $M$ is non-degenerate it must be non-full so we can proceed as we did in the proof of \cref{thm: Skolems method} and so we can apply \cref{cor: Any curve on V gives a solution to a system of equations}. In the special case where $m = 2$ and one of the embeddings were complex we saw in \cref{cor: Result to prove thues theorem} that we could apply \cref{lem: Two power series are equal} to proceed. Thus we would somehow want a generalized version of \cref{lem: Two power series are equal} to proceed in the general case, see \citep[p. 300]{borevich}  
+
+% If it were possible to give a version of \cref{lem: Two power series are equal} requiring that $n_1 + n_2  \geq n$ rather than $n_1 = n - 2$ and $n_2 \geq 2$,   
+
+\bibliographystyle{plainnat} % or another style like plain, alpha, etc.
+\bibliography{references}
+\end{document}
+
+
